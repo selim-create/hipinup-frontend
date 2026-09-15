@@ -92,12 +92,13 @@ function ReadersLike(){
       <Link href={article.path} className="v62-readers-photo"><Photo article={article}/></Link>
       <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
     </article>)}</div>
+    <div className="v69-readers-motto"><span>MERAK MODU</span><strong>AÇIK.</strong><em>Bir hikâye daha?</em></div>
   </section>;
 }
 
 function EditorsDesk(){
   const feature=articleByKey("ozge-gurkan");
-  const side=[articleByKey("ben-bohmer"),articleByKey("david-lynch"),articleByKey("elif-ebru-sakar")];
+  const side=[articleByKey("ben-bohmer"),articleByKey("david-lynch"),articleByKey("elif-ebru-sakar"),articleByKey("six-senses")];
   return <section className="v6-editors"><div className="site-width">
     <header className="v6-editors-head"><div className="v62-editors-title"><Eyebrow>HİPİNUP EDIT / 01</Eyebrow><h2>Editör Masası</h2><div className="v62-curator"><span>up!</span><div><strong>Hipinup Edit</strong><small>Haftanın editör seçkisi</small></div></div></div><p>Algoritmanın değil, merakın seçtiği hikâyeler.</p></header>
     <div className="v6-editors-grid"><article className="v6-editors-feature"><Link href={feature.path}><Photo article={feature}/></Link><div><Eyebrow>SANAT & KÜLTÜR</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
@@ -205,6 +206,7 @@ function CelebrityCluster(){
         <Link href={callout.path} className="v68-celeb-callout"><Eyebrow>MÜZİK / YÜZ YÜZE</Eyebrow><strong>{callout.title}</strong><span className="v68-celeb-pointer"/><span className="v68-celeb-avatar"><Image src={callout.imageSmall} alt="" width={180} height={180}/></span></Link>
         <Link href={textStory.path} className="v68-celeb-text">{textStory.title}</Link>
         <div className="v68-celeb-cards">{cards.map(article=><article className="v68-celeb-card" key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h4><Link href={article.path}>{article.title}</Link></h4></article>)}</div>
+        <div className="v69-celeb-motto"><span>GÖZ ÖNÜNDE.</span><strong>EZBER DIŞINDA.</strong><em>up!</em></div>
       </div>
     </div>
   </div></section>;
@@ -217,9 +219,9 @@ function RealLifeCluster(){
   return <section className="v68-cluster v68-life"><div className="site-width">
     <header className="v68-cluster-head"><h2>HAYATIN İÇİNDEN</h2><p>Sıradan günlerin içindeki iyi fikirler, küçük dönüşümler ve gerçek yaşam detayları.</p><Link href={categoryByKey("yasam").path}>Tümünü gör <ArrowUpRight size={17}/></Link></header>
     <div className="v68-life-grid">
-      <div className="v68-life-list">{list.map((article,index)=><Link href={article.path} key={article.key}><b>{index+1}</b><strong>{article.title}</strong></Link>)}</div>
+      <div className="v69-life-left"><div className="v68-life-list">{list.map((article,index)=><Link href={article.path} key={article.key}><b>{index+1}</b><strong>{article.title}</strong></Link>)}</div><AdSlot format="rectangle" className="v69-life-ad"/></div>
       {cards.map(article=><article className="v68-life-card" key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3></article>)}
-      <article className="v68-life-spotlight"><Link href={spotlight.path}><Photo article={spotlight}/></Link><div className="v68-life-spotlight-copy"><Eyebrow>DOSYA / YAŞAM</Eyebrow><h3>{spotlight.title}</h3><p>{spotlight.excerpt}</p><Link href={spotlight.path}>Dosyayı aç <ArrowUpRight size={17}/></Link></div></article>
+      <article className="v68-life-spotlight v69-life-teaser"><Link href={spotlight.path}><Photo article={spotlight}/></Link><div className="v68-life-spotlight-copy"><Eyebrow>HAFTANIN NOTU</Eyebrow><h3>{spotlight.title}</h3><Link href={spotlight.path}>Hikâyeyi aç <ArrowUpRight size={17}/></Link></div></article>
     </div>
   </div></section>;
 }

@@ -90,7 +90,7 @@ function ReadersLike(){
     <header className="v62-readers-head"><div><Eyebrow>PEOPLE MANTIĞI / HİPİNUP RİTMİ</Eyebrow><h2>Şu an okunuyor.</h2></div><p>Okurun ilgisini çeken hikâyeler, tek bakışta.</p></header>
     <div className="v62-readers-grid">{stories.map((article,index)=><article key={article.key} className={index===0?"featured":""}>
       <Link href={article.path} className="v62-readers-photo"><Photo article={article}/></Link>
-      <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
+      <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
     </article>)}</div>
   </section>;
 }

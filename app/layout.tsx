@@ -18,6 +18,7 @@ import "./hipinup-v68-clusters.css";
 import "./hipinup-v69-qa.css";
 import "./hipinup-v70-finishing.css";
 import "./hipinup-v71-style-gap.css";
+import "./hipinup-v73-rhythm-ads.css";
 
 export const metadata: Metadata = {
   title: { default: "Hipinup — Hayatın içinden, kültürün peşinden", template: "%s | Hipinup" },

@@ -7,7 +7,14 @@ import {
   ChevronRight,
   Mail,
 } from "lucide-react";
-import { articleCategory, dateLabel, orderedArticles, type Article } from "@/app/data/content";
+import {
+  articleCategory,
+  dateLabel,
+  orderedArticles,
+  type Article,
+  type ContentBlock,
+  type ContentMedia,
+} from "@/app/data/content";
 import { categoryByKey, type Category } from "@/app/data/navigation";
 import type { ApiPagination } from "@/lib/hipinup-api";
 import { Shell, StoryCard } from "./magazine";
@@ -17,7 +24,8 @@ import { ReadingProgress } from "./reading-progress";
 import { Wave, Squiggle } from "./wave";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 
-type LiveBlock = { type: "h2" | "h3" | "p" | "li" | "blockquote"; text: string };
+type LegacyBlock = { type: "h2" | "h3" | "p" | "li" | "blockquote"; text: string };
+type HeadingEntry = { block: Extract<ContentBlock, { type: "heading" }>; index: number };
 
 function categoryFrom(key: string | undefined, navigation: Category[]) {
   if (!key) return undefined;
@@ -53,21 +61,144 @@ function textFromHtml(value: string) {
     .trim();
 }
 
-function blocksFromHtml(html = ""): LiveBlock[] {
-  const blocks: LiveBlock[] = [];
+function legacyBlocksFromHtml(html = ""): ContentBlock[] {
+  const blocks: ContentBlock[] = [];
   const matcher = /<(h2|h3|p|li|blockquote)\b[^>]*>([\s\S]*?)<\/\1>/gi;
   let match: RegExpExecArray | null;
 
   while ((match = matcher.exec(html))) {
-    const text = textFromHtml(match[2]);
-    if (text) blocks.push({ type: match[1].toLowerCase() as LiveBlock["type"], text });
+    const legacy: LegacyBlock = {
+      type: match[1].toLowerCase() as LegacyBlock["type"],
+      text: textFromHtml(match[2]),
+    };
+    if (!legacy.text) continue;
+
+    if (legacy.type === "h2" || legacy.type === "h3") {
+      blocks.push({ type: "heading", level: legacy.type === "h2" ? 2 : 3, text: legacy.text });
+    } else if (legacy.type === "blockquote") {
+      blocks.push({ type: "quote", text: legacy.text });
+    } else {
+      blocks.push({ type: "paragraph", text: legacy.text });
+    }
   }
 
   return blocks;
 }
 
+function frontendHtml(value = "") {
+  return value.replace(/https?:\/\/api\.hipinup\.com(?=\/)/gi, "");
+}
+
+function paragraphInnerHtml(value = "") {
+  return frontendHtml(value)
+    .replace(/^\s*<p\b[^>]*>/i, "")
+    .replace(/<\/p>\s*$/i, "");
+}
+
+function canOptimizeImage(url: string) {
+  return url.startsWith("/") || /^https:\/\/api\.hipinup\.com\//i.test(url);
+}
+
+function ContentImage({ media, priority = false }: { media: ContentMedia; priority?: boolean }) {
+  const width = media.width > 0 ? media.width : 1200;
+  const height = media.height > 0 ? media.height : 800;
+  const alt = media.alt || "";
+
+  if (canOptimizeImage(media.url)) {
+    return <Image src={media.url} alt={alt} width={width} height={height} priority={priority} sizes="(max-width: 760px) 100vw, 700px"/>;
+  }
+
+  // External legacy media can come from domains outside the Next image allow-list.
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={media.url} alt={alt} width={width} height={height} loading="lazy" decoding="async"/>;
+}
+
 function liveTagCategory(article: Article, key: string) {
   return article.categories?.find((category) => category.key === key) || categoryByKey(key);
+}
+
+function blockAnchor(block: ContentBlock, index: number) {
+  return block.type === "heading" && block.anchor ? block.anchor : `bolum-${index}`;
+}
+
+function StructuredBlock({
+  block,
+  index,
+  headingNumber,
+  opening,
+}: {
+  block: ContentBlock;
+  index: number;
+  headingNumber: number;
+  opening: boolean;
+}) {
+  if (block.type === "heading") {
+    return <h2 id={blockAnchor(block, index)}><span>{String(headingNumber + 1).padStart(2, "0")}</span>{block.text}</h2>;
+  }
+
+  if (block.type === "paragraph") {
+    const className = `${opening ? "opening-paragraph " : ""}article-rich-html`.trim();
+    return block.html
+      ? <p className={className} dangerouslySetInnerHTML={{ __html: paragraphInnerHtml(block.html) }}/>
+      : <p className={className}>{block.text}</p>;
+  }
+
+  if (block.type === "list") {
+    const ListTag = block.ordered ? "ol" : "ul";
+    return <ListTag className="article-rich-list">{block.items.map((item, itemIndex) => <li key={itemIndex}>{item.html ? <span dangerouslySetInnerHTML={{ __html: frontendHtml(item.html) }}/> : item.text}</li>)}</ListTag>;
+  }
+
+  if (block.type === "quote") {
+    return <blockquote className="article-content-quote"><p>{block.text}</p>{block.citation && <cite>{block.citation}</cite>}</blockquote>;
+  }
+
+  if (block.type === "image") {
+    return <figure className="article-content-image"><ContentImage media={block.media}/>{block.media.caption && <figcaption>{block.media.caption}</figcaption>}</figure>;
+  }
+
+  if (block.type === "gallery") {
+    return <div className="article-content-gallery">{block.items.map((media, itemIndex) => <figure key={`${media.id || media.url}-${itemIndex}`}><ContentImage media={media}/>{media.caption && <figcaption>{media.caption}</figcaption>}</figure>)}</div>;
+  }
+
+  if (block.type === "embed") {
+    const html = frontendHtml(block.html || "");
+    return <div className="article-content-embed">
+      {html && /<(iframe|video)\b/i.test(html)
+        ? <div dangerouslySetInnerHTML={{ __html: html }}/>
+        : block.url
+          ? <a href={block.url} target="_blank" rel="noreferrer">{block.provider ? `${block.provider} içeriğini aç` : "Gömülü içeriği aç"}<ArrowUpRight size={19}/></a>
+          : html
+            ? <div dangerouslySetInnerHTML={{ __html: html }}/>
+            : null}
+    </div>;
+  }
+
+  if (block.type === "media") {
+    return <figure className="article-content-media">
+      {block.mediaType === "audio" ? <audio controls preload="metadata" src={block.url}/> : <video controls preload="metadata" src={block.url}/>} 
+      {block.caption && <figcaption>{block.caption}</figcaption>}
+    </figure>;
+  }
+
+  if (block.type === "table") {
+    return <div className="article-content-table" dangerouslySetInnerHTML={{ __html: frontendHtml(block.html) }}/>;
+  }
+
+  if (block.type === "code") {
+    return <pre className="article-content-code"><code>{block.text}</code></pre>;
+  }
+
+  if (block.type === "separator") {
+    return <hr className="article-content-separator"/>;
+  }
+
+  if (block.type === "html") {
+    return block.html
+      ? <div className="article-content-fallback article-rich-html" dangerouslySetInnerHTML={{ __html: frontendHtml(block.html) }}/>
+      : block.text ? <p className="article-content-fallback">{block.text}</p> : null;
+  }
+
+  return null;
 }
 
 export function LiveCategoryPage({
@@ -117,11 +248,16 @@ export function LiveCategoryPage({
 
 export function LiveArticlePage({ article, related, navigation }: { article: Article; related: Article[]; navigation: Category[] }) {
   const category = articleCategory(article);
-  const blocks = blocksFromHtml(article.content);
-  const headings = blocks.map((block, index) => ({ block, index })).filter(({ block }) => block.type === "h2" || block.type === "h3");
+  const blocks = article.contentBlocks?.length ? article.contentBlocks : legacyBlocksFromHtml(article.content);
+  const headings = blocks.reduce<HeadingEntry[]>((items, block, index) => {
+    if (block.type === "heading") items.push({ block, index });
+    return items;
+  }, []);
+  const firstParagraphIndex = blocks.findIndex((block) => block.type === "paragraph");
   const fallbackRelated = orderedArticles.filter((item) => item.key !== article.key).slice(0, 3);
   const more = related.length ? related : fallbackRelated;
   const adAfter = blocks.length >= 8 ? Math.min(9, Math.floor(blocks.length * 0.42)) : -1;
+  const pulloutAfter = blocks.length ? Math.min(6, blocks.length - 1) : -1;
   const image = article.image || article.imageSmall || "/images/freesbee-small.webp";
 
   return <Shell><main id="icerik" className="article-main" data-channel={category.key}>
@@ -138,15 +274,15 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
 
     <ReadingProgress title={article.title}/>
     <div className="site-width"><div className="article-layout">
-      <aside className="article-toc"><div className="sticky-toc"><span className="eyebrow">HİKÂYEYE DAL</span><h2>Bu<br/><em>yazıda.</em></h2><Squiggle/>{headings.length ? headings.slice(0, 7).map(({ block, index }, number) => <a href={`#bolum-${index}`} key={index}><span>{String(number + 1).padStart(2, "0")}</span>{block.text}</a>) : <a href="#yazi"><span>01</span>Hikâyeyi oku</a>}<Link className="back-category" href={category.path}>{category.name} dosyası <ArrowUpRight size={18}/></Link></div></aside>
+      <aside className="article-toc"><div className="sticky-toc"><span className="eyebrow">HİKÂYEYE DAL</span><h2>Bu<br/><em>yazıda.</em></h2><Squiggle/>{headings.length ? headings.slice(0, 7).map(({ block, index }, number) => <a href={`#${blockAnchor(block, index)}`} key={`${block.anchor || block.text}-${index}`}><span>{String(number + 1).padStart(2, "0")}</span>{block.text}</a>) : <a href="#yazi"><span>01</span>Hikâyeyi oku</a>}<Link className="back-category" href={category.path}>{category.name} dosyası <ArrowUpRight size={18}/></Link></div></aside>
 
       <article id="yazi" className="article-body">
         <aside className="story-brief"><span className="brief-tag"><Asterisk size={19}/> HİKÂYENİN ÖZÜ</span><p>{article.excerpt}</p></aside>
         {blocks.length ? blocks.map((block, index) => {
           const headingNumber = headings.findIndex((item) => item.index === index);
           return <div className="article-flow-block" key={`${block.type}-${index}`}>
-            {block.type === "h2" || block.type === "h3" ? <h2 id={`bolum-${index}`}><span>{String(headingNumber + 1).padStart(2, "0")}</span>{block.text}</h2> : block.type === "li" ? <p className="article-list-item">{block.text}</p> : block.type === "blockquote" ? <blockquote className="live-blockquote">{block.text}</blockquote> : <p className={index === 0 ? "opening-paragraph" : undefined}>{block.text}</p>}
-            {index === Math.min(6, blocks.length - 1) && <aside className="article-pullout"><span className="pullout-mark" aria-hidden="true">“</span><p>{article.excerpt}</p><Squiggle/></aside>}
+            <StructuredBlock block={block} index={index} headingNumber={headingNumber} opening={index === firstParagraphIndex}/>
+            {index === pulloutAfter && <aside className="article-pullout"><span className="pullout-mark" aria-hidden="true">“</span><p>{article.excerpt}</p><Squiggle/></aside>}
             {index === adAfter && <AdSlot format="rectangle" className="article-inline-ad"/>}
           </div>;
         }) : <div className="archive-excerpt"><p>{article.excerpt}</p></div>}

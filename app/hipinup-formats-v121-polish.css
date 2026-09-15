@@ -1,0 +1,20 @@
+/* Hipinup v12.1 — format interaction polish */
+.pf-single .reader-actions{margin:0}
+.pf-single .reader-actions>div{display:flex;flex-wrap:wrap;gap:8px}
+.pf-single .reader-actions button{min-height:40px;display:inline-flex;align-items:center;gap:7px;padding:0 12px;background:#fff;border:1.5px solid var(--pf-ink);box-shadow:3px 3px 0 var(--pf-blue);font-size:11px;font-weight:850;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.pf-single .reader-actions button:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--pf-blue);background:var(--pf-yellow)}
+.pf-single .reader-actions>span{display:block;min-height:17px;margin-top:7px;font-size:10px;color:#716f77;text-align:right}
+.pf-video .reader-actions button{background:#15151b;color:#fff;border-color:#fff;box-shadow:3px 3px 0 var(--pf-yellow)}
+.pf-video .reader-actions button:hover{background:var(--pf-blue);box-shadow:1px 1px 0 var(--pf-yellow)}
+.pf-video .reader-actions>span{color:#bdbdc2}
+
+/* Text-only quick cards still communicate their editorial format. */
+.v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before,
+.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{display:inline-flex;align-items:center;min-height:21px;margin-bottom:5px;padding:0 6px;border:1px solid #0a0a0f;font-size:8px;font-weight:950;letter-spacing:.08em;line-height:1;background:var(--pf-yellow);box-shadow:2px 2px 0 var(--pf-blue)}
+.v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before{content:"01  LİSTE"}
+.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{content:"▦  GALERİ"}
+
+@media(max-width:760px){
+ .pf-single .reader-actions{width:100%}.pf-single .reader-actions>div{width:100%}.pf-single .reader-actions button{flex:1;justify-content:center;min-width:145px}.pf-single .reader-actions>span{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){.pf-single .reader-actions button{transition:none!important}}

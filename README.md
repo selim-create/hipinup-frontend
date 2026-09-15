@@ -16,7 +16,7 @@ Reusable `AdSlot` components display a clearly labeled Hip Creative house-campai
 - Category pagination, nested WordPress-style `/page/2/` compatibility, accessible desktop submenus and mobile directory.
 - Search across the sample archive, browser-local saved article state and copy-link action.
 - Explicit demo newsletter. No registration, email delivery, tracking or production backend connection.
-- Self-hosted Dela Gothic One, Barlow Condensed and DM Sans font files, optimized WebP photographs, and an additional campaign gallery in the Tommy Hilfiger article.
+- Self-hosted Barlow Condensed and DM Sans font files, optimized WebP photographs, and an additional campaign gallery in the Tommy Hilfiger article.
 - Noindex metadata for the prototype. No changes are made to hipinup.com.
 
 ## Data boundary

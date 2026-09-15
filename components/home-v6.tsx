@@ -117,7 +117,7 @@ function StyleSection(){
 
 function UpShots(){
   const shots=["bubas-bosphorus","coffee","smoothies","hurrem-sultan-hamami","freesbee"].map(articleByKey);
-  return <section className="v6-shots"><div className="site-width"><header><div><Eyebrow><Camera size={13}/> BUGÜNÜN KARELERİ</Eyebrow><h2>Shots</h2></div><p>People’ın Star Tracks hızında; Hipinup’ın kendi fotoğraf diliyle.</p></header><div className="v6-shots-grid">{shots.map((article,index)=><Link href={article.path} key={article.key} className={index===0?"big":""}><Photo article={article}/><div><span>0{index+1}</span><strong>{article.title}</strong></div></Link>)}</div></div></section>;
+  return <section className="v6-shots"><div className="site-width"><header><div><Eyebrow><Camera size={13}/> BUGÜNÜN KARELERİ</Eyebrow><h2>Shots</h2></div><p>People’ın Star Tracks hızında; Hipinup’ın kendi fotoğraf diliyle.</p></header><div className="v6-shots-grid">{shots.map((article,index)=><Link href={article.path} key={article.key} className={index===0?"big":""}>{article.key==="freesbee"?<Image src={article.imageSmall} alt={article.title} width={520} height={347} sizes="(max-width: 760px) 100vw, 25vw" loading="lazy"/>:<Photo article={article}/>}<div><span>0{index+1}</span><strong>{article.title}</strong></div></Link>)}</div></div></section>;
 }
 
 function Escape(){
@@ -136,7 +136,7 @@ function Escape(){
       <div className="v67-escape-copy">
         <Eyebrow><Compass size={13}/> MOD: KAÇIŞ / 01</Eyebrow>
         <h3><span>BİRAZ</span><mark>OFFLINE</mark><span>OLSAN?</span></h3>
-        <p>Yeni rotalar. Uzun kahvaltılar. “İyi ki gelmişim” dedirten yerler.</p>
+        <p>Yeni rotalar. Uzun kahvaltılar. “iyi ki gelmişim” dedirten yerler.</p>
         <Link href={categoryByKey("seyahat").path} className="v67-escape-cta">Rotayı değiştir <ArrowUpRight size={20}/></Link>
         <em className="v67-escape-note">→ Şehirden çıkış bu tarafta.</em>
       </div>

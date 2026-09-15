@@ -92,7 +92,7 @@ function ReadersLike(){
       <Link href={article.path} className="v62-readers-photo"><Photo article={article}/></Link>
       <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
     </article>)}</div>
-    <div className="v69-readers-motto"><span>MERAK MODU</span><strong>AÇIK.</strong><em>Bir hikâye daha?</em></div>
+    <div className="v70-readers-ad"><AdSlot format="banner"/></div>
   </section>;
 }
 

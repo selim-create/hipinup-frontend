@@ -1,8 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 
-type AdFormat = "leaderboard" | "billboard" | "rectangle" | "halfpage";
+type AdFormat = "leaderboard" | "banner" | "billboard" | "rectangle" | "halfpage";
 const formats: Record<AdFormat, { desktop: string; mobile: string }> = {
   leaderboard: { desktop: "970 × 90", mobile: "320 × 100" },
+  banner: { desktop: "728 × 90", mobile: "320 × 100" },
   billboard: { desktop: "970 × 250", mobile: "300 × 250" },
   rectangle: { desktop: "300 × 250", mobile: "300 × 250" },
   halfpage: { desktop: "300 × 600", mobile: "300 × 600" },
@@ -11,7 +12,7 @@ const formats: Record<AdFormat, { desktop: string; mobile: string }> = {
 /** Reserved layout dimensions, with a house campaign in place of an ad-network tag. */
 export function AdSlot({ format, className = "" }: { format: AdFormat; className?: string }) {
   const size = formats[format];
-  const compact = format === "leaderboard";
+  const compact = format === "leaderboard" || format === "banner";
   return (
     <aside className={`ad-slot ad-${format} ${className}`} aria-label="Örnek reklam alanı">
       <div className="ad-caption">

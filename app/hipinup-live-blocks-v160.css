@@ -1,0 +1,259 @@
+/* Hipinup live content v1.6 — structured Core content blocks.
+   Keeps the locked article rhythm while rendering normalized WordPress blocks. */
+
+.article-main .article-rich-html a,
+.article-main .article-rich-list a,
+.article-main .article-content-quote a{
+  color:var(--article-accent);
+  text-decoration:underline;
+  text-decoration-thickness:1.5px;
+  text-underline-offset:3px;
+}
+
+.article-main .article-rich-html strong,
+.article-main .article-rich-list strong{
+  color:var(--ink);
+  font-weight:850;
+}
+
+.article-main .article-rich-html em,
+.article-main .article-rich-list em{
+  font-style:italic;
+}
+
+.article-main .article-content-image{
+  margin:42px -24px 46px;
+}
+
+.article-main .article-content-image img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1.5px solid var(--ink);
+  box-shadow:7px 7px 0 var(--article-shadow);
+}
+
+.article-main .article-content-image figcaption,
+.article-main .article-content-gallery figcaption{
+  margin-top:11px;
+  color:#6d6873;
+  font-size:11px;
+  font-weight:750;
+  line-height:1.45;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+}
+
+.article-main .article-content-gallery{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+  margin:44px -28px 48px;
+}
+
+.article-main .article-content-gallery figure:nth-child(odd){transform:rotate(-1deg)}
+.article-main .article-content-gallery figure:nth-child(even){transform:rotate(1deg)}
+.article-main .article-content-gallery img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1.5px solid var(--ink);
+  box-shadow:5px 5px 0 var(--article-shadow);
+}
+
+.article-main .article-rich-list{
+  margin:9px 0 34px;
+  padding:0;
+  list-style:none;
+  counter-reset:hipinup-list;
+}
+
+.article-main .article-rich-list>li{
+  position:relative;
+  margin:0;
+  padding:16px 0 16px 42px;
+  border-bottom:1px solid #dfdde3;
+  line-height:1.72;
+}
+
+.article-main .article-rich-list>li:before{
+  content:"→";
+  position:absolute;
+  left:4px;
+  top:16px;
+  color:var(--article-accent);
+  font-weight:950;
+}
+
+.article-main ol.article-rich-list{counter-reset:hipinup-list}
+.article-main ol.article-rich-list>li:before{
+  counter-increment:hipinup-list;
+  content:counter(hipinup-list,decimal-leading-zero);
+  top:14px;
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--ink);
+  background:var(--yellow);
+  box-shadow:2px 2px 0 var(--article-accent);
+  color:var(--ink);
+  font-family:var(--display);
+  font-size:13px;
+  font-weight:850;
+}
+
+.article-main .article-content-quote{
+  position:relative;
+  margin:48px -20px 50px;
+  padding:34px 36px 31px;
+  background:var(--ink);
+  color:#fff;
+  border:1.5px solid var(--ink);
+  box-shadow:8px 8px 0 var(--yellow);
+}
+
+.article-main .article-content-quote:before{
+  content:"“";
+  position:absolute;
+  right:18px;
+  top:-43px;
+  color:var(--yellow);
+  font-family:Georgia,serif;
+  font-size:110px;
+  line-height:1;
+}
+
+.article-main .article-content-quote>p{
+  position:relative;
+  z-index:1;
+  margin:0;
+  max-width:92%;
+  font-family:var(--display);
+  font-size:clamp(31px,2.7vw,43px);
+  font-weight:800;
+  line-height:1.08;
+  color:#fff;
+}
+
+.article-main .article-content-quote>cite{
+  display:block;
+  margin-top:18px;
+  color:var(--yellow);
+  font-size:12px;
+  font-style:normal;
+  font-weight:850;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+
+.article-main .article-content-embed{
+  margin:44px 0 48px;
+  padding:22px;
+  border:1.5px solid var(--ink);
+  background:var(--article-soft);
+  box-shadow:6px 6px 0 var(--yellow);
+}
+
+.article-main .article-content-embed iframe,
+.article-main .article-content-embed video{
+  display:block;
+  width:100%;
+  max-width:100%;
+  aspect-ratio:16/9;
+  height:auto;
+  border:0;
+}
+
+.article-main .article-content-embed>a{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  color:var(--ink);
+  font-weight:850;
+  overflow-wrap:anywhere;
+}
+
+.article-main .article-content-media{
+  margin:38px 0 44px;
+  padding:20px;
+  border:1.5px solid var(--ink);
+  background:var(--article-soft);
+  box-shadow:6px 6px 0 var(--article-accent);
+}
+
+.article-main .article-content-media video,
+.article-main .article-content-media audio{
+  display:block;
+  width:100%;
+}
+
+.article-main .article-content-table{
+  margin:42px 0 46px;
+  overflow-x:auto;
+  border:1.5px solid var(--ink);
+  box-shadow:5px 5px 0 var(--yellow);
+}
+
+.article-main .article-content-table table{
+  width:100%;
+  min-width:560px;
+  border-collapse:collapse;
+  background:#fff;
+  font-size:15px;
+  line-height:1.5;
+}
+
+.article-main .article-content-table th,
+.article-main .article-content-table td{
+  padding:13px 15px;
+  border:1px solid #d9d7dd;
+  text-align:left;
+  vertical-align:top;
+}
+
+.article-main .article-content-table th{
+  background:var(--yellow);
+  color:var(--ink);
+  font-weight:900;
+}
+
+.article-main .article-content-code{
+  margin:40px 0 44px;
+  padding:22px 24px;
+  overflow-x:auto;
+  background:#111018;
+  color:#fff;
+  border:1.5px solid var(--ink);
+  box-shadow:6px 6px 0 var(--article-accent);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size:14px;
+  line-height:1.7;
+  white-space:pre-wrap;
+}
+
+.article-main .article-content-separator{
+  width:120px;
+  height:5px;
+  margin:49px 0;
+  border:0;
+  background:var(--article-accent);
+  box-shadow:38px 0 0 var(--yellow),76px 0 0 var(--ink);
+}
+
+.article-main .article-content-fallback{
+  margin-bottom:27px;
+}
+
+@media(max-width:760px){
+  .article-main .article-content-image{margin:34px 0 38px}
+  .article-main .article-content-gallery{grid-template-columns:1fr;gap:17px;margin:36px 0 40px}
+  .article-main .article-content-gallery figure{transform:none!important}
+  .article-main .article-content-quote{margin:38px -4px 42px;padding:27px 21px 25px;box-shadow:6px 6px 0 var(--yellow)}
+  .article-main .article-content-quote:before{font-size:82px;top:-31px;right:8px}
+  .article-main .article-content-quote>p{font-size:32px;max-width:100%}
+  .article-main .article-content-embed,.article-main .article-content-media{margin-block:34px 38px;padding:14px}
+  .article-main .article-rich-list>li{padding-left:38px}
+}

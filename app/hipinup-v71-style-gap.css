@@ -1,0 +1,76 @@
+/* Hipinup v7.1 — root fix for Moda & Stil → UP! SHOTS gap */
+
+/* The old desk uses a two-row grid where the second track is 1fr and the
+   portrait spans both tracks. That can leave a large empty white area after
+   the support cards. Make both rows content-sized and let the section collapse
+   to the actual editorial content. */
+.v6-style-section{
+  min-height:0!important;
+  height:auto!important;
+  padding-bottom:0!important;
+  margin-bottom:0!important;
+  overflow:visible!important;
+}
+
+.v6-style-section .v6-style-grid{
+  grid-template-rows:max-content max-content!important;
+  align-content:start!important;
+  align-items:start!important;
+  min-height:0!important;
+  height:auto!important;
+}
+
+.v6-style-section .v6-style-main>a:first-child{
+  grid-row:1 / span 2!important;
+  align-self:start!important;
+  height:430px!important;
+}
+
+.v6-style-section .v6-style-main>div,
+.v6-style-section .v6-style-side{
+  align-self:start!important;
+  min-height:0!important;
+  height:auto!important;
+  margin-bottom:0!important;
+}
+
+.v6-style-section .v6-style-side{
+  grid-row:2!important;
+}
+
+.v6-style-section .v6-style-side article{
+  min-height:0!important;
+  height:auto!important;
+}
+
+.v6-style-section .v6-style-side article>a:first-child,
+.v6-style-section .v6-style-side article:nth-child(2)>a:first-child{
+  height:176px!important;
+}
+
+/* Shots must begin immediately after the fashion desk. */
+.v6-style-section + .v6-shots{
+  margin-top:0!important;
+}
+.v6-shots{
+  margin-top:0!important;
+  padding-top:30px!important;
+}
+
+@media(max-width:980px){
+  .v6-style-section .v6-style-main>a:first-child{height:400px!important}
+}
+
+@media(max-width:760px){
+  .v6-style-section .v6-style-grid{display:flex!important;flex-direction:column!important;gap:20px!important}
+  .v6-style-section .v6-style-main>a:first-child{height:430px!important}
+  .v6-style-section .v6-style-side article>a:first-child,
+  .v6-style-section .v6-style-side article:nth-child(2)>a:first-child{height:165px!important}
+  .v6-shots{padding-top:24px!important}
+}
+
+@media(max-width:520px){
+  .v6-style-section .v6-style-main>a:first-child{height:390px!important}
+  .v6-style-section .v6-style-side article>a:first-child,
+  .v6-style-section .v6-style-side article:nth-child(2)>a:first-child{height:210px!important}
+}

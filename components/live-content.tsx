@@ -8,11 +8,11 @@ import {
   Mail,
 } from "lucide-react";
 import { articleCategory, dateLabel, orderedArticles, type Article } from "@/app/data/content";
-import { categories as mockCategories, categoryByKey, type Category } from "@/app/data/navigation";
+import { categoryByKey, type Category } from "@/app/data/navigation";
 import type { ApiPagination } from "@/lib/hipinup-api";
 import { Shell, StoryCard } from "./magazine";
 import { AdSlot } from "./ad-slot";
-import { NewsletterForm, ReaderActions } from "./reader-actions";
+import { ReaderActions } from "./reader-actions";
 import { ReadingProgress } from "./reading-progress";
 import { Wave, Squiggle } from "./wave";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
@@ -165,8 +165,4 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
       <section className="related-section"><div className="related-heading"><span className="eyebrow">DAHA YENİ BAŞLADIK.</span><h2>BİR HİKÂYE<br/><em>DAHA?</em></h2><Link href={category.path} className="round-link" aria-label={`${category.name} dosyasını aç`}><ArrowUpRight size={32}/></Link></div><div className="three-grid">{more.slice(0, 3).map((item, index) => <StoryCard key={item.key} article={item} index={index}/>)}</div></section>
     </div>
   </main></Shell>;
-}
-
-export function LiveApiStatusNote() {
-  return <div className="live-api-status"><span>CORE</span><strong>Gerçek WordPress verisi</strong><NewsletterForm/></div>;
 }

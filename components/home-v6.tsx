@@ -120,9 +120,45 @@ function UpShots(){
 }
 
 function Escape(){
-  const main=articleByKey("six-senses");
-  const side=[articleByKey("bodrum-boat"),articleByKey("modern-travel")];
-  return <section className="v6-escape"><div className="site-width"><header className="v6-section-head"><div><Eyebrow><Compass size={13}/> MOD: KAÇIŞ</Eyebrow><h2>Biraz offline olsan?</h2></div><Link href={categoryByKey("seyahat").path}>Rotayı değiştir <ArrowRight size={17}/></Link></header><div className="v6-escape-grid"><article><Link href={main.path}><Photo article={main}/></Link><Eyebrow>SEYAHAT / 01</Eyebrow><h3><Link href={main.path}>{main.title}</Link></h3><p>{main.excerpt}</p></article><div>{side.map(article=><article key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3></article>)}</div></div></div></section>;
+  const main=articleByKey("modern-travel");
+  const orbit=articleByKey("bodrum-boat");
+  const picks=[articleByKey("six-senses"),articleByKey("bubas-bosphorus"),articleByKey("hurrem-sultan-hamami")];
+  return <section className="v67-escape"><div className="site-width v67-escape-inner">
+    <header className="v67-escape-mast">
+      <div className="v67-escape-mast-title"><Eyebrow><Compass size={13}/> ESCAPE EDIT</Eyebrow><h2>MOD: KAÇIŞ</h2></div>
+      <p>Yeni rotalar, uzun kahvaltılar ve “iyi ki gelmişim” dedirten yerler. Şehrin sesini biraz kısmak isteyenlere.</p>
+      <Link href={categoryByKey("seyahat").path} className="v67-escape-all">Tümünü gör <ArrowUpRight size={19}/></Link>
+    </header>
+    <div className="v67-wave" aria-hidden="true"/>
+
+    <div className="v67-escape-stage">
+      <div className="v67-escape-copy">
+        <Eyebrow><Compass size={13}/> MOD: KAÇIŞ / 01</Eyebrow>
+        <h3><span>BİRAZ</span><mark>OFFLINE</mark><span>OLSAN?</span></h3>
+        <p>Yeni rotalar. Uzun kahvaltılar. “İyi ki gelmişim” dedirten yerler.</p>
+        <Link href={categoryByKey("seyahat").path} className="v67-escape-cta">Rotayı değiştir <ArrowUpRight size={20}/></Link>
+        <em className="v67-escape-note">→ Şehirden çıkış bu tarafta.</em>
+      </div>
+
+      <article className="v67-postcard">
+        <Link href={main.path} className="v67-postcard-media"><Photo article={main} sizes="(max-width: 900px) 90vw, 58vw"/></Link>
+        <span className="v67-postcard-tag">KOS’TAN BİR NOT</span>
+        <div className="v67-postcard-caption"><Eyebrow>SEYAHAT DOSYASI</Eyebrow><h4><Link href={main.path}>Modern seyahatin<br/>yeni lüksü: özgürlük.</Link></h4><Meta article={main}/></div>
+      </article>
+
+      <Link href={orbit.path} className="v67-orbit" aria-label={orbit.title}>
+        <span className="v67-orbit-image"><Image src={orbit.image} alt="" width={520} height={520} sizes="220px"/></span>
+        <strong>MAVİNİN<br/>PEŞİNDE</strong><ArrowUpRight size={21}/>
+      </Link>
+
+      <div className="v67-escape-sticker" aria-label="Daha az yük, daha çok hayat"><small>DAHA AZ YÜK</small><strong>DAHA<br/>ÇOK<br/>HAYAT</strong></div>
+    </div>
+
+    <div className="v67-escape-picks">{picks.map((article,index)=><article className="v67-escape-pick" key={article.key}>
+      <Link href={article.path} className="v67-escape-pick-media"><Photo article={article} sizes="(max-width:680px) 140px, 33vw"/></Link>
+      <div className="v67-escape-pick-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong><Link href={article.path}>{article.title}</Link></strong></div><ArrowUpRight size={18}/></div>
+    </article>)}</div>
+  </div></section>;
 }
 
 function VideoSection(){

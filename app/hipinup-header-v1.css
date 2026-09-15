@@ -105,56 +105,70 @@ body:has(.v6-home) .masthead{
   align-items:center;
   justify-content:flex-end;
   flex-direction:row;
-  gap:10px;
+  gap:14px;
+  position:relative;
+  z-index:5;
 }
 .search-button,body:has(.v6-home) .search-button{
   width:auto;
-  height:42px;
+  height:46px;
   border:1px solid var(--line);
   border-radius:999px;
   display:flex;
   align-items:center;
   gap:7px;
-  padding:0 13px;
+  padding:0 14px;
   font-size:12px;
   font-weight:800;
   transition:border-color .18s ease,background .18s ease,transform .18s ease;
 }
 .search-button:hover{border-color:var(--ink);background:#f7f7f5;transform:translateY(-1px)}
 .search-button span,body:has(.v6-home) .search-button span{display:inline}
+
+/* CTA reference: yellow face, heavy black frame, blue offset shadow */
 .newsletter-button,body:has(.v6-home) .newsletter-button{
-  min-height:42px;
+  min-height:54px;
+  min-width:205px;
   display:flex;
   align-items:center;
-  gap:8px;
-  padding:0 14px;
-  border:1.5px solid var(--ink);
+  justify-content:space-between;
+  gap:18px;
+  padding:0 19px 0 25px;
+  border:3px solid var(--ink);
+  border-radius:0;
   background:var(--yellow);
   color:var(--ink);
-  box-shadow:none;
-  font-size:12px;
+  box-shadow:6px 6px 0 var(--blue);
+  font-size:17px;
+  line-height:1;
   font-weight:900;
-  letter-spacing:-.15px;
-  transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+  letter-spacing:-.55px;
+  transition:transform .16s cubic-bezier(.22,1,.36,1),box-shadow .16s ease;
 }
-.newsletter-button>svg:first-child{display:none}
-.newsletter-button:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink);background:var(--yellow)}
+.newsletter-button>svg{stroke-width:2.35}
+.newsletter-button:hover{
+  transform:translate(2px,2px);
+  box-shadow:4px 4px 0 var(--blue);
+  background:var(--yellow);
+}
+.newsletter-button:active{transform:translate(5px,5px);box-shadow:1px 1px 0 var(--blue)}
 
 /* ---------- Sticky navigation ---------- */
 .navigation-shell,.hip-navigation-shell,body:has(.v6-home) .navigation-shell{
   position:sticky;
   top:0;
-  z-index:70;
+  z-index:80;
   background:rgba(255,255,255,.97);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
   border-top:1.5px solid var(--ink);
   border-bottom:1.5px solid var(--ink);
   box-shadow:none;
+  overflow:visible;
   transition:box-shadow .22s ease,background .22s ease;
 }
 .navigation-shell.is-scrolled{
-  background:rgba(255,255,255,.94);
+  background:rgba(255,255,255,.96);
   box-shadow:0 8px 26px rgba(16,16,24,.08);
 }
 .primary-navigation,body:has(.v6-home) .primary-navigation{
@@ -162,7 +176,8 @@ body:has(.v6-home) .masthead{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px;
+  gap:15px;
+  overflow:visible;
   transition:min-height .2s ease;
 }
 .navigation-shell.is-scrolled .primary-navigation{min-height:56px}
@@ -170,11 +185,16 @@ body:has(.v6-home) .masthead{
   width:36px;
   height:36px;
   border-radius:50%;
+  flex:0 0 36px;
+  position:relative;
+  z-index:6;
   transition:background .16s ease,transform .16s ease;
 }
 .desktop-menu:hover{background:var(--yellow);transform:rotate(-5deg)}
-.nav-root{flex:1;min-width:0}
+.nav-root{flex:1;min-width:0;position:relative;z-index:4;overflow:visible}
 .nav-list{gap:18px;justify-content:center}
+.nav-item{position:relative;z-index:1}
+.nav-item:has([data-state="open"]){z-index:20}
 .nav-label>a,body:has(.v6-home) .nav-label>a{
   line-height:56px;
   font-size:13px;
@@ -204,11 +224,39 @@ body:has(.v6-home) .masthead{
 }
 .nav-expand{height:30px;width:18px}
 
+/* Logo enters on the LEFT when sticky state activates */
+.sticky-brand-reveal{
+  order:-2;
+  flex:0 0 auto;
+  max-width:0;
+  opacity:0;
+  overflow:hidden;
+  transform:translateY(15px);
+  pointer-events:none;
+  margin-right:0;
+  position:relative;
+  z-index:7;
+  transition:max-width .34s cubic-bezier(.22,1,.36,1),opacity .22s ease,transform .32s cubic-bezier(.22,1,.36,1),margin-right .32s ease;
+}
+.navigation-shell.is-scrolled .sticky-brand-reveal{
+  max-width:136px;
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+  margin-right:5px;
+}
+.sticky-brand-reveal .brand-small .hipinup-wordmark{
+  font-size:30px;
+  letter-spacing:-2.5px;
+}
+
 .sticky-nav-actions{
   display:flex;
   align-items:center;
   gap:8px;
   flex-shrink:0;
+  position:relative;
+  z-index:7;
 }
 .sticky-search-button{
   width:36px;
@@ -239,47 +287,40 @@ body:has(.v6-home) .masthead{
   font-size:12px;
   font-weight:900;
   white-space:nowrap;
+  position:relative;
+  z-index:7;
   transition:background .16s ease;
 }
 .explore-button:hover{background:#f4f4f1}
-.sticky-brand-reveal{
-  max-width:0;
-  opacity:0;
-  overflow:hidden;
-  transform:translateY(16px);
-  pointer-events:none;
-  margin-left:0;
-  transition:max-width .34s cubic-bezier(.22,1,.36,1),opacity .22s ease,transform .32s cubic-bezier(.22,1,.36,1),margin-left .32s ease;
-}
-.navigation-shell.is-scrolled .sticky-brand-reveal{
-  max-width:142px;
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-  margin-left:4px;
-}
-.sticky-brand-reveal .brand-small .hipinup-wordmark{
-  font-size:30px;
-  letter-spacing:-2.5px;
-}
 
-/* Keep dropdowns crisp, but less boxy */
+/* Dropdowns above the sticky bar content */
+.nav-dropdown,[data-slot="navigation-menu-content"]{
+  z-index:120!important;
+  overflow:visible;
+}
 .nav-dropdown{
   border:1.5px solid var(--ink)!important;
   box-shadow:7px 7px 0 var(--yellow)!important;
 }
 
+/* Radix portals must sit ABOVE sticky navigation (nav = 80) */
+[data-slot="sheet-overlay"],[data-slot="dialog-overlay"]{z-index:200!important}
+[data-slot="sheet-content"],[data-slot="dialog-content"]{z-index:210!important}
+.menu-sheet,.search-dialog{z-index:210!important}
+
 /* ---------- Responsive ---------- */
-@media(max-width:1180px){
-  .site-width{width:calc(100% - 64px)}
+@media(max-width:1240px){
   .nav-list{gap:12px}
   .nav-label>a,body:has(.v6-home) .nav-label>a{font-size:12px}
+  .newsletter-button,body:has(.v6-home) .newsletter-button{min-width:184px;min-height:50px;padding:0 16px 0 20px;font-size:15px;box-shadow:5px 5px 0 var(--blue)}
+}
+
+@media(max-width:1080px){
+  .site-width{width:calc(100% - 64px)}
   .masthead-note>strong,body:has(.v6-home) .masthead-note>strong{font-size:21px}
   .hipinup-wordmark{font-size:clamp(52px,5vw,67px)}
-  .newsletter-button span{display:none}
-  .newsletter-button{width:42px;justify-content:center;padding:0}
-  .newsletter-button>svg:first-child{display:block}
-  .newsletter-button>svg:last-child{display:none}
+  .newsletter-button,body:has(.v6-home) .newsletter-button{min-width:164px;font-size:14px;gap:10px;padding-inline:16px}
+  .newsletter-button>svg{width:19px;height:19px}
 }
 
 @media(max-width:900px){

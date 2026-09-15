@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "./site-link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Search, Menu, X, Plus } from "lucide-react";
@@ -76,7 +77,7 @@ export function Header({articles}:{articles:Article[]}) {
    <DialogDescription>İsimleri, konuları ve Hipinup hikâyelerini keşfet.</DialogDescription>
    <form action="/" method="get" onSubmit={()=>setSearch(false)} className="search-form"><Search/><input autoFocus name="s" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Moda, seyahat, müzik..." aria-label="Aranacak kelime"/><button aria-label="Ara" type="submit"><ArrowRight/></button></form>
    <span className="eyebrow">{query?'ARAMA SONUÇLARI':'KEŞFE BAŞLA'}</span>
-   <div className="search-results">{results.length?results.map(a=><Link href={a.path} key={a.key} onClick={()=>setSearch(false)}><img src={a.imageSmall} alt="" width={92} height={70}/><span><small>{categoryByKey(a.tags[0]).name}</small>{a.title}</span><ArrowUpRight size={19}/></Link>):<p className="empty-search">Bu kelimeyle bir hikâye bulamadık. Başka bir kelime deneyebilirsin.</p>}</div>
+   <div className="search-results">{results.length?results.map(a=><Link href={a.path} key={a.key} onClick={()=>setSearch(false)}><Image src={a.imageSmall} alt="" width={92} height={70} sizes="92px"/><span><small>{categoryByKey(a.tags[0]).name}</small>{a.title}</span><ArrowUpRight size={19}/></Link>):<p className="empty-search">Bu kelimeyle bir hikâye bulamadık. Başka bir kelime deneyebilirsin.</p>}</div>
   </DialogContent></Dialog>
  </>;
 }

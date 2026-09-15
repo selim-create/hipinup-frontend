@@ -20,7 +20,7 @@ import { Shell } from "./magazine";
 import { AdSlot } from "./ad-slot";
 
 function Photo({article, priority=false, sizes="(max-width: 760px) 100vw, 50vw", className=""}:{article:Article;priority?:boolean;sizes?:string;className?:string}) {
-  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} priority={priority} loading={priority?"eager":"lazy"}/>;
+  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} loading={priority?"eager":"lazy"} fetchPriority={priority?"high":"auto"}/>;
 }
 
 function Meta({article}:{article:Article}) {

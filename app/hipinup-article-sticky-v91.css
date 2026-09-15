@@ -1,8 +1,9 @@
 /* Hipinup article v9.1 — desktop sticky reading rails.
-   The left TOC must be sticky on the grid item itself; making only its child
-   sticky keeps it constrained by the short parent box. The right rail is
-   bounded to the viewport so the full ad/recommendation stack remains
-   reachable while it stays anchored beside long-form articles. */
+   Left rail: the TOC stays anchored beside the article.
+   Right rail: widgets move with the document in their natural order; only the
+   final newsletter widget becomes sticky once it reaches the reading offset.
+   The right rail stretches with the article row so the final sticky widget has
+   the full long-form article as its containing block. */
 
 @media (min-width:1001px){
   .article-main .article-layout{
@@ -21,28 +22,25 @@
     top:auto;
   }
 
+  /*
+   * Do not make the whole right rail sticky or independently scrollable.
+   * Ads and recommendation cards should move with the page. Stretching the
+   * rail to the grid row gives the final widget room to stick for the rest of
+   * the article without introducing a nested scrollbar.
+   */
   .article-main .article-sidebar{
+    position:relative;
+    top:auto;
+    align-self:stretch;
+    max-height:none;
+    overflow:visible;
+    overscroll-behavior:auto;
+    padding-right:0;
+  }
+
+  .article-main .article-sidebar > .sidebar-newsletter{
     position:sticky;
     top:132px;
-    align-self:start;
-    max-height:calc(100vh - 156px);
-    overflow-y:auto;
-    overscroll-behavior:contain;
-    scrollbar-width:thin;
-    scrollbar-color:rgba(17,16,24,.28) transparent;
-    padding-right:8px;
-  }
-
-  .article-main .article-sidebar::-webkit-scrollbar{
-    width:6px;
-  }
-
-  .article-main .article-sidebar::-webkit-scrollbar-track{
-    background:transparent;
-  }
-
-  .article-main .article-sidebar::-webkit-scrollbar-thumb{
-    background:rgba(17,16,24,.24);
-    border-radius:999px;
+    z-index:2;
   }
 }

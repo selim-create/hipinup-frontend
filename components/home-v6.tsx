@@ -21,7 +21,7 @@ import { Shell } from "./magazine";
 import { AdSlot } from "./ad-slot";
 
 function Photo({article, priority=false, sizes="(max-width: 760px) 100vw, 50vw", className=""}:{article:Article;priority?:boolean;sizes?:string;className?:string}) {
-  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} priority={priority}/>;
+  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} priority={priority} loading={priority?"eager":"lazy"}/>;
 }
 
 function Meta({article}:{article:Article}) {
@@ -44,22 +44,23 @@ function LiveStrip(){
 function Hero(){
   const lead=articleByKey("modern-travel");
   const side=[articleByKey("tommy-t-wave"),articleByKey("freesbee"),articleByKey("david-lynch")];
-  return <section className="site-width v6-hero">
+  return <section className="site-width v6-hero v62-top-stories">
     <article className="v6-lead">
+      <div className="v62-top-label"><span>TOP STORY</span><em>01</em></div>
       <Link href={lead.path} className="v6-lead-photo"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 72vw"/></Link>
       <div className="v6-lead-copy">
-        <div className="v6-lead-kicker"><Eyebrow>SEYAHAT / DOSYA</Eyebrow><span>01</span></div>
+        <div className="v6-lead-kicker"><Eyebrow>SEYAHAT / DOSYA</Eyebrow><span>YENİ NESİL SEYAHAT</span></div>
         <h1><Link href={lead.path}>{lead.title}</Link></h1>
-        <div className="v6-lead-bottom"><p>{lead.excerpt}</p><div><Meta article={lead}/><Link href={lead.path} className="v6-read-link">Hikâyeyi oku <ArrowUpRight size={17}/></Link></div></div>
+        <div className="v6-lead-bottom"><p>{lead.excerpt}</p><div><div className="v62-byline">{lead.author}</div><Meta article={lead}/><Link href={lead.path} className="v6-read-link">Hikâyeyi oku <ArrowUpRight size={17}/></Link></div></div>
       </div>
     </article>
     <aside className="v6-hero-rail">
-      <header><Eyebrow><Sparkles size={13}/> THE EDIT</Eyebrow><h2>Şimdi buna bak.</h2></header>
+      <header><Eyebrow><Sparkles size={13}/> THE EDIT</Eyebrow><h2>Şimdi buna bak.</h2><p>Bugünün hızlı seçkisi.</p></header>
       {side.map((article,index)=><article className={`v6-rail-story ${index===0?"featured":""}`} key={article.key}>
         {index===0&&<Link href={article.path} className="v6-rail-photo"><Photo article={article}/></Link>}
         <div className="v6-rail-row"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3>{index===0&&<Meta article={article}/>}</div><ArrowUpRight size={17}/></div>
       </article>)}
-      <div className="v6-rail-note">Editörün hızlı seçkisi. Gürültü yok, sadece iyi hikâyeler.</div>
+      <div className="v6-rail-note">Bir sonraki kaydırmada fikrin değişebilir.</div>
     </aside>
   </section>;
 }
@@ -76,11 +77,22 @@ function MustRead(){
   </section>;
 }
 
+function ReadersLike(){
+  const stories=[articleByKey("bodrum-boat"),articleByKey("elif-ebru-sakar"),articleByKey("tags-design")];
+  return <section className="site-width v62-readers">
+    <header className="v62-readers-head"><div><Eyebrow>PEOPLE MANTIĞI / HİPİNUP RİTMİ</Eyebrow><h2>Şu an okunuyor.</h2></div><p>Okurun ilgisini çeken hikâyeler, tek bakışta.</p></header>
+    <div className="v62-readers-grid">{stories.map((article,index)=><article key={article.key} className={index===0?"featured":""}>
+      <Link href={article.path} className="v62-readers-photo"><Photo article={article}/></Link>
+      <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
+    </article>)}</div>
+  </section>;
+}
+
 function EditorsDesk(){
   const feature=articleByKey("ozge-gurkan");
   const side=[articleByKey("ben-bohmer"),articleByKey("david-lynch"),articleByKey("elif-ebru-sakar")];
   return <section className="v6-editors"><div className="site-width">
-    <header className="v6-editors-head"><div><Eyebrow>HİPİNUP EDIT / 01</Eyebrow><h2>Editör Masası</h2></div><p>Algoritmanın değil, merakın seçtiği hikâyeler.</p></header>
+    <header className="v6-editors-head"><div className="v62-editors-title"><Eyebrow>HİPİNUP EDIT / 01</Eyebrow><h2>Editör Masası</h2><div className="v62-curator"><span>up!</span><div><strong>Hipinup Edit</strong><small>Haftanın editör seçkisi</small></div></div></div><p>Algoritmanın değil, merakın seçtiği hikâyeler.</p></header>
     <div className="v6-editors-grid"><article className="v6-editors-feature"><Link href={feature.path}><Photo article={feature}/></Link><div><Eyebrow>SANAT & KÜLTÜR</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
     <div className="v6-editors-side">{side.map((article,index)=><Link href={article.path} key={article.key}><span>0{index+1}</span><Image src={article.imageSmall} alt="" width={220} height={150}/><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div></Link>)}</div></div>
   </div></section>;
@@ -97,7 +109,7 @@ function StyleSection(){
 
 function UpShots(){
   const shots=["bubas-bosphorus","coffee","smoothies","hurrem-sultan-hamami","freesbee"].map(articleByKey);
-  return <section className="v6-shots"><div className="site-width"><header><div><Eyebrow><Camera size={13}/> FOTOĞRAFLA ANLAT</Eyebrow><h2>UP! Shots</h2></div><p>Bir bakışta içine çeken yerler, tatlar ve anlar.</p></header><div className="v6-shots-grid">{shots.map((article,index)=><Link href={article.path} key={article.key} className={index===0?"big":""}><Photo article={article}/><div><span>0{index+1}</span><strong>{article.title}</strong></div></Link>)}</div></div></section>;
+  return <section className="v6-shots"><div className="site-width"><header><div><Eyebrow><Camera size={13}/> BUGÜNÜN KARELERİ</Eyebrow><h2>Shots</h2></div><p>People’ın Star Tracks hızında; Hipinup’ın kendi fotoğraf diliyle.</p></header><div className="v6-shots-grid">{shots.map((article,index)=><Link href={article.path} key={article.key} className={index===0?"big":""}><Photo article={article}/><div><span>0{index+1}</span><strong>{article.title}</strong></div></Link>)}</div></div></section>;
 }
 
 function Escape(){
@@ -119,7 +131,7 @@ function Culture(){
 
 function Radar(){
   const topics=[["Moda & Stil","moda"],["Celebrity","celebrity"],["Yeni Mekanlar","mekan"],["Wellness","wellness"],["Şehrin Sanatı","sanat"],["Kaçış Rotaları","seyahat"]] as const;
-  return <section className="v6-radar"><div className="site-width"><header><div><Eyebrow><TrendingUp size={13}/> RADARDA</Eyebrow><h2>Şimdi ne konuşuyoruz?</h2></div><p>Trend değil; ilgimizi çeken şeyler.</p></header><div>{topics.map(([label,key],index)=><Link href={categoryByKey(key).path} key={key}><span>0{index+1}</span><strong>{label}</strong><ArrowUpRight size={18}/></Link>)}</div></div></section>;
+  return <section className="v6-radar"><div className="site-width"><header><div><Eyebrow><TrendingUp size={13}/> TRENDING TOPICS</Eyebrow><h2>Şimdi ne konuşuyoruz?</h2></div><p>Trend değil; ilgimizi çeken şeyler.</p></header><div>{topics.map(([label,key],index)=><Link href={categoryByKey(key).path} key={key}><span>0{index+1}</span><strong>{label}</strong><ArrowUpRight size={18}/></Link>)}</div></div></section>;
 }
 
 function FeelGood(){
@@ -143,6 +155,7 @@ export function HomePageV6(){
     <Hero/>
     <MustRead/>
     <div className="site-width v6-ad"><AdSlot format="leaderboard"/></div>
+    <ReadersLike/>
     <EditorsDesk/>
     <StyleSection/>
     <UpShots/>

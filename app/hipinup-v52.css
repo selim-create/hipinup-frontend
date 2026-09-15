@@ -1,0 +1,167 @@
+/* Hipinup v5.2 — final homepage polish
+   Keeps v5/v5.1 intact while tightening the masthead, first-screen priority,
+   section rhythm and closing feature. */
+
+/* Masthead: less UI, more publication identity. */
+body:has(.v52-home) .masthead{
+  min-height:104px;
+  grid-template-columns:1fr auto 1fr;
+  gap:34px;
+}
+body:has(.v52-home) .masthead::before,
+body:has(.v52-home) .masthead::after{display:none}
+body:has(.v52-home) .brand-image{width:clamp(300px,23vw,365px)}
+body:has(.v52-home) .masthead-note{transform:none}
+body:has(.v52-home) .masthead-note>span{display:none}
+body:has(.v52-home) .masthead-note>strong{
+  font-size:39px;
+  line-height:.88;
+  letter-spacing:-.8px;
+}
+body:has(.v52-home) .masthead-note::after{
+  left:0;
+  right:15%;
+  height:10px;
+  bottom:-11px;
+}
+body:has(.v52-home) .masthead-actions{justify-content:flex-end;gap:12px}
+body:has(.v52-home) .masthead-actions .search-button span{display:none}
+body:has(.v52-home) .search-button{
+  width:42px;
+  height:42px;
+  border:1.5px solid var(--ink);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+}
+body:has(.v52-home) .search-button::after{display:none}
+body:has(.v52-home) .newsletter-button{
+  box-shadow:3px 3px 0 var(--ink);
+  transform:none;
+}
+body:has(.v52-home) .primary-navigation{min-height:46px}
+body:has(.v52-home) .nav-label>a{line-height:46px}
+
+/* Hero now arrives before advertising; the first commercial break becomes a transition. */
+.v52-home .v51-hero{padding-top:27px}
+.v52-inline-ad{
+  padding-top:30px!important;
+  padding-bottom:4px!important;
+  max-width:1080px;
+}
+.v52-inline-ad + .v5-marquee{margin-top:34px}
+
+/* Don't Miss: one deliberately oversized interruption breaks the four-equal-row pattern. */
+.v52-home .v51-dont-miss .v5-dont-list{align-items:stretch}
+.v52-home .v51-dont-miss .v52-dont-feature{
+  grid-column:1/-1;
+  grid-template-columns:104px minmax(0,1fr) auto;
+  padding:22px 14px;
+  background:#eef9fd;
+  border-top:2px solid var(--ink);
+  border-bottom:2px solid var(--ink);
+  margin:2px 0;
+}
+.v52-home .v51-dont-miss .v52-dont-feature .v5-dont-number{
+  font-size:86px;
+  color:var(--ink);
+  line-height:.7;
+  background:linear-gradient(transparent 57%,var(--yellow) 57%);
+  width:max-content;
+}
+.v52-home .v51-dont-miss .v52-dont-feature h3{
+  font-size:35px;
+  line-height:.94;
+  max-width:720px;
+}
+.v52-home .v51-dont-miss .v5-dont-row:nth-child(4){grid-column:1/-1}
+
+/* Editors Desk: increase hierarchy in the spread and stop the side rail reading like a list widget. */
+.v52-home .v51-editors-header h2{font-size:88px!important}
+.v52-home .v51-editors-feature{
+  grid-template-columns:minmax(0,1.47fr) minmax(205px,.53fr);
+}
+.v52-home .v51-editors-feature .v5-editors-photo{height:492px}
+.v52-home .v51-editors-feature-copy{padding:25px 21px!important}
+.v52-home .v51-editors-picks .v5-editor-pick{
+  grid-template-columns:34px 102px 1fr auto;
+  gap:11px;
+}
+.v52-home .v51-editors-picks .v5-editor-pick>img{
+  width:102px;
+  height:82px;
+}
+.v52-home .v51-editors-picks .v5-editor-pick:first-of-type{
+  grid-template-columns:38px 126px 1fr auto;
+  padding-top:22px;
+  padding-bottom:21px;
+}
+.v52-home .v51-editors-picks .v5-editor-pick:first-of-type>img{
+  width:126px;
+  height:98px;
+}
+.v52-home .v51-editors-picks .v5-editor-pick:first-of-type strong{font-size:16px}
+
+/* Fashion: allow the yellow manifesto and small story to physically interrupt the grid. */
+.v52-home .v51-style .v5-style-manifesto{
+  transform:translate(-42px,35px) rotate(3.5deg);
+}
+.v52-home .v51-style .v5-fashion-arch{
+  transform:translate(-29px,7px);
+}
+.v52-home .v51-style .v5-fashion-small{
+  transform:translate(17px,-25px) rotate(-.5deg);
+}
+
+/* Culture uses a new feature image in v5.2; give the new poster enough room to breathe. */
+.v52-home .v51-culture .v5-culture-poster{
+  font-size:43px;
+  max-width:78%;
+}
+
+/* One Last Thing: closer to a 72/28 cinematic split. */
+.v52-home .v51-last .v5-last-grid{
+  grid-template-columns:minmax(0,1.72fr) minmax(280px,.68fr);
+}
+.v52-home .v51-last .v5-last-image{height:565px}
+.v52-home .v51-last .v5-last-copy{padding:42px 31px}
+.v52-home .v51-last .v5-last-copy h2{
+  font-size:59px;
+  margin-bottom:20px;
+}
+.v52-home .v51-last .v5-last-copy>p{font-size:14px}
+
+@media (max-width:900px){
+  body:has(.v52-home) .masthead{grid-template-columns:1fr auto 1fr;gap:18px}
+  body:has(.v52-home) .brand-image{width:250px}
+  body:has(.v52-home) .masthead-note>strong{font-size:31px}
+  .v52-home .v51-editors-header h2{font-size:72px!important}
+  .v52-home .v51-editors-feature{grid-template-columns:1.25fr .75fr}
+  .v52-home .v51-style .v5-style-manifesto,
+  .v52-home .v51-style .v5-fashion-arch,
+  .v52-home .v51-style .v5-fashion-small{transform:none}
+  .v52-home .v51-last .v5-last-grid{grid-template-columns:1.15fr .85fr}
+}
+
+@media (max-width:680px){
+  body:has(.v52-home) .masthead{min-height:82px;gap:7px}
+  body:has(.v52-home) .brand-image{width:185px}
+  body:has(.v52-home) .masthead-note{display:none}
+  body:has(.v52-home) .search-button{width:38px;height:38px}
+  body:has(.v52-home) .newsletter-button span{display:none}
+  .v52-inline-ad{padding-top:21px!important}
+  .v52-home .v51-dont-miss .v52-dont-feature{padding:16px 7px;background:#eef9fd}
+  .v52-home .v51-dont-miss .v52-dont-feature .v5-dont-number{font-size:48px}
+  .v52-home .v51-dont-miss .v52-dont-feature h3{font-size:23px}
+  .v52-home .v51-editors-header h2{font-size:57px!important}
+  .v52-home .v51-editors-feature{display:block}
+  .v52-home .v51-editors-picks .v5-editor-pick,
+  .v52-home .v51-editors-picks .v5-editor-pick:first-of-type{grid-template-columns:30px 82px 1fr}
+  .v52-home .v51-editors-picks .v5-editor-pick>img,
+  .v52-home .v51-editors-picks .v5-editor-pick:first-of-type>img{width:82px;height:72px}
+  .v52-home .v51-editors-picks .v5-editor-pick>svg{display:none}
+  .v52-home .v51-culture .v5-culture-poster{font-size:36px;max-width:88%}
+  .v52-home .v51-last .v5-last-grid{grid-template-columns:1fr}
+  .v52-home .v51-last .v5-last-image{height:420px}
+  .v52-home .v51-last .v5-last-copy{padding:32px 24px}
+}

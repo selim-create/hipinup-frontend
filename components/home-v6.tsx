@@ -226,6 +226,14 @@ function RealLifeCluster(){
   </div></section>;
 }
 
+function DesktopRailAds(){
+  return <section className="v73-rail-ads" aria-label="Desktop reklam alanları"><div className="site-width v73-rail-ads-inner">
+    <AdSlot format="halfpage"/>
+    <AdSlot format="wideSkyscraper"/>
+    <AdSlot format="skyscraper"/>
+  </div></section>;
+}
+
 function Explore(){
   const keys=["celebrity","moda","seyahat","sanat","wellness","mekan"];
   return <section className="v6-explore"><div className="site-width"><strong>Merakın nereye gidiyor?</strong><nav>{keys.map(key=><Link href={categoryByKey(key).path} key={key}>{categoryByKey(key).name}<ArrowUpRight size={15}/></Link>)}</nav></div></section>;
@@ -237,6 +245,7 @@ export function HomePageV6(){
     <div className="site-width v65-top-ad"><AdSlot format="leaderboard"/></div>
     <Hero/>
     <MustRead/>
+    <div className="v73-mobile-ad-break"><AdSlot format="mobileBanner"/></div>
     <ReadersLike/>
     <EditorsDesk/>
     <StyleSection/>
@@ -244,11 +253,14 @@ export function HomePageV6(){
     <div className="v6-ad-break"><div className="site-width"><AdSlot format="billboard"/></div></div>
     <Escape/>
     <VideoSection/>
+    <div className="v73-mobile-ad-break v73-mobile-ad-mini"><AdSlot format="mobileMini"/></div>
     <Culture/>
     <Radar/>
     <PopCultureCluster/>
     <CelebrityCluster/>
+    <div className="v73-rectangle-break"><AdSlot format="rectangle"/></div>
     <RealLifeCluster/>
+    <DesktopRailAds/>
     <Explore/>
   </main></Shell>;
 }

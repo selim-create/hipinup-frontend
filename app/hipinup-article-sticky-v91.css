@@ -1,0 +1,48 @@
+/* Hipinup article v9.1 — desktop sticky reading rails.
+   The left TOC must be sticky on the grid item itself; making only its child
+   sticky keeps it constrained by the short parent box. The right rail is
+   bounded to the viewport so the full ad/recommendation stack remains
+   reachable while it stays anchored beside long-form articles. */
+
+@media (min-width:1001px){
+  .article-main .article-layout{
+    align-items:start;
+  }
+
+  .article-main .article-toc{
+    position:sticky;
+    top:132px;
+    align-self:start;
+    height:max-content;
+  }
+
+  .article-main .sticky-toc{
+    position:static;
+    top:auto;
+  }
+
+  .article-main .article-sidebar{
+    position:sticky;
+    top:132px;
+    align-self:start;
+    max-height:calc(100vh - 156px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(17,16,24,.28) transparent;
+    padding-right:8px;
+  }
+
+  .article-main .article-sidebar::-webkit-scrollbar{
+    width:6px;
+  }
+
+  .article-main .article-sidebar::-webkit-scrollbar-track{
+    background:transparent;
+  }
+
+  .article-main .article-sidebar::-webkit-scrollbar-thumb{
+    background:rgba(17,16,24,.24);
+    border-radius:999px;
+  }
+}

@@ -177,14 +177,51 @@ function Radar(){
   return <section className="v6-radar"><div className="site-width"><header><div><Eyebrow><TrendingUp size={13}/> TRENDING TOPICS</Eyebrow><h2>Şimdi ne konuşuyoruz?</h2></div><p>Trend değil; ilgimizi çeken şeyler.</p></header><div>{topics.map(([label,key],index)=><Link href={categoryByKey(key).path} key={key}><span>0{index+1}</span><strong>{label}</strong><ArrowUpRight size={18}/></Link>)}</div></div></section>;
 }
 
-function FeelGood(){
-  const cards=[articleByKey("smoothies"),articleByKey("coffee"),articleByKey("hurrem-sultan-hamami")];
-  return <section className="site-width v6-feel"><header className="v6-section-head"><div><Eyebrow>WELLNESS</Eyebrow><h2>Modunu yükselt.</h2></div><Link href={categoryByKey("wellness").path}>Bir mola ver <ArrowRight size={17}/></Link></header><div className="v6-feel-grid">{cards.map((article,index)=><article key={article.key} className={index===0?"featured":""}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3></article>)}</div></section>;
+function PopCultureCluster(){
+  const mini=[articleByKey("tommy-t-wave"),articleByKey("freesbee")];
+  const feature=articleByKey("david-lynch");
+  const highlight=articleByKey("ozge-gurkan");
+  const rail=[articleByKey("ben-bohmer"),articleByKey("elif-ebru-sakar"),articleByKey("istanbula-reverans"),articleByKey("akay")];
+  return <section className="v68-cluster v68-pop"><div className="site-width">
+    <header className="v68-cluster-head"><h2>POP KÜLTÜR</h2><p>Müzik, sinema, internet ve konuştuğumuz her şey. Hızlı, canlı, filtresiz.</p><Link href={categoryByKey("populer").path}>Tümünü gör <ArrowUpRight size={17}/></Link></header>
+    <div className="v68-pop-body">
+      <div className="v68-pop-left">{mini.map(article=><article className="v68-pop-mini" key={article.key}><Link href={article.path}><Image src={article.imageSmall} alt="" width={320} height={320}/></Link><h3><Link href={article.path}>{article.title}</Link></h3></article>)}<Link href={highlight.path} className="v68-pop-highlight"><mark>{highlight.title}</mark> <ArrowUpRight size={16}/></Link></div>
+      <article className="v68-pop-feature"><Link href={feature.path}><Photo article={feature}/></Link><Eyebrow>SİNEMA / DOSYA</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><Meta article={feature}/></article>
+      <div className="v68-pop-rail">{rail.map(article=><Link href={article.path} key={article.key}><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong><Meta article={article}/></Link>)}</div>
+    </div>
+  </div></section>;
 }
 
-function LastThing(){
-  const article=articleByKey("sustainable-fashion");
-  return <section className="v6-last"><div className="site-width v6-last-grid"><Link href={article.path} className="v6-last-photo"><Photo article={article}/></Link><div><Eyebrow>ONE LAST THING</Eyebrow><h2>Daha az.<br/>Daha iyi.</h2><p>{article.excerpt}</p><Meta article={article}/><Link href={article.path} className="v6-read-link light">Hikâyeyi oku <ArrowUpRight size={17}/></Link></div></div></section>;
+function CelebrityCluster(){
+  const feature=articleByKey("tommy-t-wave");
+  const callout=articleByKey("elif-ebru-sakar");
+  const textStory=articleByKey("ben-bohmer");
+  const cards=[articleByKey("david-lynch"),articleByKey("ozge-gurkan")];
+  return <section className="v68-cluster v68-celeb"><div className="site-width">
+    <header className="v68-cluster-head"><h2>CELEBRITY</h2><p>Sahnenin önü, arkası ve insanların gerçekten konuştuğu anlar.</p><Link href={categoryByKey("celebrity").path}>Tümünü gör <ArrowUpRight size={17}/></Link></header>
+    <div className="v68-celeb-body">
+      <article className="v68-celeb-feature"><Link href={feature.path}><Photo article={feature}/></Link><Eyebrow>STYLE / PEOPLE</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><Meta article={feature}/></article>
+      <div className="v68-celeb-right">
+        <Link href={callout.path} className="v68-celeb-callout"><Eyebrow>MÜZİK / YÜZ YÜZE</Eyebrow><strong>{callout.title}</strong><span className="v68-celeb-pointer"/><span className="v68-celeb-avatar"><Image src={callout.imageSmall} alt="" width={180} height={180}/></span></Link>
+        <Link href={textStory.path} className="v68-celeb-text">{textStory.title}</Link>
+        <div className="v68-celeb-cards">{cards.map(article=><article className="v68-celeb-card" key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h4><Link href={article.path}>{article.title}</Link></h4></article>)}</div>
+      </div>
+    </div>
+  </div></section>;
+}
+
+function RealLifeCluster(){
+  const list=[articleByKey("coffee"),articleByKey("smoothies"),articleByKey("tags-design")];
+  const cards=[articleByKey("hurrem-sultan-hamami"),articleByKey("bubas-bosphorus")];
+  const spotlight=articleByKey("sustainable-fashion");
+  return <section className="v68-cluster v68-life"><div className="site-width">
+    <header className="v68-cluster-head"><h2>HAYATIN İÇİNDEN</h2><p>Sıradan günlerin içindeki iyi fikirler, küçük dönüşümler ve gerçek yaşam detayları.</p><Link href={categoryByKey("yasam").path}>Tümünü gör <ArrowUpRight size={17}/></Link></header>
+    <div className="v68-life-grid">
+      <div className="v68-life-list">{list.map((article,index)=><Link href={article.path} key={article.key}><b>{index+1}</b><strong>{article.title}</strong></Link>)}</div>
+      {cards.map(article=><article className="v68-life-card" key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3></article>)}
+      <article className="v68-life-spotlight"><Link href={spotlight.path}><Photo article={spotlight}/></Link><div className="v68-life-spotlight-copy"><Eyebrow>DOSYA / YAŞAM</Eyebrow><h3>{spotlight.title}</h3><p>{spotlight.excerpt}</p><Link href={spotlight.path}>Dosyayı aç <ArrowUpRight size={17}/></Link></div></article>
+    </div>
+  </div></section>;
 }
 
 function Explore(){
@@ -207,8 +244,9 @@ export function HomePageV6(){
     <VideoSection/>
     <Culture/>
     <Radar/>
-    <FeelGood/>
-    <LastThing/>
+    <PopCultureCluster/>
+    <CelebrityCluster/>
+    <RealLifeCluster/>
     <Explore/>
   </main></Shell>;
 }

@@ -1,0 +1,31 @@
+/* Hipinup v12.1 — format interaction polish */
+.pf-single .reader-actions{margin:0}
+.pf-single .reader-actions>div{display:flex;flex-wrap:wrap;gap:8px}
+.pf-single .reader-actions button{min-height:40px;display:inline-flex;align-items:center;gap:7px;padding:0 12px;background:#fff;border:1.5px solid var(--pf-ink);box-shadow:3px 3px 0 var(--pf-blue);font-size:11px;font-weight:850;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.pf-single .reader-actions button:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--pf-blue);background:var(--pf-yellow)}
+.pf-single .reader-actions>span{display:block;min-height:17px;margin-top:7px;font-size:10px;color:#716f77;text-align:right}
+.pf-video .reader-actions button{background:#15151b;color:#fff;border-color:#fff;box-shadow:3px 3px 0 var(--pf-yellow)}
+.pf-video .reader-actions button:hover{background:var(--pf-blue);box-shadow:1px 1px 0 var(--pf-yellow)}
+.pf-video .reader-actions>span{color:#bdbdc2}
+
+/* Dedicated reading strip for non-standard single formats. */
+.pf-single .reading-strip{position:sticky;top:56px;z-index:34;background:var(--pf-ink);color:#fff;border-block:1px solid #3b3b41;isolation:isolate}
+.pf-single .reading-strip>.site-width{min-height:46px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px}
+.pf-single .reading-label{font-size:9px;font-weight:950;letter-spacing:.14em;color:var(--pf-yellow)}
+.pf-single .reading-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:760;color:#d8d8dc}
+.pf-single .reading-strip>.site-width>a{width:30px;height:30px;display:grid;place-items:center;border:1px solid #666;border-radius:50%;transition:background .18s ease,color .18s ease}
+.pf-single .reading-strip>.site-width>a:hover{background:var(--pf-yellow);color:var(--pf-ink)}
+.pf-single .reading-progress{position:absolute!important;left:0;right:0;bottom:-1px;height:3px!important;border-radius:0!important;background:#34343a!important}
+.pf-single .reading-progress [data-slot="progress-indicator"]{background:var(--pf-blue)!important}
+
+/* Text-only quick cards still communicate their editorial format. */
+.v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before,
+.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{display:inline-flex;align-items:center;min-height:21px;margin-bottom:5px;padding:0 6px;border:1px solid #0a0a0f;font-size:8px;font-weight:950;letter-spacing:.08em;line-height:1;background:var(--pf-yellow);box-shadow:2px 2px 0 var(--pf-blue)}
+.v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before{content:"01  LİSTE"}
+.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{content:"▦  GALERİ"}
+
+@media(max-width:760px){
+ .pf-single .reader-actions{width:100%}.pf-single .reader-actions>div{width:100%}.pf-single .reader-actions button{flex:1;justify-content:center;min-width:145px}.pf-single .reader-actions>span{text-align:left}
+ .pf-single .reading-strip{top:48px}.pf-single .reading-strip>.site-width{min-height:42px;gap:9px}.pf-single .reading-title{font-size:10px}.pf-single .reading-label{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.pf-single .reader-actions button,.pf-single .reading-strip>.site-width>a{transition:none!important}}

@@ -1,0 +1,146 @@
+/* Hipinup Header v1.1 — final asset + interaction polish */
+
+/* Real brand asset */
+.brand,.hipinup-brand,body:has(.v6-home) .brand{
+  overflow:visible;
+  line-height:0;
+}
+.brand-image{
+  display:block;
+  width:clamp(250px,18vw,305px);
+  height:auto;
+  transform-origin:center;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),filter .22s ease;
+}
+.brand:hover .brand-image{
+  transform:translateY(-2px) rotate(-.35deg) scale(1.012);
+  filter:drop-shadow(0 2px 0 rgba(16,16,24,.05));
+}
+.brand-small .brand-image{width:112px}
+.sticky-brand-reveal .brand-small .brand-image{width:108px}
+
+/* Let the logo breathe: the logo supplies the energy, the masthead supplies the space */
+.masthead,body:has(.v6-home) .masthead{min-height:124px}
+.masthead-note>strong,body:has(.v6-home) .masthead-note>strong{font-size:23px;letter-spacing:-1.05px}
+.masthead-note>strong::after{
+  content:"";
+  display:inline-block;
+  width:8px;
+  height:8px;
+  margin-left:7px;
+  border-radius:50%;
+  background:var(--blue);
+  transform:translateY(-2px);
+}
+
+/* Header button motion: tactile, quick, not bouncy */
+.search-button,body:has(.v6-home) .search-button{
+  position:relative;
+  overflow:visible;
+  transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s ease,background .18s ease,border-color .18s ease;
+}
+.search-button svg{transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.search-button:hover,body:has(.v6-home) .search-button:hover{
+  background:var(--yellow);
+  border-color:var(--ink);
+  transform:translate(-2px,-2px);
+  box-shadow:3px 3px 0 var(--blue);
+}
+.search-button:hover svg{transform:rotate(-8deg) scale(1.06)}
+.search-button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--blue)}
+
+.newsletter-button,body:has(.v6-home) .newsletter-button{overflow:visible}
+.newsletter-button svg{transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.newsletter-button:hover svg{transform:translate(3px,-3px) rotate(2deg)}
+.newsletter-button:focus-visible{outline:3px solid var(--blue);outline-offset:7px}
+
+.desktop-menu,.mobile-menu{
+  border:1px solid transparent;
+  transition:transform .2s cubic-bezier(.22,1,.36,1),background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.desktop-menu svg,.mobile-menu svg{transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.desktop-menu:hover,.mobile-menu:hover{
+  background:var(--yellow);
+  border-color:var(--ink);
+  box-shadow:3px 3px 0 var(--blue);
+  transform:translate(-1px,-1px);
+}
+.desktop-menu:hover svg,.mobile-menu:hover svg{transform:rotate(-8deg)}
+.desktop-menu:active,.mobile-menu:active{transform:translate(2px,2px);box-shadow:none}
+
+/* Navigation feels alive without becoming noisy */
+.nav-label>a,body:has(.v6-home) .nav-label>a{
+  transition:transform .18s cubic-bezier(.22,1,.36,1),color .18s ease;
+}
+.nav-label>a:hover{transform:translateY(-1px)}
+.nav-expand{
+  border-radius:50%;
+  transition:background .18s ease,transform .18s cubic-bezier(.22,1,.36,1);
+}
+.nav-expand:hover{background:var(--cyan);transform:translateY(-1px)}
+
+.explore-button{
+  min-height:38px;
+  padding:0 12px;
+  border:1.5px solid transparent;
+  transition:transform .18s cubic-bezier(.22,1,.36,1),background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.explore-button svg{transition:transform .22s cubic-bezier(.22,1,.36,1)}
+.explore-button:hover{
+  background:var(--yellow);
+  border-color:var(--ink);
+  box-shadow:3px 3px 0 var(--blue);
+  transform:translate(-1px,-1px);
+}
+.explore-button:hover svg{transform:rotate(90deg)}
+.explore-button:active{transform:translate(2px,2px);box-shadow:none}
+
+.sticky-search-button{
+  transition:opacity .2s ease,transform .24s cubic-bezier(.22,1,.36,1),border-color .16s ease,background .16s ease,box-shadow .18s ease;
+}
+.navigation-shell.is-scrolled .sticky-search-button:hover{
+  background:var(--yellow);
+  border-color:var(--ink);
+  transform:translate(-1px,-1px) scale(1);
+  box-shadow:3px 3px 0 var(--blue);
+}
+.sticky-search-button svg{transition:transform .18s ease}
+.sticky-search-button:hover svg{transform:rotate(-9deg)}
+
+/* Sticky state gets slightly tighter and more editorial */
+.navigation-shell.is-scrolled .primary-navigation{min-height:54px}
+.navigation-shell.is-scrolled .sticky-brand-reveal{max-width:122px;margin-right:7px}
+.navigation-shell.is-scrolled .sticky-brand-reveal .brand:hover .brand-image{transform:translateY(-1px) scale(1.02)}
+
+/* Dropdown interaction */
+.nav-dropdown-links>a,.dropdown-all{
+  transition:transform .18s cubic-bezier(.22,1,.36,1),background .18s ease,color .18s ease;
+}
+.nav-dropdown-links>a:hover{transform:translateX(4px);background:linear-gradient(90deg,var(--cyan),transparent 72%)}
+.dropdown-all:hover{transform:translateX(3px)}
+
+/* Search / side-sheet controls are above the sticky header and visibly interactive */
+.search-dialog .icon-button,.menu-sheet .icon-button,.search-form button,.sheet-newsletter{
+  transition:transform .18s cubic-bezier(.22,1,.36,1),background .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.search-dialog .icon-button:hover,.menu-sheet .icon-button:hover{background:var(--yellow);transform:rotate(5deg)}
+.search-form button:hover{background:var(--yellow);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--blue)}
+.sheet-newsletter:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--blue)}
+
+@media(max-width:1080px){
+  .brand-image{width:clamp(225px,22vw,270px)}
+}
+
+@media(max-width:900px){
+  .masthead,body:has(.v6-home) .masthead{min-height:76px}
+  .masthead .brand-image{width:158px}
+  .brand-small .brand-image{width:104px}
+}
+
+@media(max-width:520px){
+  .masthead .brand-image{width:144px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .brand-image,.search-button,.search-button svg,.newsletter-button svg,.desktop-menu,.mobile-menu,.desktop-menu svg,.mobile-menu svg,.nav-label>a,.nav-expand,.explore-button,.explore-button svg,.sticky-search-button,.sticky-search-button svg,.nav-dropdown-links>a,.dropdown-all,.search-dialog .icon-button,.menu-sheet .icon-button,.search-form button,.sheet-newsletter{transition:none!important}
+}

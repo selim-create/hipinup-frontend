@@ -4,6 +4,7 @@ import { categories as mockCategories, type Category } from "@/app/data/navigati
 const DEFAULT_API_URL = "https://api.hipinup.com/wp-json/hipinup/v1";
 const API_URL = (process.env.HIPINUP_API_URL || DEFAULT_API_URL).replace(/\/+$/, "");
 const REVALIDATE_SECONDS = 60;
+const FALLBACK_IMAGE = "/images/freesbee-small.webp";
 
 type ApiTerm = {
   id: number;
@@ -71,6 +72,8 @@ function toArticle(record: ApiArticle): Article {
   const apiCategories = (record.categories || []).map(toCategory);
   const primary = record.primaryCategory ? toCategory(record.primaryCategory) : apiCategories[0];
   const tags = record.tags?.length ? record.tags : primary ? [primary.key] : ["genel"];
+  const image = record.image || record.imageSmall || FALLBACK_IMAGE;
+  const imageSmall = record.imageSmall || record.image || FALLBACK_IMAGE;
 
   return {
     id: record.id,
@@ -80,8 +83,8 @@ function toArticle(record: ApiArticle): Article {
     path: record.path,
     date: record.date,
     tags,
-    image: record.image,
-    imageSmall: record.imageSmall || record.image,
+    image,
+    imageSmall,
     excerpt: record.excerpt,
     author: record.author,
     minutes: record.minutes,

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "./site-link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Search, Menu, X, Plus, Mail } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Search, Menu, X, Plus } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuContent, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -46,12 +46,13 @@ export function Header({articles}:{articles:Article[]}) {
    <Brand/>
    <div className="masthead-actions">
     <button onClick={()=>setSearch(true)} className="search-button" aria-label="Hipinup’ta ara"><Search size={20}/><span>Ara</span></button>
-    <a href="#bulten" className="newsletter-button"><Mail size={16}/><span>Bi’ doz Hipinup</span><ArrowUpRight size={17}/></a>
+    <a href="#bulten" className="newsletter-button"><span>Bi’ doz Hipinup</span><ArrowUpRight size={23}/></a>
    </div>
   </header>
 
   <div className={`navigation-shell hip-navigation-shell ${scrolled?'is-scrolled':''}`}>
    <nav className="site-width primary-navigation" aria-label="Ana menü">
+    <div className="sticky-brand-reveal" aria-hidden={!scrolled}><Brand small/></div>
     <button className="icon-button desktop-menu" onClick={()=>setMenu(true)} aria-label="Tüm kategorileri aç"><Menu size={21}/></button>
     <NavigationMenu className="nav-root" viewport={false} delayDuration={100}><NavigationMenuList className="nav-list">
      {mainNav.map(c=>{const children=categories.filter(s=>s.parent===c.key);return <NavigationMenuItem key={c.key} className="nav-item"><div className="nav-label"><Link className={path?.replace(/\/$/,'')===c.path.replace(/\/$/,'')?'active':''} href={c.path}>{c.name}</Link>{children.length>0&&<NavigationMenuTrigger className="nav-expand" aria-label={`${c.name} alt kategorileri`}><span className="sr-only">Alt kategoriler</span></NavigationMenuTrigger>}</div>{children.length>0&&<NavigationMenuContent className="nav-dropdown"><span className="eyebrow">{c.name.toLocaleUpperCase('tr')} DÜNYASINI KEŞFET</span><div className="nav-dropdown-links">{children.map(s=><Link key={s.key} href={s.path}>{s.name}<ArrowUpRight size={16}/></Link>)}</div><Link className="dropdown-all" href={c.path}>Tüm {c.name} içerikleri <ArrowRight size={17}/></Link></NavigationMenuContent>}</NavigationMenuItem>})}
@@ -59,7 +60,6 @@ export function Header({articles}:{articles:Article[]}) {
     <div className="sticky-nav-actions">
      <button onClick={()=>setSearch(true)} className="sticky-search-button" aria-label="Hipinup’ta ara"><Search size={19}/></button>
      <button onClick={()=>setMenu(true)} className="explore-button">Keşfet <Plus size={17}/></button>
-     <div className="sticky-brand-reveal" aria-hidden={!scrolled}><Brand small/></div>
     </div>
    </nav>
   </div>

@@ -1,0 +1,47 @@
+/* Hipinup v7.4 — ad placement architecture correction */
+
+/* Side skyscrapers live outside the editorial canvas on very wide desktops. */
+.v73-rail-ads{
+  position:fixed!important;
+  inset:0!important;
+  width:0!important;
+  height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  background:transparent!important;
+  z-index:22;
+  pointer-events:none;
+}
+.v73-rail-ads-inner{display:contents!important}
+.v73-rail-ads .ad-slot{margin:0!important;pointer-events:auto}
+.v73-rail-ads .ad-wideSkyscraper{position:fixed;top:176px;left:max(18px,calc(50% - 852px))}
+.v73-rail-ads .ad-skyscraper{position:fixed;top:176px;right:max(18px,calc(50% - 812px))}
+
+/* Extra 300x250 belongs to a real editorial rail. */
+.v74-pop-ad{width:300px;max-width:100%;margin:24px auto 0;padding-top:22px;border-top:1px solid #d7d7da}
+.v74-pop-ad .ad-caption{margin-bottom:6px}
+.v74-pop-ad .ad-creative{display:flex!important;padding:20px!important;border-bottom:2px solid var(--v73-ink)!important}
+
+/* 300x600 behaves as a proper sidebar inside Hayatın İçinden. */
+@media(min-width:1181px){
+  .v68-life-grid{grid-template-columns:320px minmax(0,1fr) minmax(0,1fr) 300px!important;gap:26px!important}
+  .v69-life-left{grid-column:1!important;grid-row:1 / span 2!important}
+  .v74-life-halfpage{grid-column:4!important;grid-row:1 / span 2!important;width:300px;margin:0!important;align-self:start}
+  .v69-life-teaser{grid-column:2 / 4!important;grid-row:2!important}
+}
+
+/* Old standalone rectangle break is retired. */
+.v73-rectangle-break{display:none!important}
+
+/* Mobile ads are in-feed transitions only. */
+.v74-mobile-after-readers,.v74-mobile-after-radar{display:none}
+
+@media(max-width:1780px){.v73-rail-ads{display:none!important}}
+@media(max-width:1180px){.v74-life-halfpage{display:none!important}}
+
+@media(max-width:760px){
+  .v74-mobile-after-readers,.v74-mobile-after-radar{display:flex;justify-content:center;padding:24px 0 28px;background:#f5f5f3;border-block:1px solid #e2e1de}
+  .v74-mobile-after-radar{padding-block:18px 22px}
+  .v74-mobile-after-readers .ad-slot,.v74-mobile-after-radar .ad-slot{margin:0}
+}

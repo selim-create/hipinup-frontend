@@ -8,24 +8,33 @@
 .pf-video .reader-actions button:hover{background:var(--pf-blue);box-shadow:1px 1px 0 var(--pf-yellow)}
 .pf-video .reader-actions>span{color:#bdbdc2}
 
-/* Dedicated reading strip for non-standard single formats. */
-.pf-single .reading-strip{position:sticky;top:56px;z-index:34;background:var(--pf-ink);color:#fff;border-block:1px solid #3b3b41;isolation:isolate}
-.pf-single .reading-strip>.site-width{min-height:46px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px}
-.pf-single .reading-label{font-size:9px;font-weight:950;letter-spacing:.14em;color:var(--pf-yellow)}
-.pf-single .reading-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:760;color:#d8d8dc}
-.pf-single .reading-strip>.site-width>a{width:30px;height:30px;display:grid;place-items:center;border:1px solid #666;border-radius:50%;transition:background .18s ease,color .18s ease}
-.pf-single .reading-strip>.site-width>a:hover{background:var(--pf-yellow);color:var(--pf-ink)}
-.pf-single .reading-progress{position:absolute!important;left:0;right:0;bottom:-1px;height:3px!important;border-radius:0!important;background:#34343a!important}
-.pf-single .reading-progress [data-slot="progress-indicator"]{background:var(--pf-blue)!important}
+/* v12.2 — format badges belong only to large editorial media.
+   Small thumbnails, rails, side cards and text-only quick picks stay clean. */
+.story-card .story-image:after,
+.v6-home a[href]:has(img):after{display:none!important}
 
-/* Text-only quick cards still communicate their editorial format. */
+/* Category/search only keep the marker on the dominant feature card. */
+.story-card.feature .story-image:after,
+.category-feature-grid>.feature .story-image:after,
+.search-page .three-grid>.story-card:first-child .story-image:after{display:flex!important}
+
+/* Homepage: only visually dominant feature media may carry a format marker. */
+.v65-lead-photo:after,
+.v62-readers-grid article.featured .v62-readers-photo:after,
+.v6-editors-feature>a:first-child:after,
+.v6-style-main>a:first-child:after,
+.v6-shots-grid>a.big:after,
+.v67-postcard-media:after,
+.v6-video-grid>a.featured:after,
+.v6-culture-main>a:first-child:after,
+.v68-pop-feature>a:first-child:after,
+.v68-celeb-feature>a:first-child:after{display:flex!important}
+
+/* No badge-like labels in compact text-only cards. */
 .v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before,
-.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{display:inline-flex;align-items:center;min-height:21px;margin-bottom:5px;padding:0 6px;border:1px solid #0a0a0f;font-size:8px;font-weight:950;letter-spacing:.08em;line-height:1;background:var(--pf-yellow);box-shadow:2px 2px 0 var(--pf-blue)}
-.v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before{content:"01  LİSTE"}
-.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{content:"▦  GALERİ"}
+.v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{content:none!important;display:none!important}
 
 @media(max-width:760px){
  .pf-single .reader-actions{width:100%}.pf-single .reader-actions>div{width:100%}.pf-single .reader-actions button{flex:1;justify-content:center;min-width:145px}.pf-single .reader-actions>span{text-align:left}
- .pf-single .reading-strip{top:48px}.pf-single .reading-strip>.site-width{min-height:42px;gap:9px}.pf-single .reading-title{font-size:10px}.pf-single .reading-label{font-size:8px}
 }
-@media(prefers-reduced-motion:reduce){.pf-single .reader-actions button,.pf-single .reading-strip>.site-width>a{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.pf-single .reader-actions button{transition:none!important}}

@@ -1,0 +1,284 @@
+/* Hipinup v7.0 — homepage finishing pass: rhythm, ads, newsletter, hover system */
+
+:root{
+  --v70-ink:#0d0d12;
+  --v70-blue:#20b1ea;
+  --v70-yellow:#fff100;
+}
+
+/* ---------------------------------------------------------
+   Global interactive polish — every link should feel alive.
+   --------------------------------------------------------- */
+a[href]{
+  transition:color .18s ease,background-color .18s ease,border-color .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+a[href]:focus-visible{
+  outline:3px solid var(--v70-blue);
+  outline-offset:4px;
+}
+.v6-home a[href] svg,.footer a[href] svg,.newsletter-section a[href] svg{
+  transition:transform .18s cubic-bezier(.22,1,.36,1);
+}
+.v6-home a[href]:hover>svg,.footer a[href]:hover>svg,.newsletter-section a[href]:hover>svg{
+  transform:translate(3px,-3px);
+}
+.v6-home a[href] img{
+  transition:filter .22s ease,transform .38s cubic-bezier(.22,1,.36,1);
+}
+.v6-home a[href]:hover img{filter:saturate(1.06) contrast(1.02)}
+.v6-home h1 a:hover,.v6-home h2 a:hover,.v6-home h3 a:hover,.v6-home h4 a:hover{
+  text-decoration:underline;
+  text-decoration-color:var(--v70-yellow);
+  text-decoration-thickness:.16em;
+  text-underline-offset:.08em;
+}
+.v6-home .v6-eyebrow[href]:hover,.footer a[href]:hover,.newsletter-section a[href]:hover{
+  color:#087fa9;
+}
+.footer-links a[href]{display:inline-flex;width:max-content;position:relative}
+.footer-links a[href]:after{
+  content:"";position:absolute;left:0;right:100%;bottom:-2px;height:4px;background:var(--v70-yellow);transition:right .18s ease;
+}
+.footer-links a[href]:hover:after{right:0}
+.footer-bottom a[href]:hover,.publisher:hover{color:#087fa9}
+
+/* ---------------------------------------------------------
+   Readers block — use the real empty desktop zone for a 728x90.
+   --------------------------------------------------------- */
+.v62-readers{
+  position:relative;
+  border-top:0!important;
+  padding-top:14px!important;
+  padding-bottom:30px!important;
+}
+.v62-readers-head{margin-bottom:18px!important}
+.v70-readers-ad{
+  position:absolute;
+  right:0;
+  bottom:24px;
+  width:min(728px,57%);
+  z-index:3;
+}
+.v70-readers-ad .ad-caption{margin-bottom:6px;font-size:10px}
+.ad-banner{--ad-width:728px}
+.ad-banner .ad-creative{
+  height:90px;
+  padding:12px 22px;
+  gap:28px;
+}
+.ad-banner .ad-agency{padding-right:24px;border-right:1px solid #56535b}
+.ad-banner .ad-agency>strong{font-size:35px;letter-spacing:-2.8px}
+.ad-banner .ad-agency>span{font-size:10px;letter-spacing:1px;margin-top:4px}
+.ad-banner .ad-message>p{font-size:31px;white-space:nowrap}
+.ad-banner .ad-message em{margin-left:6px}
+.ad-banner .ad-action{margin-left:auto;padding:10px 12px;font-size:11px}
+.ad-banner .ad-orbit{width:165px;height:165px;border-width:18px;right:122px;top:-91px;opacity:.7}
+.ad-banner .ad-orbit:after{inset:12px}
+
+/* ---------------------------------------------------------
+   Moda & Stil — the lead portrait no longer creates a dead zone.
+   --------------------------------------------------------- */
+.v6-style-section{
+  padding-top:66px!important;
+  padding-bottom:8px!important;
+  margin-bottom:0!important;
+}
+.v6-style-section>.v6-section-head{
+  margin-bottom:26px!important;
+  padding-bottom:25px!important;
+}
+.v6-style-section .v6-style-grid{gap:22px 34px!important}
+.v6-style-section .v6-style-main>a:first-child{
+  height:clamp(430px,30vw,500px)!important;
+}
+.v6-style-section .v6-style-main>div{padding-bottom:22px!important}
+.v6-style-section .v6-style-side{gap:22px!important}
+.v6-style-section .v6-style-side article>a:first-child,
+.v6-style-section .v6-style-side article:nth-child(2)>a:first-child{height:190px!important}
+.v6-style-section+.v6-shots{margin-top:0!important}
+.v6-shots{padding-top:34px!important}
+
+/* ---------------------------------------------------------
+   Homepage rhythm — remove leftover dead vertical zones.
+   --------------------------------------------------------- */
+.v6-editors>.site-width{padding-top:52px;padding-bottom:52px}
+.v6-culture{padding-top:58px!important;padding-bottom:58px!important}
+.v6-radar{padding-top:42px!important;padding-bottom:42px!important}
+.v68-cluster{padding:54px 0!important}
+.v68-cluster+.v68-cluster{padding-top:36px!important}
+.v68-cluster-head{margin-bottom:24px!important;padding-bottom:18px!important}
+.v68-life{padding-bottom:46px!important}
+.v6-home h1,.v6-home h2,.v6-home h3,.v6-home h4{text-wrap:balance}
+
+/* Escape top stays clean: no second decorative rule/wave. */
+.v67-escape{border-top:0!important}
+.v67-escape:before{display:none!important}
+.v67-escape-inner{padding-top:34px!important}
+.v67-wave{margin-bottom:30px!important}
+
+/* ---------------------------------------------------------
+   Newsletter — shorter, more intentional, one-screen friendly.
+   --------------------------------------------------------- */
+.newsletter-section{
+  position:relative;
+  padding:28px 0 34px!important;
+  overflow:hidden;
+}
+.newsletter-section::after{
+  right:4.2%!important;
+  top:42px!important;
+  font-size:15px!important;
+  padding:5px 9px!important;
+  box-shadow:4px 4px 0 var(--v70-yellow)!important;
+  transform:rotate(5deg)!important;
+}
+.newsletter-wave{height:34px!important;margin-top:-30px}
+.newsletter-inner{
+  display:grid!important;
+  grid-template-columns:minmax(0,.92fr) minmax(470px,1.08fr)!important;
+  gap:clamp(48px,6vw,96px)!important;
+  align-items:center!important;
+  min-height:455px!important;
+}
+.newsletter-copy{position:relative;align-self:center}
+.newsletter-copy>.eyebrow{font-size:12px!important;letter-spacing:.08em}
+.newsletter-copy h2{
+  margin:18px 0 0!important;
+  font-size:clamp(72px,6.3vw,112px)!important;
+  line-height:.76!important;
+  letter-spacing:-.065em!important;
+}
+.newsletter-copy h2>span{
+  margin-left:72px!important;
+  margin-block:5px 8px!important;
+  padding:0 12px 6px!important;
+}
+.newsletter-copy p{
+  margin:24px 0 0!important;
+  max-width:520px;
+  font-size:16px!important;
+  line-height:1.45!important;
+}
+.newsletter-stamp{
+  width:104px!important;
+  height:104px!important;
+  top:62px!important;
+  right:1%!important;
+  font-size:26px!important;
+  line-height:.88!important;
+}
+.newsletter-form-wrap{
+  position:relative;
+  align-self:center!important;
+  max-width:760px;
+  width:100%;
+  padding-top:42px;
+}
+.newsletter-form-wrap:before{
+  content:"HAFTADA 1  •  FEED DIŞI  •  EDİTÖR SEÇKİSİ";
+  position:absolute;
+  left:0;
+  top:0;
+  display:inline-flex;
+  align-items:center;
+  min-height:27px;
+  padding:4px 10px;
+  border:1.5px solid var(--v70-ink);
+  background:#fff;
+  box-shadow:4px 4px 0 var(--v70-yellow);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.newsletter-form-wrap>.hand-note{
+  display:flex!important;
+  align-items:flex-end;
+  gap:14px;
+  margin:0 0 17px!important;
+  font-size:clamp(23px,2vw,34px)!important;
+  line-height:1!important;
+}
+.newsletter-form-wrap>.hand-note svg{width:49px;height:34px}
+.newsletter-form .email-field{
+  min-height:76px!important;
+  border:2px solid var(--v70-ink)!important;
+  box-shadow:8px 8px 0 var(--v70-ink)!important;
+}
+.newsletter-form .email-field input{
+  min-height:72px!important;
+  font-size:19px!important;
+  padding-inline:22px!important;
+}
+.newsletter-form .email-field button{
+  width:64px!important;
+  height:58px!important;
+  margin-right:7px!important;
+  border:2px solid var(--v70-ink)!important;
+  background:var(--v70-yellow)!important;
+  color:var(--v70-ink)!important;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease!important;
+}
+.newsletter-form .email-field button:hover{
+  transform:translate(-2px,-2px);
+  box-shadow:4px 4px 0 var(--v70-blue);
+  background:#fff53b!important;
+}
+.consent-row{margin-top:24px!important}
+.demo-note{margin-top:13px!important}
+
+/* Explore strip gets a more tactile hover without adding visual noise. */
+.v6-explore nav a{
+  transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease!important;
+}
+.v6-explore nav a:hover{
+  background:#fff!important;
+  color:var(--v70-ink)!important;
+  transform:translateY(-4px);
+  box-shadow:0 5px 0 var(--v70-blue);
+}
+
+@media(max-width:1100px){
+  .v70-readers-ad{width:52%;bottom:18px}
+  .newsletter-inner{grid-template-columns:.9fr 1.1fr!important;gap:42px!important;min-height:430px!important}
+  .newsletter-copy h2{font-size:76px!important}
+  .newsletter-copy h2>span{margin-left:54px!important}
+  .newsletter-stamp{width:88px!important;height:88px!important;font-size:22px!important}
+}
+
+@media(max-width:900px){
+  .v70-readers-ad{display:none}
+  .v62-readers{padding-bottom:50px!important}
+  .newsletter-inner{grid-template-columns:1fr!important;min-height:0!important;gap:38px!important}
+  .newsletter-copy{max-width:650px}
+  .newsletter-form-wrap{max-width:none;padding-top:38px}
+  .newsletter-section::after{top:28px!important;right:5%!important}
+}
+
+@media(max-width:760px){
+  .v6-style-section{padding-top:48px!important;padding-bottom:0!important}
+  .v6-style-section .v6-style-main>a:first-child{height:440px!important}
+  .v6-shots{padding-top:26px!important}
+  .v68-cluster{padding:42px 0!important}
+  .newsletter-section{padding:32px 0 38px!important}
+  .newsletter-section::after{display:none}
+  .newsletter-wave{height:24px!important;margin-top:-33px}
+  .newsletter-copy h2{font-size:clamp(66px,20vw,86px)!important}
+  .newsletter-copy h2>span{margin-left:44px!important}
+  .newsletter-stamp{top:48px!important;right:0!important;width:78px!important;height:78px!important;font-size:19px!important}
+  .newsletter-copy p{margin-top:18px!important;font-size:15px!important}
+  .newsletter-form-wrap:before{font-size:9px;letter-spacing:.05em}
+  .newsletter-form-wrap>.hand-note{font-size:24px!important}
+  .newsletter-form .email-field{min-height:68px!important;box-shadow:6px 6px 0 var(--v70-ink)!important}
+  .newsletter-form .email-field input{min-height:64px!important;font-size:17px!important}
+  .newsletter-form .email-field button{width:55px!important;height:52px!important}
+}
+
+@media(max-width:520px){
+  .newsletter-form-wrap:before{content:"HAFTADA 1 • EDİTÖR SEÇKİSİ"}
+  .newsletter-copy h2>span{margin-left:32px!important}
+  .v6-style-section .v6-style-main>a:first-child{height:390px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  a[href],a[href] *, .newsletter-form .email-field button{transition:none!important}
+}

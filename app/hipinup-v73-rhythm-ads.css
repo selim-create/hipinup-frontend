@@ -1,0 +1,456 @@
+/* Hipinup v7.3 — rhythm, newsletter wave, expanded display inventory */
+
+:root{
+  --v73-ink:#0d0d12;
+  --v73-blue:#20b1ea;
+  --v73-yellow:#fff100;
+  --v73-paper:#f5f5f2;
+}
+
+/* ---------------------------------------------------------
+   1. Moda & Stil → UP! SHOTS: controlled breathing room.
+   Root empty-row bug is already fixed in v7.2; now restore
+   a deliberate editorial gap rather than zero separation.
+   --------------------------------------------------------- */
+.v6-style-section{
+  padding-bottom:54px!important;
+}
+.v6-style-section + .v6-shots{
+  margin-top:0!important;
+}
+.v6-shots{
+  padding-top:44px!important;
+}
+
+/* ---------------------------------------------------------
+   2. Newsletter: restore the wave and tighten the composition.
+   --------------------------------------------------------- */
+.newsletter-section{
+  position:relative;
+  overflow:visible!important;
+  padding:36px 0 42px!important;
+  isolation:isolate;
+}
+.newsletter-wave{
+  display:block!important;
+  position:absolute!important;
+  z-index:4;
+  left:0;
+  top:-46px;
+  width:100%;
+  height:48px!important;
+  margin:0!important;
+  color:var(--v73-blue)!important;
+  pointer-events:none;
+}
+.newsletter-inner{
+  min-height:402px!important;
+  grid-template-columns:minmax(0,.9fr) minmax(470px,1.1fr)!important;
+  gap:clamp(54px,6vw,96px)!important;
+  align-items:center!important;
+}
+.newsletter-copy h2{
+  margin-top:15px!important;
+  font-size:clamp(66px,5.7vw,100px)!important;
+  line-height:.79!important;
+  letter-spacing:-.062em!important;
+}
+.newsletter-copy h2>span{
+  margin-left:62px!important;
+  margin-block:4px 7px!important;
+  padding:0 11px 5px!important;
+}
+.newsletter-copy p{
+  margin-top:20px!important;
+  max-width:500px;
+  font-size:15px!important;
+  line-height:1.45!important;
+}
+.newsletter-stamp{
+  width:90px!important;
+  height:90px!important;
+  top:58px!important;
+  right:0!important;
+  font-size:23px!important;
+  line-height:.88!important;
+}
+.newsletter-form-wrap{
+  max-width:730px!important;
+  padding-top:36px!important;
+}
+.newsletter-form-wrap:before{
+  top:0!important;
+  min-height:24px!important;
+  padding:3px 9px!important;
+  font-size:9px!important;
+  box-shadow:3px 3px 0 var(--v73-yellow)!important;
+}
+.newsletter-form-wrap>.hand-note{
+  margin-bottom:14px!important;
+  font-size:clamp(22px,1.85vw,31px)!important;
+}
+.newsletter-form-wrap>.hand-note svg{
+  width:44px!important;
+  height:31px!important;
+}
+.newsletter-form .email-field{
+  min-height:70px!important;
+  box-shadow:7px 7px 0 var(--v73-ink)!important;
+}
+.newsletter-form .email-field input{
+  min-height:66px!important;
+  font-size:18px!important;
+}
+.newsletter-form .email-field button{
+  width:58px!important;
+  height:54px!important;
+}
+.consent-row{
+  margin-top:20px!important;
+}
+.demo-note{
+  margin-top:10px!important;
+}
+.newsletter-section::after{
+  top:35px!important;
+  right:3.6%!important;
+  font-size:14px!important;
+  transform:rotate(4deg)!important;
+}
+
+/* ---------------------------------------------------------
+   3. Whole-homepage rhythm QA.
+   --------------------------------------------------------- */
+.v6-home h1,.v6-home h2,.v6-home h3,.v6-home h4{
+  text-wrap:balance;
+}
+.v6-home p{
+  text-wrap:pretty;
+}
+.v65-must{
+  padding-bottom:48px!important;
+}
+.v62-readers{
+  padding-bottom:42px!important;
+}
+.v6-editors,
+.v6-shots,
+.v6-video,
+.v6-radar,
+.v68-cluster{
+  isolation:isolate;
+}
+.v6-editors>.site-width{
+  padding-top:48px!important;
+  padding-bottom:50px!important;
+}
+.v6-culture{
+  padding-top:54px!important;
+  padding-bottom:54px!important;
+}
+.v6-radar{
+  padding-top:40px!important;
+  padding-bottom:44px!important;
+}
+.v68-cluster{
+  padding-top:52px!important;
+  padding-bottom:52px!important;
+}
+.v68-cluster+.v68-cluster{
+  padding-top:36px!important;
+}
+.v68-cluster-head{
+  margin-bottom:24px!important;
+}
+.v6-explore{
+  position:relative;
+  z-index:2;
+}
+
+/* ---------------------------------------------------------
+   4. Expanded display ad inventory.
+   --------------------------------------------------------- */
+.ad-skyscraper{
+  --ad-width:120px;
+}
+.ad-wideSkyscraper{
+  --ad-width:160px;
+}
+.ad-skyscraper .ad-caption,
+.ad-wideSkyscraper .ad-caption{
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  font-size:8px;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+.ad-skyscraper .ad-creative,
+.ad-wideSkyscraper .ad-creative{
+  height:600px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:space-between;
+  padding:18px 12px;
+  gap:18px;
+}
+.ad-skyscraper .ad-agency,
+.ad-wideSkyscraper .ad-agency{
+  width:100%;
+  padding:0;
+  border:0;
+}
+.ad-skyscraper .ad-agency>strong{
+  font-size:31px;
+  letter-spacing:-2.7px;
+}
+.ad-wideSkyscraper .ad-agency>strong{
+  font-size:36px;
+  letter-spacing:-3px;
+}
+.ad-skyscraper .ad-agency>span,
+.ad-wideSkyscraper .ad-agency>span{
+  font-size:9px;
+  letter-spacing:.7px;
+}
+.ad-skyscraper .ad-message,
+.ad-wideSkyscraper .ad-message{
+  margin-block:auto;
+}
+.ad-skyscraper .ad-message>p{
+  font-size:31px;
+  line-height:.9;
+}
+.ad-wideSkyscraper .ad-message>p{
+  font-size:38px;
+  line-height:.9;
+}
+.ad-skyscraper .ad-action,
+.ad-wideSkyscraper .ad-action{
+  width:42px;
+  height:42px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  align-self:flex-end;
+}
+.ad-skyscraper .ad-orbit,
+.ad-wideSkyscraper .ad-orbit{
+  width:170px;
+  height:170px;
+  border-width:21px;
+  right:-92px;
+  top:280px;
+}
+.ad-skyscraper::after,
+.ad-wideSkyscraper::after,
+.ad-mobileBanner::after,
+.ad-mobileMini::after{
+  display:none!important;
+}
+
+.v73-rail-ads{
+  padding:52px 0 60px;
+  background:var(--v73-paper);
+  border-block:1px solid #dededb;
+}
+.v73-rail-ads-inner{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:42px;
+}
+.v73-rail-ads .ad-halfpage,
+.v73-rail-ads .ad-wideSkyscraper,
+.v73-rail-ads .ad-skyscraper{
+  margin:0;
+}
+
+.v73-rectangle-break{
+  display:flex;
+  justify-content:center;
+  padding:42px 0 50px;
+  background:#fafafa;
+  border-block:1px solid #e1e1df;
+}
+.v73-rectangle-break .ad-slot{
+  margin:0;
+}
+
+.v73-mobile-ad-break{
+  display:none;
+}
+.ad-mobileBanner,
+.ad-mobileMini{
+  --ad-width:320px;
+}
+.ad-mobileBanner .ad-creative{
+  height:100px;
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr) 42px;
+  align-items:center;
+  gap:10px;
+  padding:13px 12px;
+}
+.ad-mobileBanner .ad-agency,
+.ad-mobileMini .ad-agency{
+  padding:0;
+  border:0;
+}
+.ad-mobileBanner .ad-agency>strong{
+  font-size:27px;
+  letter-spacing:-2.4px;
+}
+.ad-mobileBanner .ad-agency>span{
+  font-size:8px;
+  letter-spacing:.5px;
+}
+.ad-mobileBanner .ad-message>p{
+  font-size:22px;
+  line-height:.95;
+  white-space:normal;
+}
+.ad-mobileBanner .ad-action{
+  width:38px;
+  height:38px;
+  padding:0;
+  font-size:0;
+  display:grid;
+  place-items:center;
+}
+.ad-mobileBanner .ad-orbit{
+  width:96px;
+  height:96px;
+  border-width:12px;
+  right:-43px;
+  top:-49px;
+}
+.ad-mobileMini .ad-creative{
+  height:50px;
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr) 32px;
+  align-items:center;
+  gap:8px;
+  padding:7px 9px;
+}
+.ad-mobileMini .ad-agency>strong{
+  font-size:23px;
+  letter-spacing:-2px;
+}
+.ad-mobileMini .ad-agency>span{
+  display:none;
+}
+.ad-mobileMini .ad-message>p{
+  font-size:18px;
+  line-height:1;
+  white-space:nowrap;
+}
+.ad-mobileMini .ad-action{
+  width:30px;
+  height:30px;
+  padding:0;
+  font-size:0;
+  display:grid;
+  place-items:center;
+}
+.ad-mobileMini .ad-orbit{
+  width:70px;
+  height:70px;
+  border-width:9px;
+  right:-34px;
+  top:-37px;
+}
+
+@media(max-width:1180px){
+  .v73-rail-ads{
+    display:none;
+  }
+}
+
+@media(max-width:900px){
+  .newsletter-inner{
+    grid-template-columns:1fr!important;
+    min-height:0!important;
+    gap:34px!important;
+  }
+  .newsletter-wave{
+    top:-38px;
+    height:40px!important;
+  }
+  .newsletter-copy{
+    max-width:640px;
+  }
+  .newsletter-stamp{
+    right:4%!important;
+  }
+  .v73-rectangle-break{
+    display:none;
+  }
+}
+
+@media(max-width:760px){
+  .v6-style-section{
+    padding-bottom:38px!important;
+  }
+  .v6-shots{
+    padding-top:34px!important;
+  }
+  .newsletter-section{
+    padding:30px 0 36px!important;
+  }
+  .newsletter-wave{
+    top:-31px;
+    height:33px!important;
+  }
+  .newsletter-copy h2{
+    font-size:clamp(62px,19vw,82px)!important;
+  }
+  .newsletter-copy h2>span{
+    margin-left:36px!important;
+  }
+  .newsletter-stamp{
+    width:76px!important;
+    height:76px!important;
+    top:45px!important;
+    font-size:19px!important;
+  }
+  .newsletter-form-wrap{
+    padding-top:34px!important;
+  }
+  .v73-mobile-ad-break{
+    display:flex;
+    justify-content:center;
+    padding:28px 0 34px;
+    background:#f5f5f3;
+    border-block:1px solid #e2e1de;
+  }
+  .v73-mobile-ad-mini{
+    padding-block:22px 26px;
+  }
+  .v73-mobile-ad-break .ad-slot{
+    margin:0;
+  }
+  .v73-mobile-ad-break .ad-caption{
+    font-size:9px;
+    margin-bottom:6px;
+  }
+}
+
+@media(max-width:380px){
+  .ad-mobileBanner,
+  .ad-mobileMini{
+    width:min(100%,320px);
+  }
+  .newsletter-copy h2{
+    font-size:58px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ad-creative,
+  .ad-action,
+  .newsletter-form .email-field button{
+    transition:none!important;
+  }
+}

@@ -6,7 +6,6 @@ import {
   Camera,
   CirclePlay,
   Compass,
-  Sparkles,
   TrendingUp,
 } from "lucide-react";
 import {
@@ -21,7 +20,7 @@ import { Shell } from "./magazine";
 import { AdSlot } from "./ad-slot";
 
 function Photo({article, priority=false, sizes="(max-width: 760px) 100vw, 50vw", className=""}:{article:Article;priority?:boolean;sizes?:string;className?:string}) {
-  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} priority={priority} loading={priority?"eager":"lazy"}/>;
+  return <Image className={className} src={article.image} alt={article.title} width={1280} height={854} sizes={sizes} priority={priority} loading={priority?"eager":"lazy"} fetchPriority={priority?"high":"auto"}/>;
 }
 
 function Meta({article}:{article:Article}) {
@@ -42,38 +41,51 @@ function LiveStrip(){
 }
 
 function Hero(){
-  const lead=articleByKey("modern-travel");
-  const side=[articleByKey("tommy-t-wave"),articleByKey("freesbee"),articleByKey("david-lynch")];
-  return <section className="site-width v6-hero v62-top-stories">
-    <article className="v6-lead">
-      <div className="v62-top-label"><span>TOP STORY</span><em>01</em></div>
-      <Link href={lead.path} className="v6-lead-photo"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 72vw"/></Link>
-      <div className="v6-lead-copy">
-        <div className="v6-lead-kicker"><Eyebrow>SEYAHAT / DOSYA</Eyebrow><span>YENİ NESİL SEYAHAT</span></div>
-        <h1><Link href={lead.path}>{lead.title}</Link></h1>
-        <div className="v6-lead-bottom"><p>{lead.excerpt}</p><div><div className="v62-byline">{lead.author}</div><Meta article={lead}/><Link href={lead.path} className="v6-read-link">Hikâyeyi oku <ArrowUpRight size={17}/></Link></div></div>
+  const lead=articleByKey("freesbee");
+  const side=[articleByKey("tommy-t-wave"),articleByKey("elif-ebru-sakar"),articleByKey("david-lynch")];
+  const promo=articleByKey("modern-travel");
+  return <section className="site-width v7-hero">
+    <article className="v7-hero-feature">
+      <div className="v7-hero-media">
+        <Link href={lead.path} className="v7-hero-image"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 68vw"/></Link>
+        <Link href={categoryByKey("moda").path} className="v7-hero-chip">STİL RADARI <ArrowUpRight size={16}/></Link>
+        <h1 className="v7-hero-title"><Link href={lead.path}><span>KALİFORNİYA</span><span>RUHUNU TAK!</span></Link></h1>
+        <span className="v7-hero-vertical">NO RULES. JUST STYLE.</span>
+      </div>
+      <div className="v7-hero-foot">
+        <div><p>{lead.excerpt}</p><Meta article={lead}/></div>
+        <Link href={lead.path} className="v7-hero-arrow" aria-label="Hikâyeyi oku"><ArrowUpRight size={27}/></Link>
       </div>
     </article>
-    <aside className="v6-hero-rail">
-      <header><Eyebrow><Sparkles size={13}/> THE EDIT</Eyebrow><h2>Şimdi buna bak.</h2><p>Bugünün hızlı seçkisi.</p></header>
-      {side.map((article,index)=><article className={`v6-rail-story ${index===0?"featured":""}`} key={article.key}>
-        {index===0&&<Link href={article.path} className="v6-rail-photo"><Photo article={article}/></Link>}
-        <div className="v6-rail-row"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3>{index===0&&<Meta article={article}/>}</div><ArrowUpRight size={17}/></div>
-      </article>)}
-      <div className="v6-rail-note">Bir sonraki kaydırmada fikrin değişebilir.</div>
+
+    <aside className="v7-flow">
+      <header className="v7-flow-head">
+        <span className="v7-flow-kicker">BUNU<br/>DA BİL</span>
+        <h2>Akışta<br/><em>ne var?</em></h2>
+        <span className="v7-up-badge">up!</span>
+      </header>
+      <div className="v7-flow-list">
+        {side.map((article,index)=><Link href={article.path} className={`v7-flow-item shape-${index+1}`} key={article.key}>
+          <div className="v7-flow-photo"><Image src={article.imageSmall} alt="" width={220} height={180}/><b>0{index+1}</b></div>
+          <div className="v7-flow-copy"><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong><Meta article={article}/></div>
+          <ArrowUpRight className="v7-flow-arrow" size={17}/>
+        </Link>)}
+      </div>
+      <Link href={promo.path} className="v7-promo">
+        <div className="v7-promo-copy"><Eyebrow>SEYAHAT DOSYASI</Eyebrow><strong>Az eşya.<br/>Çok hikâye.</strong><span>Hafif seyahat et <ArrowUpRight size={15}/></span></div>
+        <div className="v7-promo-photo"><Image src={promo.imageSmall} alt="" width={280} height={190}/></div>
+      </Link>
     </aside>
   </section>;
 }
 
 function MustRead(){
-  const feature=articleByKey("istanbula-reverans");
-  const list=[articleByKey("tags-design"),articleByKey("bubas-bosphorus"),articleByKey("coffee")];
-  return <section className="site-width v6-must">
-    <header className="v6-section-head"><div><Eyebrow>HIZLI SEÇKİ</Eyebrow><h2>Kaçırma.</h2></div><p>Bugün bakmaya değer dört şey.</p></header>
-    <div className="v6-must-grid">
-      <article className="v6-must-feature"><Link href={feature.path} className="v6-must-photo"><Photo article={feature}/></Link><div><Eyebrow>{articleCategory(feature).name}</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
-      <div className="v6-must-list">{list.map((article,index)=><Link href={article.path} key={article.key}><span>0{index+2}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div><ArrowUpRight size={17}/></Link>)}</div>
-    </div>
+  const list=[articleByKey("tags-design"),articleByKey("bubas-bosphorus"),articleByKey("istanbula-reverans")];
+  return <section className="site-width v7-must">
+    <div className="v7-must-title"><Eyebrow>HIZLI SEÇKİ</Eyebrow><h2>KAÇIRMA</h2><span/></div>
+    <div className="v7-must-list">{list.map((article,index)=><Link href={article.path} key={article.key}>
+      <b>0{index+1}</b><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div><ArrowUpRight size={17}/>
+    </Link>)}</div>
   </section>;
 }
 
@@ -152,9 +164,9 @@ function Explore(){
 export function HomePageV6(){
   return <Shell><main id="icerik" className="v6-home">
     <LiveStrip/>
+    <div className="site-width v7-top-ad"><AdSlot format="leaderboard"/></div>
     <Hero/>
     <MustRead/>
-    <div className="site-width v6-ad"><AdSlot format="leaderboard"/></div>
     <ReadersLike/>
     <EditorsDesk/>
     <StyleSection/>

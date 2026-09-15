@@ -14,34 +14,63 @@ export function Header({articles}:{articles:Article[]}) {
  const [menu,setMenu]=useState(false);
  const [search,setSearch]=useState(false);
  const [query,setQuery]=useState("");
+ const [scrolled,setScrolled]=useState(false);
  const path=usePathname();
+
  useEffect(()=>{
   const frame=requestAnimationFrame(()=>{setMenu(false);setSearch(false)});
   return()=>cancelAnimationFrame(frame);
  },[path]);
+
+ useEffect(()=>{
+  let frame=0;
+  const update=()=>{
+   cancelAnimationFrame(frame);
+   frame=requestAnimationFrame(()=>setScrolled(window.scrollY>120));
+  };
+  update();
+  window.addEventListener("scroll",update,{passive:true});
+  return()=>{cancelAnimationFrame(frame);window.removeEventListener("scroll",update)};
+ },[]);
+
  const results=articles.filter(a=>(a.title+' '+a.excerpt).toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr'))).slice(0,5);
  return <>
   <a className="skip-link" href="#icerik">İçeriğe geç</a>
-  <div className="utility"><div className="site-width"><span>POP KÜLTÜR. GERÇEK HAYAT. BOLCA MERAK.</span><span className="utility-right">ARŞİVDEN SEÇTİKLERİMİZ <span className="utility-divider">/</span> BİR HIP MEDYA YAYINI</span></div></div>
-  <header className="masthead site-width">
-   <div className="masthead-note"><span>YAŞA. KEŞFET. PAYLAŞ.</span><strong>Hayatı yakala.</strong></div>
+
+  <header className="masthead site-width hip-header-masthead">
+   <div className="masthead-note">
+    <strong>Hayatı yakala.</strong>
+    <span>POP KÜLTÜR · STİL · İYİ YAŞAM</span>
+   </div>
    <button onClick={()=>setMenu(true)} className="icon-button mobile-menu" aria-label="Menüyü aç"><Menu/></button>
    <Brand/>
-   <div className="masthead-actions"><button onClick={()=>setSearch(true)} className="search-button" aria-label="Hipinup’ta ara"><Search size={21}/><span>Ara & keşfet</span></button><a href="#bulten" className="newsletter-button"><Mail size={16}/><span>Bi’ doz Hipinup</span><ArrowUpRight size={17}/></a></div>
+   <div className="masthead-actions">
+    <button onClick={()=>setSearch(true)} className="search-button" aria-label="Hipinup’ta ara"><Search size={20}/><span>Ara</span></button>
+    <a href="#bulten" className="newsletter-button"><Mail size={16}/><span>Bi’ doz Hipinup</span><ArrowUpRight size={17}/></a>
+   </div>
   </header>
-  <div className="navigation-shell"><nav className="site-width primary-navigation" aria-label="Ana menü">
-   <button className="icon-button desktop-menu" onClick={()=>setMenu(true)} aria-label="Tüm kategorileri aç"><Menu size={21}/></button>
-   <NavigationMenu className="nav-root" viewport={false} delayDuration={100}><NavigationMenuList className="nav-list">
-    {mainNav.map(c=>{const children=categories.filter(s=>s.parent===c.key);return <NavigationMenuItem key={c.key} className="nav-item"><div className="nav-label"><Link className={path?.replace(/\/$/,'')===c.path.replace(/\/$/,'')?'active':''} href={c.path}>{c.name}</Link>{children.length>0&&<NavigationMenuTrigger className="nav-expand" aria-label={`${c.name} alt kategorileri`}><span className="sr-only">Alt kategoriler</span></NavigationMenuTrigger>}</div>{children.length>0&&<NavigationMenuContent className="nav-dropdown"><span className="eyebrow">{c.name.toLocaleUpperCase('tr')} DÜNYASINI KEŞFET</span><div className="nav-dropdown-links">{children.map(s=><Link key={s.key} href={s.path}>{s.name}<ArrowUpRight size={16}/></Link>)}</div><Link className="dropdown-all" href={c.path}>Tüm {c.name} içerikleri <ArrowRight size={17}/></Link></NavigationMenuContent>}</NavigationMenuItem>})}
-   </NavigationMenuList></NavigationMenu>
-   <button onClick={()=>setMenu(true)} className="explore-button">Keşfet <Plus size={17}/></button>
-  </nav></div>
+
+  <div className={`navigation-shell hip-navigation-shell ${scrolled?'is-scrolled':''}`}>
+   <nav className="site-width primary-navigation" aria-label="Ana menü">
+    <button className="icon-button desktop-menu" onClick={()=>setMenu(true)} aria-label="Tüm kategorileri aç"><Menu size={21}/></button>
+    <NavigationMenu className="nav-root" viewport={false} delayDuration={100}><NavigationMenuList className="nav-list">
+     {mainNav.map(c=>{const children=categories.filter(s=>s.parent===c.key);return <NavigationMenuItem key={c.key} className="nav-item"><div className="nav-label"><Link className={path?.replace(/\/$/,'')===c.path.replace(/\/$/,'')?'active':''} href={c.path}>{c.name}</Link>{children.length>0&&<NavigationMenuTrigger className="nav-expand" aria-label={`${c.name} alt kategorileri`}><span className="sr-only">Alt kategoriler</span></NavigationMenuTrigger>}</div>{children.length>0&&<NavigationMenuContent className="nav-dropdown"><span className="eyebrow">{c.name.toLocaleUpperCase('tr')} DÜNYASINI KEŞFET</span><div className="nav-dropdown-links">{children.map(s=><Link key={s.key} href={s.path}>{s.name}<ArrowUpRight size={16}/></Link>)}</div><Link className="dropdown-all" href={c.path}>Tüm {c.name} içerikleri <ArrowRight size={17}/></Link></NavigationMenuContent>}</NavigationMenuItem>})}
+    </NavigationMenuList></NavigationMenu>
+    <div className="sticky-nav-actions">
+     <button onClick={()=>setSearch(true)} className="sticky-search-button" aria-label="Hipinup’ta ara"><Search size={19}/></button>
+     <button onClick={()=>setMenu(true)} className="explore-button">Keşfet <Plus size={17}/></button>
+     <div className="sticky-brand-reveal" aria-hidden={!scrolled}><Brand small/></div>
+    </div>
+   </nav>
+  </div>
+
   <Sheet open={menu} onOpenChange={setMenu}><SheetContent side="left" className="menu-sheet" showCloseButton={false}>
     <div className="sheet-top"><Brand small/><SheetClose className="icon-button" aria-label="Menüyü kapat"><X/></SheetClose></div>
     <SheetTitle className="menu-title">Merakının peşinden git.</SheetTitle><SheetDescription className="menu-description">Hipinup dünyasında keşfedecek çok şey var.</SheetDescription>
     <div className="all-categories">{['yasam','ajanda','populer'].map(key=><div key={key}><Link className="category-group-title" href={categoryByKey(key).path}>{categoryByKey(key).name}<ArrowUpRight size={20}/></Link>{categories.filter(c=>c.parent===key||key==='yasam'&&c.key==='moda').map(c=><Link href={c.path} key={c.key}>{c.name}</Link>)}</div>)}</div>
     <a href="#bulten" onClick={()=>setMenu(false)} className="sheet-newsletter">Haftanın iyi gelenleri, e-postanda.<ArrowUpRight/></a>
   </SheetContent></Sheet>
+
   <Dialog open={search} onOpenChange={setSearch}><DialogContent className="search-dialog" showCloseButton={false}>
    <div className="search-dialog-top"><DialogTitle>Bugün neyi merak ediyorsun?</DialogTitle><DialogClose className="icon-button" aria-label="Aramayı kapat"><X/></DialogClose></div>
    <DialogDescription>İsimleri, konuları ve Hipinup hikâyelerini keşfet.</DialogDescription>

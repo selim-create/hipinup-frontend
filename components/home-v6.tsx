@@ -6,7 +6,6 @@ import {
   Camera,
   CirclePlay,
   Compass,
-  Sparkles,
   TrendingUp,
 } from "lucide-react";
 import {
@@ -42,38 +41,46 @@ function LiveStrip(){
 }
 
 function Hero(){
-  const lead=articleByKey("modern-travel");
-  const side=[articleByKey("tommy-t-wave"),articleByKey("freesbee"),articleByKey("david-lynch")];
-  return <section className="site-width v6-hero v62-top-stories">
-    <article className="v6-lead">
-      <div className="v62-top-label"><span>TOP STORY</span><em>01</em></div>
-      <Link href={lead.path} className="v6-lead-photo"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 72vw"/></Link>
-      <div className="v6-lead-copy">
-        <div className="v6-lead-kicker"><Eyebrow>SEYAHAT / DOSYA</Eyebrow><span>YENİ NESİL SEYAHAT</span></div>
-        <h1><Link href={lead.path}>{lead.title}</Link></h1>
-        <div className="v6-lead-bottom"><p>{lead.excerpt}</p><div><div className="v62-byline">{lead.author}</div><Meta article={lead}/><Link href={lead.path} className="v6-read-link">Hikâyeyi oku <ArrowUpRight size={17}/></Link></div></div>
+  const lead=articleByKey("freesbee");
+  const side=[articleByKey("tommy-t-wave"),articleByKey("elif-ebru-sakar"),articleByKey("david-lynch")];
+  const travel=articleByKey("modern-travel");
+  return <section className="site-width v65-hero">
+    <article className="v65-lead">
+      <div className="v65-lead-media">
+        <Link href={lead.path} className="v65-lead-photo"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 68vw"/></Link>
+        <Link href={categoryByKey("moda").path} className="v65-radar-tag">STİL RADARI <ArrowUpRight size={18}/></Link>
+        <span className="v65-side-rule">NO RULES. JUST STYLE.</span>
+        <h1 className="v65-lead-title"><Link href={lead.path}><span>KALİFORNİYA</span><span>RUHUNU TAK!</span></Link></h1>
+      </div>
+      <div className="v65-lead-deck">
+        <div><p>Cesur çerçeveler. Özgür ruhlar. Freesbee’nin Kaliforniya enerjisi şimdi Türkiye’de.</p><Meta article={lead}/></div>
+        <Link href={lead.path} className="v65-round-link" aria-label="Hikâyeyi oku"><ArrowUpRight size={25}/></Link>
       </div>
     </article>
-    <aside className="v6-hero-rail">
-      <header><Eyebrow><Sparkles size={13}/> THE EDIT</Eyebrow><h2>Şimdi buna bak.</h2><p>Bugünün hızlı seçkisi.</p></header>
-      {side.map((article,index)=><article className={`v6-rail-story ${index===0?"featured":""}`} key={article.key}>
-        {index===0&&<Link href={article.path} className="v6-rail-photo"><Photo article={article}/></Link>}
-        <div className="v6-rail-row"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3>{index===0&&<Meta article={article}/>}</div><ArrowUpRight size={17}/></div>
-      </article>)}
-      <div className="v6-rail-note">Bir sonraki kaydırmada fikrin değişebilir.</div>
+
+    <aside className="v65-flow">
+      <header className="v65-flow-head"><span>BUNU<br/>DA BİL</span><h2>Akışta<br/><em>ne var?</em></h2><b>up!</b></header>
+      <div className="v65-flow-list">{side.map((article,index)=><article className={`v65-flow-story story-${index+1}`} key={article.key}>
+        <span className="v65-flow-number">0{index+1}</span>
+        <Link href={article.path} className="v65-flow-photo"><Image src={article.imageSmall} alt="" width={260} height={190} sizes="150px"/></Link>
+        <div className="v65-flow-copy"><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><Meta article={article}/></div>
+        <ArrowUpRight className="v65-flow-arrow" size={17}/>
+      </article>)}</div>
+      <Link href={travel.path} className="v65-travel-card">
+        <div><Eyebrow>SEYAHAT DOSYASI</Eyebrow><strong>Az eşya.<br/>Çok hikâye.</strong><span>Hafif seyahat et <ArrowUpRight size={15}/></span></div>
+        <span className="v65-travel-photo"><Image src={travel.imageSmall} alt="" width={320} height={220} sizes="180px"/></span>
+      </Link>
     </aside>
   </section>;
 }
 
 function MustRead(){
-  const feature=articleByKey("istanbula-reverans");
-  const list=[articleByKey("tags-design"),articleByKey("bubas-bosphorus"),articleByKey("coffee")];
-  return <section className="site-width v6-must">
-    <header className="v6-section-head"><div><Eyebrow>HIZLI SEÇKİ</Eyebrow><h2>Kaçırma.</h2></div><p>Bugün bakmaya değer dört şey.</p></header>
-    <div className="v6-must-grid">
-      <article className="v6-must-feature"><Link href={feature.path} className="v6-must-photo"><Photo article={feature}/></Link><div><Eyebrow>{articleCategory(feature).name}</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
-      <div className="v6-must-list">{list.map((article,index)=><Link href={article.path} key={article.key}><span>0{index+2}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div><ArrowUpRight size={17}/></Link>)}</div>
-    </div>
+  const list=[articleByKey("tags-design"),articleByKey("bubas-bosphorus"),articleByKey("istanbula-reverans")];
+  return <section className="site-width v65-must">
+    <header><Eyebrow>HIZLI SEÇKİ</Eyebrow><h2>KAÇIRMA</h2></header>
+    <div className="v65-must-list">{list.map((article,index)=><Link href={article.path} key={article.key}>
+      <span className="v65-must-number">0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div><ArrowUpRight size={17}/>
+    </Link>)}</div>
   </section>;
 }
 
@@ -83,7 +90,7 @@ function ReadersLike(){
     <header className="v62-readers-head"><div><Eyebrow>PEOPLE MANTIĞI / HİPİNUP RİTMİ</Eyebrow><h2>Şu an okunuyor.</h2></div><p>Okurun ilgisini çeken hikâyeler, tek bakışta.</p></header>
     <div className="v62-readers-grid">{stories.map((article,index)=><article key={article.key} className={index===0?"featured":""}>
       <Link href={article.path} className="v62-readers-photo"><Photo article={article}/></Link>
-      <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
+      <div className="v62-readers-copy"><span>0{index+1}</span><div><Eyebrow>{articleCategory(article).name}</Eyrow><h3><Link href={article.path}>{article.title}</Link></h3><div className="v62-reader-foot"><span>{article.author}</span><Meta article={article}/></div></div></div>
     </article>)}</div>
   </section>;
 }
@@ -152,9 +159,9 @@ function Explore(){
 export function HomePageV6(){
   return <Shell><main id="icerik" className="v6-home">
     <LiveStrip/>
+    <div className="site-width v65-top-ad"><AdSlot format="leaderboard"/></div>
     <Hero/>
     <MustRead/>
-    <div className="site-width v6-ad"><AdSlot format="leaderboard"/></div>
     <ReadersLike/>
     <EditorsDesk/>
     <StyleSection/>

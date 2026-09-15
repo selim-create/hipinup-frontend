@@ -6,6 +6,7 @@ import "./hipinup-v51.css";
 import "./hipinup-v52.css";
 import "./hipinup-v6.css";
 import "./hipinup-v61.css";
+import "./hipinup-v62.css";
 
 export const metadata: Metadata = {
   title: { default: "Hipinup — Hayatın içinden, kültürün peşinden", template: "%s | Hipinup" },

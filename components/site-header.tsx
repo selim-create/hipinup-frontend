@@ -15,7 +15,10 @@ export function Header({articles}:{articles:Article[]}) {
  const [search,setSearch]=useState(false);
  const [query,setQuery]=useState("");
  const path=usePathname();
- useEffect(()=>{setMenu(false);setSearch(false)},[path]);
+ useEffect(()=>{
+  const frame=requestAnimationFrame(()=>{setMenu(false);setSearch(false)});
+  return()=>cancelAnimationFrame(frame);
+ },[path]);
  const results=articles.filter(a=>(a.title+' '+a.excerpt).toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr'))).slice(0,5);
  return <>
   <a className="skip-link" href="#icerik">İçeriğe geç</a>

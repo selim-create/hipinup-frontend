@@ -67,7 +67,7 @@ const galleryKeys=["istanbula-reverans","ozge-gurkan","bodrum-boat","akay","free
 function GalleryExperience({article}:{article:Article}){
   const shots=galleryKeys.map(articleByKey);
   return <>
-    <section className="pf-gallery-lead" aria-label="Foto galeri öne çıkan kareler">
+    <section className="pf-gallery-lead site-width" aria-label="Foto galeri öne çıkan kareler">
       <figure className="pf-gallery-main"><Image src={article.image} alt={article.title} width={1280} height={854} priority sizes="(max-width:900px) 100vw, 70vw"/><figcaption><span>01 / 05</span>İstanbul’a başka bir gözle bak.</figcaption></figure>
       <div className="pf-gallery-stack">{shots.slice(1,3).map((shot,i)=><figure key={shot.key}><Image src={shot.imageSmall} alt="" width={640} height={430}/><span>0{i+2}</span></figure>)}</div>
       <div className="pf-gallery-sticker"><Images/><strong>5 KARE</strong><span>Tek hikâye.</span></div>
@@ -114,7 +114,9 @@ function StandardBody({article,format}:{article:Article;format:ArticleFormat}){
   const blocks=(bodies[article.key]||[]).filter(b=>b.text.trim());
   const paragraphs=blocks.filter(b=>b.type!=="h2"&&b.type!=="h3");
   if(format==="list"){
-    const items=(paragraphs.length?paragraphs.map(b=>b.text):[article.excerpt,"Detayları fark et.","Kendi yorumunu kat.","Kaydet ve geri dön.","Bir arkadaşına gönder."]).slice(0,5);
+    const fallback=[article.excerpt,"Malzemeyi ve dokuyu yakından incele.","Küçük detayların mekânın havasını nasıl değiştirdiğine bak.","Kendi stiline uyan parçaları kaydet.","Listeyi sonra yeniden açmak için paylaş."];
+    const source=paragraphs.map(b=>b.text);
+    const items=[...source,...fallback].filter((text,i,arr)=>arr.indexOf(text)===i).slice(0,5);
     return <section className="pf-list-body site-width"><header><span>LİSTE / {String(items.length).padStart(2,"0")}</span><h2>KISA KISA.<br/><em>İYİ İYİ.</em></h2></header><div>{items.map((text,i)=><article key={i}><span>{String(i+1).padStart(2,"0")}</span><p>{text}</p><ArrowUpRight size={24}/></article>)}</div></section>;
   }
   return <section className={`pf-story-body site-width pf-story-${format}`}>
@@ -133,15 +135,14 @@ export function PostFormatPage({article}:{article:Article}){
   if(format==="standard") return <ArticlePage article={article}/>;
   return <Shell><main id="icerik" className={`pf-single pf-${format}`} data-format={format}>
     <section className="pf-hero"><div className="site-width"><FormatBreadcrumb article={article}/><FormatHeader article={article} format={format}/></div>
-      {format==="gallery"&&<div className="site-width"><GalleryExperience article={article}/></div>}
+      {format==="gallery"&&<GalleryExperience article={article}/>} 
       {format==="video"&&<div className="site-width"><VideoExperience article={article}/></div>}
       {format==="podcast"&&<PodcastExperience article={article}/>} 
       {format==="quote"&&<QuoteExperience article={article}/>} 
       {format==="list"&&<ListExperience article={article}/>} 
     </section>
     <ReadingProgress title={article.title}/>
-    {format!=="gallery"&&<StandardBody article={article} format={format}/>} 
-    {format==="gallery"&&<StandardBody article={article} format={format}/>} 
+    <StandardBody article={article} format={format}/>
     <FormatRelated article={article}/>
   </main></Shell>;
 }

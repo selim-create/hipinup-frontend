@@ -8,6 +8,7 @@ import "./hipinup-v6.css";
 import "./hipinup-v61.css";
 import "./hipinup-v62.css";
 import "./hipinup-v63.css";
+import "./hipinup-v64.css";
 
 export const metadata: Metadata = {
   title: { default: "Hipinup — Hayatın içinden, kültürün peşinden", template: "%s | Hipinup" },
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="tr"><body>{children}</body></html>;
+  return <html lang="tr" data-scroll-behavior="smooth"><body>{children}</body></html>;
 }

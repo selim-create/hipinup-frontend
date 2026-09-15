@@ -1,4 +1,16 @@
-export type Category = { key: string; name: string; path: string; description: string; parent?: string; tags?: string[] };
+export type CategoryAncestor = { id: number; key: string; slug?: string; name: string; path: string };
+export type Category = {
+  id?: number;
+  key: string;
+  name: string;
+  path: string;
+  description: string;
+  parent?: string;
+  parentId?: number;
+  count?: number;
+  ancestors?: CategoryAncestor[];
+  tags?: string[];
+};
 export const categories: Category[] = [
   {key:"yasam",name:"Yaşam",path:"/konu/yasam/",description:"İyi hissettiren fikirler, yeni keşifler ve hayatın güzel detayları.",tags:["wellness","seyahat","dekorasyon","gastronomi","teknoloji","saglik","iliskiler","astroloji","tasarim"]},
   {key:"saglik",name:"Sağlık",path:"/saglikli-yasam,beslenme-ve-diyet,aile,psikoloji",description:"Beden, zihin ve gündelik yaşam üzerine.",parent:"yasam"},

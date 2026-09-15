@@ -5,6 +5,7 @@ import "./hipinup-footer-v80.css";
 import "./hipinup-category-v81.css";
 import "./hipinup-article-v90.css";
 import "./hipinup-article-sticky-v91.css";
+import "./hipinup-live-blocks-v160.css";
 import "./hipinup-discovery-v100.css";
 import "./hipinup-responsive-v110.css";
 import "./hipinup-formats-v120.css";

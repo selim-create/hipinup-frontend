@@ -3,6 +3,29 @@ import bodyRecords from "./bodies.json";
 import { categories, categoryByKey, type Category } from "./navigation";
 
 export type ArticleFormat = "standard" | "gallery" | "video" | "podcast" | "quote" | "list";
+export type ContentMedia = {
+  id: number;
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption: string;
+};
+export type ContentListItem = { text: string; html?: string };
+export type ContentBlock =
+  | { type: "paragraph"; text: string; html?: string }
+  | { type: "heading"; level: number; text: string; anchor?: string; html?: string }
+  | { type: "list"; ordered: boolean; items: ContentListItem[]; html?: string }
+  | { type: "quote"; text: string; citation?: string; html?: string }
+  | { type: "image"; media: ContentMedia; html?: string }
+  | { type: "gallery"; items: ContentMedia[]; html?: string }
+  | { type: "embed"; url: string; provider?: string; html?: string }
+  | { type: "media"; mediaType: "video" | "audio"; id?: number; url: string; caption?: string; html?: string }
+  | { type: "table"; html: string }
+  | { type: "code"; text: string; html?: string }
+  | { type: "separator" }
+  | { type: "html"; text?: string; html?: string };
+
 export type Article = {
   id?: number;
   key: string;
@@ -18,6 +41,8 @@ export type Article = {
   minutes: number;
   format?: ArticleFormat;
   content?: string;
+  contentBlocks?: ContentBlock[];
+  contentBlockSpec?: number;
   category?: Category;
   categories?: Category[];
   formatData?: Record<string, unknown>;

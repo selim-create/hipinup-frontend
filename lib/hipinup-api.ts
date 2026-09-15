@@ -1,10 +1,19 @@
-import type { Article, ArticleFormat } from "@/app/data/content";
-import { categories as mockCategories, type Category } from "@/app/data/navigation";
+import type { Article, ArticleFormat, ContentBlock } from "@/app/data/content";
+import { categories as mockCategories, type Category, type CategoryAncestor } from "@/app/data/navigation";
 
 const DEFAULT_API_URL = "https://api.hipinup.com/wp-json/hipinup/v1";
 const API_URL = (process.env.HIPINUP_API_URL || DEFAULT_API_URL).replace(/\/+$/, "");
 const REVALIDATE_SECONDS = 60;
 const FALLBACK_IMAGE = "/images/freesbee-small.webp";
+const CORE_CONTRACT = "2";
+
+type ApiAncestor = {
+  id: number;
+  key: string;
+  slug?: string;
+  name: string;
+  path: string;
+};
 
 type ApiTerm = {
   id: number;
@@ -13,7 +22,10 @@ type ApiTerm = {
   name: string;
   path: string;
   parent: string | null;
+  parentId?: number;
   description?: string;
+  count?: number;
+  ancestors?: ApiAncestor[];
 };
 
 type ApiArticle = {
@@ -36,6 +48,8 @@ type ApiArticle = {
   primaryCategory?: ApiTerm | null;
   formatData?: Record<string, unknown>;
   content?: string;
+  contentBlocks?: ContentBlock[];
+  contentBlockSpec?: number;
 };
 
 export type ApiPagination = {
@@ -56,14 +70,42 @@ export type ResolvedContent =
 
 const fallbackDescription = (name: string) => `${name} dünyasından yeni hikâyeler, keşifler ve Hipinup seçkileri.`;
 
+function decodeEntities(value = "") {
+  return value
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, "\"")
+    .replace(/&#039;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&#8217;|&#x2019;/gi, "’")
+    .replace(/&#8220;|&#x201c;/gi, "“")
+    .replace(/&#8221;|&#x201d;/gi, "”");
+}
+
+function toAncestor(item: ApiAncestor): CategoryAncestor {
+  return {
+    id: item.id,
+    key: item.key,
+    slug: item.slug,
+    name: decodeEntities(item.name),
+    path: item.path,
+  };
+}
+
 function toCategory(term: ApiTerm): Category {
   const fallback = mockCategories.find((item) => item.key === term.key);
+  const name = decodeEntities(term.name || fallback?.name || term.key);
   return {
+    id: term.id,
     key: term.key,
-    name: term.name || fallback?.name || term.key,
+    name,
     path: term.path || fallback?.path || `/konu/${term.key}/`,
-    description: term.description || fallback?.description || fallbackDescription(term.name || term.key),
+    description: decodeEntities(term.description || fallback?.description || fallbackDescription(name)),
     parent: term.parent || fallback?.parent,
+    parentId: term.parentId,
+    count: term.count,
+    ancestors: term.ancestors?.map(toAncestor),
     tags: fallback?.tags,
   };
 }
@@ -78,22 +120,24 @@ function toArticle(record: ApiArticle): Article {
   return {
     id: record.id,
     key: record.key,
-    title: record.title,
-    originalTitle: record.title,
+    title: decodeEntities(record.title),
+    originalTitle: decodeEntities(record.title),
     path: record.path,
     date: record.date,
     tags,
     image,
     imageSmall,
-    excerpt: record.excerpt,
-    author: record.author,
+    excerpt: decodeEntities(record.excerpt),
+    author: decodeEntities(record.author),
     minutes: record.minutes,
     format: record.format || "standard",
     content: record.content,
+    contentBlocks: record.contentBlocks,
+    contentBlockSpec: record.contentBlockSpec,
     category: primary,
     categories: apiCategories,
     formatData: record.formatData,
-    cardLabel: record.cardLabel || "",
+    cardLabel: decodeEntities(record.cardLabel || ""),
   };
 }
 
@@ -155,7 +199,9 @@ export async function getArticles({
 }
 
 export async function getNavigation(): Promise<Category[] | null> {
-  const response = await apiFetch<ApiTerm[]>("/navigation");
+  // Contract query differentiates the richer Core 0.2 category response from any
+  // stale reverse-cache entry produced before category metadata was introduced.
+  const response = await apiFetch<ApiTerm[]>(`/navigation?contract=${CORE_CONTRACT}`);
   return response ? response.map(toCategory) : null;
 }
 

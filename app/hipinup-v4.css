@@ -1,0 +1,804 @@
+/* Hipinup v4 — energetic editorial layer
+   Keeps the existing layout and data model intact while pushing hierarchy,
+   asymmetry, motion and the #20b1ea / #fff100 identity further. */
+
+:root {
+  --hip-blue: #20b1ea;
+  --hip-yellow: #fff100;
+  --hip-ink: #101018;
+  --hip-paper: #fffdf6;
+  --hip-soft-blue: #e7f8ff;
+  --hip-soft-yellow: #fffbd1;
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 12% 11%, rgb(32 177 234 / 7%) 0 1px, transparent 1.5px) 0 0 / 18px 18px,
+    #fff;
+}
+
+/* Header: make the identity feel like a magazine masthead, not a utility bar. */
+.utility {
+  position: relative;
+  overflow: hidden;
+}
+
+.utility::after {
+  content: "";
+  position: absolute;
+  inset: auto -4% -22px auto;
+  width: 180px;
+  height: 36px;
+  border: 2px solid rgb(255 255 255 / 55%);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.masthead {
+  position: relative;
+  min-height: 138px;
+  isolation: isolate;
+}
+
+.masthead::before {
+  content: "";
+  position: absolute;
+  width: 108px;
+  height: 108px;
+  right: 31%;
+  top: 13px;
+  border: 2px solid var(--hip-yellow);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  z-index: -1;
+  opacity: .9;
+}
+
+.masthead::after {
+  content: "UP!";
+  position: absolute;
+  left: 41.5%;
+  bottom: 15px;
+  padding: 2px 8px 1px;
+  background: var(--hip-blue);
+  color: #fff;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .4px;
+  transform: rotate(7deg);
+  z-index: 2;
+}
+
+.brand {
+  position: relative;
+  transform-origin: left center;
+  transition: transform .2s ease;
+}
+
+.brand:hover {
+  transform: rotate(-1.5deg) scale(1.018);
+}
+
+.brand-image {
+  display: block;
+  width: clamp(198px, 17vw, 255px);
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-small .brand-image {
+  width: 168px;
+}
+
+.masthead-note {
+  position: relative;
+  transform: rotate(-4deg) translateY(2px);
+}
+
+.masthead-note::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: -13%;
+  bottom: -10px;
+  height: 9px;
+  background: var(--hip-yellow);
+  transform: rotate(1deg) skewX(-16deg);
+  z-index: -1;
+}
+
+.search-button {
+  position: relative;
+}
+
+.search-button::after {
+  content: "";
+  position: absolute;
+  left: 31px;
+  right: 4px;
+  bottom: -3px;
+  height: 3px;
+  background: var(--hip-blue);
+  transform: scaleX(0) rotate(-2deg);
+  transform-origin: left;
+  transition: transform .18s ease;
+}
+
+.search-button:hover::after {
+  transform: scaleX(1) rotate(-2deg);
+}
+
+.newsletter-button {
+  border-width: 2px;
+  box-shadow: 5px 5px 0 var(--hip-ink);
+  transform: rotate(-1deg);
+}
+
+.newsletter-button:hover {
+  transform: translate(3px, 3px) rotate(1deg);
+  box-shadow: 1px 1px 0 var(--hip-ink);
+}
+
+.navigation-shell {
+  box-shadow: 0 6px 0 rgb(255 241 0 / 18%);
+}
+
+.nav-label > a {
+  z-index: 0;
+}
+
+.nav-label > a::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  bottom: 11px;
+  height: 7px;
+  background: var(--hip-yellow);
+  transform: scaleX(0) rotate(-2deg);
+  transform-origin: left;
+  transition: transform .16s ease;
+  z-index: -1;
+}
+
+.nav-label > a:hover::before {
+  transform: scaleX(1) rotate(-2deg);
+}
+
+.explore-button {
+  transition: transform .18s ease, color .18s ease;
+}
+
+.explore-button:hover {
+  color: var(--hip-blue);
+  transform: rotate(-2deg);
+}
+
+/* Radar feels like a live culture strip. */
+.radar {
+  position: relative;
+  overflow: hidden;
+  border-bottom-width: 2px;
+}
+
+.radar::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  right: 4.5%;
+  top: -98px;
+  border: 2px solid var(--hip-ink);
+  border-radius: 50%;
+  opacity: .32;
+}
+
+.radar-tag {
+  background: var(--hip-ink);
+  color: var(--hip-yellow);
+  padding: 6px 10px 5px;
+  transform: rotate(-2deg);
+}
+
+.radar-topics > a {
+  position: relative;
+}
+
+.radar-topics > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  background: var(--hip-blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .16s ease;
+}
+
+.radar-topics > a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Cover: editorial collage, stronger hierarchy, less rectangular feeling. */
+.cover-grid {
+  position: relative;
+  gap: clamp(28px, 3vw, 46px);
+  padding-top: 42px;
+}
+
+.cover-grid::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 42px;
+  left: -56px;
+  top: 118px;
+  border-top: 4px solid var(--hip-blue);
+  border-bottom: 4px solid var(--hip-blue);
+  transform: rotate(-12deg);
+  opacity: .95;
+}
+
+.cover-stage {
+  min-height: 530px;
+  border: 2px solid var(--hip-ink);
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 80% 100%, 0 96%);
+  box-shadow: 11px 11px 0 var(--hip-blue);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.cover-stage:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 16px 16px 0 var(--hip-blue);
+}
+
+.cover-stage > img {
+  transition: transform .55s cubic-bezier(.2,.7,.2,1), filter .25s ease;
+}
+
+.cover-stage:hover > img {
+  transform: scale(1.035);
+  filter: saturate(1.06) contrast(1.03);
+}
+
+.cover-stage h1 {
+  bottom: 31px;
+}
+
+.cover-stage h1 > span {
+  border: 2px solid var(--hip-ink);
+  box-shadow: 4px 4px 0 var(--hip-ink);
+}
+
+.cover-stage h1 > span + span {
+  margin-top: 10px;
+  margin-left: 31px;
+}
+
+.cover-kicker {
+  top: 24px;
+  left: 22px;
+  box-shadow: 4px 4px 0 var(--hip-yellow);
+}
+
+.cover-star {
+  width: 124px;
+  height: 124px;
+  right: 24px;
+  top: 26px;
+  filter: drop-shadow(4px 5px 0 rgb(16 16 24 / 88%));
+  animation: hip-float 4.8s ease-in-out infinite;
+}
+
+.cover-description {
+  position: relative;
+  padding: 12px 0 4px 18px;
+}
+
+.cover-description::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 17px;
+  bottom: 7px;
+  width: 5px;
+  background: var(--hip-yellow);
+  transform: rotate(2deg);
+}
+
+.cover-description > p {
+  max-width: 650px;
+  font-size: clamp(17px, 1.55vw, 21px);
+}
+
+.hot-feed {
+  position: relative;
+  border-left: 0;
+  padding-left: 10px;
+}
+
+.hot-feed::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 4px;
+  bottom: 7px;
+  width: 2px;
+  background: var(--hip-ink);
+  transform: rotate(1deg);
+}
+
+.hot-heading {
+  margin-bottom: 27px;
+}
+
+.hot-heading h2 {
+  font-size: clamp(54px, 4.7vw, 72px);
+  line-height: .76;
+}
+
+.hot-heading h2 em {
+  color: var(--hip-blue);
+  background: none;
+  text-shadow: 3px 3px 0 var(--hip-yellow);
+}
+
+.hot-feed-stories > .story-card {
+  transition: transform .18s ease, background .18s ease;
+}
+
+.hot-feed-stories > .story-card:nth-child(odd):hover {
+  transform: translateX(6px) rotate(.5deg);
+}
+
+.hot-feed-stories > .story-card:nth-child(even):hover {
+  transform: translateX(-3px) rotate(-.5deg);
+}
+
+.card-number {
+  background: var(--hip-yellow) !important;
+  color: var(--hip-ink) !important;
+  border: 1.5px solid var(--hip-ink);
+  font-weight: 900;
+}
+
+.image-arrow {
+  transition: transform .18s ease, background .18s ease;
+}
+
+.story-image:hover .image-arrow {
+  transform: rotate(8deg) scale(1.08);
+  background: var(--hip-yellow);
+  color: var(--hip-ink);
+}
+
+.travel-teaser {
+  border: 2px solid var(--hip-ink);
+  box-shadow: 6px 6px 0 var(--hip-yellow);
+  transform: rotate(1deg);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.travel-teaser:hover {
+  transform: translate(-3px, -3px) rotate(-1deg);
+  box-shadow: 10px 10px 0 var(--hip-blue);
+}
+
+/* Quick picks: oversized issue-list energy. */
+.quick-picks {
+  position: relative;
+  border-top: 2px solid var(--hip-ink);
+  border-bottom: 2px solid var(--hip-ink);
+}
+
+.quick-title {
+  background: var(--hip-ink);
+  color: #fff;
+  transform: rotate(-2deg) translateY(-3px);
+  box-shadow: 5px 5px 0 var(--hip-blue);
+}
+
+.quick-picks > a {
+  position: relative;
+  transition: background .16s ease, transform .16s ease;
+}
+
+.quick-picks > a:hover {
+  background: var(--hip-soft-yellow);
+  transform: translateY(-4px);
+}
+
+.quick-number {
+  font-family: var(--display);
+  font-size: 34px !important;
+  color: var(--hip-blue);
+  -webkit-text-stroke: 1px var(--hip-ink);
+}
+
+/* Large culture ticker should behave like an editorial divider. */
+.culture-ticker {
+  border-block: 2px solid var(--hip-ink);
+  background: var(--hip-yellow);
+  transform: rotate(-.25deg) scale(1.005);
+  transform-origin: center;
+}
+
+.ticker-track {
+  animation-duration: 24s !important;
+}
+
+.ticker-track span {
+  text-shadow: 2px 2px 0 rgb(255 255 255 / 65%);
+}
+
+.ticker-outline {
+  color: transparent !important;
+  -webkit-text-stroke: 2px var(--hip-ink);
+  text-shadow: none !important;
+}
+
+/* Fashion spread: more collage, less card-grid. */
+.style-section {
+  position: relative;
+  padding-top: clamp(62px, 7vw, 98px);
+}
+
+.style-section::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -120px;
+  top: 70px;
+  border: 30px solid var(--hip-soft-blue);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.style-manifesto h2 {
+  text-shadow: 4px 4px 0 var(--hip-yellow);
+}
+
+.style-manifesto h2 span {
+  color: var(--hip-blue);
+  -webkit-text-stroke: 1.5px var(--hip-ink);
+}
+
+.fashion-big,
+.fashion-arch,
+.fashion-small {
+  transition: transform .24s ease;
+}
+
+.fashion-big:hover {
+  transform: rotate(-1.2deg) translateY(-5px);
+}
+
+.fashion-arch:hover {
+  transform: rotate(1.8deg) translateY(-7px);
+}
+
+.fashion-small:hover {
+  transform: rotate(-2deg) translateY(-4px);
+}
+
+/* Advertising: obvious reserved inventory without looking like a dead grey box. */
+.masthead-ad,
+.ad-break {
+  position: relative;
+}
+
+.masthead-ad::before,
+.ad-break::before {
+  content: "ADVERTISEMENT / PARTNER SPACE";
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: #7b7982;
+  text-align: center;
+}
+
+.ad-slot {
+  position: relative;
+}
+
+.ad-slot::after {
+  content: "";
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: -8px;
+  right: -8px;
+  border-radius: 50%;
+  background: var(--hip-yellow);
+  border: 2px solid var(--hip-ink);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ad-creative {
+  border-width: 2px !important;
+  box-shadow: 7px 7px 0 var(--hip-ink);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.ad-creative:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 11px 11px 0 var(--hip-ink);
+}
+
+/* Travel section gets a stronger colour transition. */
+.escape-section {
+  position: relative;
+  background:
+    radial-gradient(circle at 88% 20%, rgb(255 241 0 / 80%) 0 82px, transparent 83px),
+    var(--hip-blue) !important;
+}
+
+.escape-copy h2 {
+  text-shadow: 4px 4px 0 rgb(255 255 255 / 72%);
+}
+
+.postcard {
+  transition: transform .24s cubic-bezier(.2,.7,.2,1);
+}
+
+.postcard:hover {
+  transform: rotate(-2deg) translateY(-8px);
+}
+
+.escape-circle {
+  transition: transform .24s ease;
+}
+
+.escape-circle:hover {
+  transform: rotate(5deg) scale(1.025);
+}
+
+/* Culture and wellness: poster-like moments rather than repeated cards. */
+.culture-section {
+  position: relative;
+}
+
+.culture-section::after {
+  content: "✳";
+  position: absolute;
+  right: 2.5%;
+  top: 38px;
+  font-size: 70px;
+  line-height: 1;
+  color: var(--hip-yellow);
+  -webkit-text-stroke: 2px var(--hip-ink);
+  transform: rotate(14deg);
+  pointer-events: none;
+}
+
+.culture-photo {
+  box-shadow: 10px 10px 0 var(--hip-yellow);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.culture-photo:hover {
+  transform: rotate(-1deg) translate(-3px, -3px);
+  box-shadow: 14px 14px 0 var(--hip-blue);
+}
+
+.feel-good-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.feel-good-section::before {
+  content: "GOOD MOOD / GOOD MOOD / GOOD MOOD";
+  position: absolute;
+  left: -25px;
+  bottom: 18px;
+  font-family: var(--display);
+  font-size: clamp(58px, 9vw, 132px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: .75;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(16 16 24 / 9%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.feel-good-grid .story-card {
+  position: relative;
+  z-index: 1;
+  transition: transform .22s ease;
+}
+
+.feel-good-grid .story-card:nth-child(1):hover {
+  transform: rotate(-2deg) translateY(-6px);
+}
+
+.feel-good-grid .story-card:nth-child(2):hover {
+  transform: rotate(1.5deg) translateY(-9px);
+}
+
+.feel-good-grid .story-card:nth-child(3):hover {
+  transform: rotate(-1deg) translateY(-5px);
+}
+
+.topic-dock {
+  position: relative;
+  overflow: visible;
+}
+
+.topic-dock::before {
+  content: "CHOOSE YOUR RABBIT HOLE →";
+  position: absolute;
+  right: 0;
+  top: -28px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: var(--hip-blue);
+  transform: rotate(2deg);
+}
+
+.topic-dock a {
+  transition: transform .16s ease, background .16s ease;
+}
+
+.topic-dock a:hover {
+  background: var(--hip-yellow);
+  transform: translateX(7px);
+}
+
+/* Footer / newsletter finishes with an identity hit. */
+.newsletter-section {
+  position: relative;
+}
+
+.newsletter-section::after {
+  content: "INBOX'A İYİ GELİR.";
+  position: absolute;
+  right: 4%;
+  top: 66px;
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  transform: rotate(7deg);
+  background: #fff;
+  border: 2px solid var(--hip-ink);
+  padding: 6px 10px;
+  box-shadow: 4px 4px 0 var(--hip-yellow);
+}
+
+.footer-wordmark {
+  position: relative;
+}
+
+.footer-wordmark::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 38%;
+  top: 50%;
+  height: 9px;
+  background: var(--hip-yellow);
+  transform: rotate(-1deg);
+  z-index: 0;
+}
+
+.footer-wordmark .brand {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes hip-float {
+  0%, 100% { transform: rotate(15deg) translateY(0); }
+  50% { transform: rotate(11deg) translateY(-7px); }
+}
+
+@media (max-width: 1100px) {
+  .masthead::before,
+  .masthead::after,
+  .cover-grid::before,
+  .culture-section::after {
+    display: none;
+  }
+
+  .cover-stage {
+    min-height: 470px;
+    box-shadow: 8px 8px 0 var(--hip-blue);
+  }
+
+  .cover-star {
+    width: 105px;
+    height: 105px;
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    background: #fff;
+  }
+
+  .masthead {
+    min-height: 86px;
+  }
+
+  .brand-image {
+    width: 172px;
+  }
+
+  .radar-tag {
+    padding: 5px 8px 4px;
+  }
+
+  .cover-grid {
+    padding-top: 25px;
+  }
+
+  .cover-stage {
+    min-height: 420px;
+    clip-path: polygon(0 0, 100% 0, 100% 96%, 72% 100%, 0 97%);
+    box-shadow: 6px 6px 0 var(--hip-blue);
+  }
+
+  .cover-stage h1 > span {
+    box-shadow: 3px 3px 0 var(--hip-ink);
+  }
+
+  .cover-star {
+    width: 90px;
+    height: 90px;
+    right: 13px;
+    top: 16px;
+  }
+
+  .cover-description {
+    padding-left: 13px;
+  }
+
+  .hot-feed::before {
+    display: none;
+  }
+
+  .culture-ticker {
+    transform: none;
+  }
+
+  .newsletter-section::after,
+  .topic-dock::before,
+  .ad-slot::after {
+    display: none;
+  }
+
+  .ad-creative {
+    box-shadow: 4px 4px 0 var(--hip-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-star,
+  .ticker-track {
+    animation: none !important;
+  }
+
+  .brand,
+  .cover-stage,
+  .cover-stage > img,
+  .story-card,
+  .travel-teaser,
+  .postcard,
+  .escape-circle,
+  .culture-photo,
+  .ad-creative,
+  .topic-dock a {
+    transition: none !important;
+  }
+}

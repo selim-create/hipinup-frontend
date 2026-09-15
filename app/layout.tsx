@@ -26,6 +26,7 @@ import "./hipinup-article-v90.css";
 import "./hipinup-discovery-v100.css";
 import "./hipinup-responsive-v110.css";
 import "./hipinup-formats-v120.css";
+import "./hipinup-formats-v121-polish.css";
 
 export const metadata: Metadata = {
   title: { default: "Hipinup — Hayatın içinden, kültürün peşinden", template: "%s | Hipinup" },

@@ -153,7 +153,7 @@ function DontMiss() {
       </div>
       <div className="v5-dont-list">
         {picks.map((article, index) => (
-          <Link href={article.path} key={article.key} className="v5-dont-row">
+          <Link href={article.path} key={article.key} className={`v5-dont-row ${index === 2 ? "v52-dont-feature" : ""}`}>
             <span className="v5-dont-number">0{index + 1}</span>
             <div>
               <span className="v5-kicker">{articleCategory(article).name}</span>
@@ -186,7 +186,7 @@ function CultureMarquee() {
 
 function EditorsDesk() {
   const feature = articleByKey("istanbula-reverans");
-  const picks = ["ben-bohmer", "ozge-gurkan", "david-lynch"].map(articleByKey);
+  const picks = ["david-lynch", "elif-ebru-sakar", "tags-design"].map(articleByKey);
   return (
     <section className="v5-editors-section v51-editors-section">
       <div className="site-width v5-editors-grid v51-editors-grid">
@@ -235,7 +235,7 @@ function StyleSpread() {
 }
 
 function UpShots() {
-  const shots = ["bubas-bosphorus", "coffee", "smoothies", "hurrem-sultan-hamami", "bodrum-boat", "six-senses"].map(articleByKey);
+  const shots = ["bubas-bosphorus", "coffee", "smoothies", "hurrem-sultan-hamami", "tags-design", "freesbee"].map(articleByKey);
   return (
     <section className="v5-shots">
       <div className="site-width">
@@ -258,16 +258,16 @@ function UpShots() {
 }
 
 function Escape() {
-  const travel = articleByKey("modern-travel");
+  const travel = articleByKey("six-senses");
   const boat = articleByKey("bodrum-boat");
-  const six = articleByKey("six-senses");
+  const small = articleByKey("tags-design");
   return (
     <section className="v5-escape">
       <div className="site-width v5-escape-grid">
         <header><span className="v5-kicker"><Compass size={14}/> MOD: KAÇIŞ</span><h2>BİRAZ<br/><em>OFFLINE</em><br/>OLSAN?</h2><p>Yeni rotalar. Uzun kahvaltılar. Daha az bildirim.</p><Link href={categoryByKey("seyahat").path}>Rotayı değiştir <ArrowRight size={18}/></Link></header>
-        <Link href={travel.path} className="v5-escape-main"><Photo article={travel}/><span>KOS’TAN BİR NOT</span><strong>Modern seyahatin yeni lüksü: <em>özgürlük.</em></strong></Link>
+        <Link href={travel.path} className="v5-escape-main"><Photo article={travel}/><span>EGE’DEN BİR NOT</span><strong>Doğayla baş başa: <em>ritmi düşür.</em></strong></Link>
         <Link href={boat.path} className="v5-escape-circle"><Photo article={boat}/><span>MAVİNİN<br/>PEŞİNDEN</span></Link>
-        <StoryCard article={six} variant="v5-escape-small"/>
+        <StoryCard article={small} variant="v5-escape-small"/>
       </div>
     </section>
   );
@@ -298,14 +298,14 @@ function UpVideo() {
 }
 
 function TalkCulture() {
-  const feature = articleByKey("istanbula-reverans");
+  const feature = articleByKey("ozge-gurkan");
   return (
     <section className="site-width v5-culture v51-culture">
       <div className="v5-culture-heading"><span className="v5-kicker">KÜLTÜRÜN TAM ORTASINDAN</span><h2>BUNU<br/><em>KONUŞALIM.</em></h2><Headphones size={42}/></div>
-      <Link href={feature.path} className="v5-culture-feature"><Photo article={feature}/><span className="v5-culture-poster">AYNI ŞEHİR.<br/><em>BİN HİKÂYE.</em></span><span className="v5-culture-side">BAKIŞINI DEĞİŞTİR.</span></Link>
+      <Link href={feature.path} className="v5-culture-feature"><Photo article={feature}/><span className="v5-culture-poster">RENKLER<br/><em>SINIR TANIMAZ.</em></span><span className="v5-culture-side">BAKIŞINI DEĞİŞTİR.</span></Link>
       <div className="v5-culture-stack">
         <StoryCard article={articleByKey("ben-bohmer")} variant="v5-culture-card"/>
-        <StoryCard article={articleByKey("ozge-gurkan")} variant="v5-culture-card"/>
+        <StoryCard article={articleByKey("elif-ebru-sakar")} variant="v5-culture-card"/>
       </div>
     </section>
   );
@@ -388,11 +388,11 @@ function TopicDock() {
 export function HomePageV51() {
   return (
     <Shell>
-      <main id="icerik" className="v5-home v51-home">
+      <main id="icerik" className="v5-home v51-home v52-home">
         <PulseBar/>
-        <div className="site-width v5-top-ad"><AdSlot format="leaderboard"/></div>
         <Hero/>
         <DontMiss/>
+        <div className="site-width v5-top-ad v52-inline-ad"><AdSlot format="leaderboard"/></div>
         <CultureMarquee/>
         <EditorsDesk/>
         <StyleSpread/>

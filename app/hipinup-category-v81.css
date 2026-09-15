@@ -1,0 +1,282 @@
+/* Hipinup category v8.1 — enhancement only, no redesign */
+
+/* Keep the existing category composition; refine interaction and readability. */
+.category-main{
+  --category-ease:cubic-bezier(.22,1,.36,1);
+}
+
+.category-main .category-wave{pointer-events:none}
+
+/* Breadcrumb: clearer navigation without changing its footprint. */
+.category-main .breadcrumb a{
+  position:relative;
+  transition:color .18s var(--category-ease);
+}
+.category-main .breadcrumb a:after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:100%;
+  bottom:-3px;
+  height:2px;
+  background:var(--blue);
+  transition:right .2s var(--category-ease);
+}
+.category-main .breadcrumb a:hover:after,
+.category-main .breadcrumb a:focus-visible:after{right:0}
+
+/* Header details: preserve the existing hero, only make it feel more alive. */
+.category-main .category-title-row h1>span{
+  transition:transform .22s var(--category-ease),color .22s var(--category-ease);
+  transform-origin:center;
+}
+.category-main .category-title-row:hover h1>span{
+  transform:rotate(4deg) translateY(-2px);
+  color:var(--blue);
+}
+.category-main .category-description p{text-wrap:pretty}
+
+/* Pills: tactile, legible and keyboard-friendly. */
+.category-main .category-pills>a{
+  position:relative;
+  isolation:isolate;
+  transition:
+    transform .18s var(--category-ease),
+    box-shadow .18s var(--category-ease),
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease;
+}
+.category-main .category-pills>a>svg{
+  transition:transform .18s var(--category-ease);
+}
+.category-main .category-pills>a:hover{
+  transform:translate(-2px,-2px);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.category-main .category-pills>a:hover>svg{
+  transform:translate(2px,-2px);
+}
+.category-main .category-pills>a[aria-current=page]{
+  box-shadow:3px 3px 0 var(--ink);
+  font-weight:800;
+}
+.category-main .category-pills>a[aria-current=page]>svg{
+  transform:rotate(45deg);
+}
+
+/* Archive count: just enough emphasis to clarify hierarchy. */
+.category-main .archive-count{
+  position:relative;
+}
+.category-main .archive-count>span:first-child svg{
+  transition:transform .22s var(--category-ease),color .22s ease;
+}
+.category-main .archive-count:hover>span:first-child svg{
+  transform:rotate(32deg);
+  color:var(--blue);
+}
+
+/* Cards: retain all current shapes and proportions; improve feedback. */
+.category-main .story-card{
+  transition:transform .22s var(--category-ease);
+}
+.category-main .story-image{
+  transform:translateZ(0);
+}
+.category-main .story-image>img{
+  transition:
+    transform .5s var(--category-ease),
+    filter .35s ease;
+}
+.category-main .story-card:hover .story-image>img{
+  transform:scale(1.035);
+  filter:saturate(1.04) contrast(1.02);
+}
+.category-main .story-card .image-arrow{
+  transition:
+    opacity .18s ease,
+    transform .22s var(--category-ease),
+    background .18s ease;
+}
+.category-main .story-card:hover .image-arrow{
+  background:var(--yellow);
+  transform:translateY(0) rotate(4deg);
+}
+.category-main .story-copy h3 a{
+  background-image:linear-gradient(var(--yellow),var(--yellow));
+  background-position:0 100%;
+  background-repeat:no-repeat;
+  background-size:0 7px;
+  transition:background-size .22s var(--category-ease);
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+.category-main .story-card:hover .story-copy h3 a,
+.category-main .story-copy h3 a:focus-visible{
+  background-size:100% 7px;
+  text-decoration:none;
+}
+
+/* Feature stays visually identical at rest; hover only adds depth. */
+.category-main .category-feature-grid>.feature .story-copy{
+  transition:transform .22s var(--category-ease),box-shadow .22s var(--category-ease);
+}
+.category-main .category-feature-grid>.feature:hover .story-copy{
+  transform:translate(-2px,-2px);
+  box-shadow:7px 7px 0 var(--blue);
+}
+.category-main .category-feature-grid>.feature:hover{
+  transform:none;
+}
+
+/* Side stories move just enough to signal clickability. */
+.category-main .archive-side{
+  transition:transform .2s var(--category-ease),border-color .2s ease;
+}
+.category-main .archive-side:hover{
+  transform:translateX(5px);
+  border-color:var(--ink);
+}
+.category-main .archive-side .card-number{
+  transition:background .18s ease,color .18s ease;
+}
+.category-main .archive-side:hover .card-number{
+  background:var(--blue);
+  color:#fff;
+}
+
+/* Archive grid keeps the intentional offsets; hover should not flatten them. */
+.category-main .archive-grid>.story-card:hover{
+  transform:translateY(-4px);
+}
+.category-main .archive-grid>.story-card:nth-child(3n+2):hover{
+  transform:translateY(31px);
+}
+.category-main .archive-grid .card-number{
+  transition:background .18s ease,transform .18s var(--category-ease);
+}
+.category-main .archive-grid>.story-card:hover .card-number{
+  background:var(--blue);
+  color:white;
+  transform:rotate(-4deg);
+}
+
+/* Discovery cards inherit the same interaction language. */
+.category-main .archive-discovery .story-card:hover{
+  transform:translateY(-4px);
+}
+
+/* Pagination: stronger affordance, same structure. */
+.category-main .archive-pagination a{
+  min-width:38px;
+  min-height:38px;
+  border:1px solid transparent;
+  transition:
+    transform .18s var(--category-ease),
+    box-shadow .18s var(--category-ease),
+    background .18s ease,
+    border-color .18s ease;
+}
+.category-main .archive-pagination a:hover{
+  background:var(--cyan);
+  border-color:var(--ink);
+  transform:translate(-1px,-1px);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.category-main .archive-pagination a[aria-current=page]:hover{
+  background:var(--yellow);
+  transform:translate(0,0);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.category-main .archive-pagination svg{
+  transition:transform .18s var(--category-ease);
+}
+.category-main .archive-pagination a:hover svg:first-child{transform:translateX(-2px)}
+.category-main .archive-pagination a:hover svg:last-child{transform:translateX(2px)}
+
+/* Ad/discovery separation: preserve the archive rhythm. */
+.category-main .archive-ad{
+  margin-top:54px;
+  margin-bottom:22px;
+}
+
+/* Focus treatment inside the archive is visible but doesn't disturb layout. */
+.category-main .story-image:focus-visible,
+.category-main .category-pills>a:focus-visible,
+.category-main .archive-pagination a:focus-visible{
+  outline:3px solid var(--blue);
+  outline-offset:4px;
+}
+
+@media(max-width:1000px){
+  .category-main .category-pills>a:hover{transform:none;box-shadow:2px 2px 0 var(--ink)}
+  .category-main .archive-side:hover{transform:translateX(3px)}
+  .category-main .archive-grid>.story-card:hover{transform:translateY(-3px)}
+  .category-main .archive-grid>.story-card:nth-child(3n+2):hover{transform:translateY(23px)}
+}
+
+@media(max-width:700px){
+  /* Keep the existing mobile composition; make dense controls easier to use. */
+  .category-main .category-pills{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+    margin-inline:-18px;
+    padding-inline:18px;
+    padding-bottom:12px;
+    scroll-snap-type:x proximity;
+  }
+  .category-main .category-pills::-webkit-scrollbar{display:none}
+  .category-main .category-pills>a{
+    flex:0 0 auto;
+    min-height:38px;
+    scroll-snap-align:start;
+  }
+  .category-main .category-pills>a:hover{box-shadow:none}
+  .category-main .category-pills>a[aria-current=page]{box-shadow:2px 2px 0 var(--ink)}
+
+  .category-main .category-title-row:hover h1>span{
+    transform:rotate(7deg);
+    color:var(--ink);
+  }
+
+  .category-main .story-card:hover,
+  .category-main .archive-grid>.story-card:hover,
+  .category-main .archive-grid>.story-card:nth-child(3n+2):hover,
+  .category-main .archive-discovery .story-card:hover{
+    transform:none;
+  }
+  .category-main .archive-side:hover{transform:none}
+
+  .category-main .story-card .image-arrow{
+    opacity:1;
+    width:34px;
+    height:34px;
+    transform:none;
+  }
+
+  .category-main .archive-pagination a{
+    min-width:42px;
+    min-height:42px;
+  }
+  .category-main .archive-pagination [aria-label="Go to previous page"],
+  .category-main .archive-pagination [aria-label="Go to next page"]{
+    padding-inline:10px;
+  }
+
+  .category-main .archive-ad{
+    margin-top:42px;
+    margin-bottom:12px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .category-main *,
+  .category-main *:before,
+  .category-main *:after{
+    transition-duration:.01ms!important;
+    animation-duration:.01ms!important;
+  }
+}

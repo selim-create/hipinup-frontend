@@ -188,7 +188,7 @@ function PopCultureCluster(){
     <div className="v68-pop-body">
       <div className="v68-pop-left">{mini.map(article=><article className="v68-pop-mini" key={article.key}><Link href={article.path}><Image src={article.imageSmall} alt="" width={320} height={320}/></Link><h3><Link href={article.path}>{article.title}</Link></h3></article>)}<Link href={highlight.path} className="v68-pop-highlight"><mark>{highlight.title}</mark> <ArrowUpRight size={16}/></Link></div>
       <article className="v68-pop-feature"><Link href={feature.path}><Photo article={feature}/></Link><Eyebrow>SİNEMA / DOSYA</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><Meta article={feature}/></article>
-      <div className="v68-pop-rail">{rail.map(article=><Link href={article.path} key={article.key}><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong><Meta article={article}/></Link>)}</div>
+      <div className="v68-pop-rail">{rail.map(article=><Link href={article.path} key={article.key}><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong><Meta article={article}/></Link>)}<AdSlot format="rectangle" className="v74-pop-ad"/></div>
     </div>
   </div></section>;
 }
@@ -221,6 +221,7 @@ function RealLifeCluster(){
     <div className="v68-life-grid">
       <div className="v69-life-left"><div className="v68-life-list">{list.map((article,index)=><Link href={article.path} key={article.key}><b>{index+1}</b><strong>{article.title}</strong></Link>)}</div><AdSlot format="rectangle" className="v69-life-ad"/></div>
       {cards.map(article=><article className="v68-life-card" key={article.key}><Link href={article.path}><Photo article={article}/></Link><Eyebrow>{articleCategory(article).name}</Eyebrow><h3><Link href={article.path}>{article.title}</Link></h3></article>)}
+      <AdSlot format="halfpage" className="v74-life-halfpage"/>
       <article className="v68-life-spotlight v69-life-teaser"><Link href={spotlight.path}><Photo article={spotlight}/></Link><div className="v68-life-spotlight-copy"><Eyebrow>HAFTANIN NOTU</Eyebrow><h3>{spotlight.title}</h3><Link href={spotlight.path}>Hikâyeyi aç <ArrowUpRight size={17}/></Link></div></article>
     </div>
   </div></section>;
@@ -228,7 +229,6 @@ function RealLifeCluster(){
 
 function DesktopRailAds(){
   return <section className="v73-rail-ads" aria-label="Desktop reklam alanları"><div className="site-width v73-rail-ads-inner">
-    <AdSlot format="halfpage"/>
     <AdSlot format="wideSkyscraper"/>
     <AdSlot format="skyscraper"/>
   </div></section>;
@@ -242,25 +242,24 @@ function Explore(){
 export function HomePageV6(){
   return <Shell><main id="icerik" className="v6-home">
     <LiveStrip/>
+    <DesktopRailAds/>
     <div className="site-width v65-top-ad"><AdSlot format="leaderboard"/></div>
     <Hero/>
     <MustRead/>
-    <div className="v73-mobile-ad-break"><AdSlot format="mobileBanner"/></div>
     <ReadersLike/>
+    <div className="v74-mobile-after-readers"><AdSlot format="mobileBanner"/></div>
     <EditorsDesk/>
     <StyleSection/>
     <UpShots/>
     <div className="v6-ad-break"><div className="site-width"><AdSlot format="billboard"/></div></div>
     <Escape/>
     <VideoSection/>
-    <div className="v73-mobile-ad-break v73-mobile-ad-mini"><AdSlot format="mobileMini"/></div>
     <Culture/>
     <Radar/>
+    <div className="v74-mobile-after-radar"><AdSlot format="mobileMini"/></div>
     <PopCultureCluster/>
     <CelebrityCluster/>
-    <div className="v73-rectangle-break"><AdSlot format="rectangle"/></div>
     <RealLifeCluster/>
-    <DesktopRailAds/>
     <Explore/>
   </main></Shell>;
 }

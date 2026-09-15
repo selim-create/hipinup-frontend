@@ -1,9 +1,11 @@
-/* Hipinup v7.1 — root fix for Moda & Stil → UP! SHOTS gap */
+/* Hipinup v7.2 — definitive Moda & Stil → UP! SHOTS gap fix */
 
-/* The old desk uses a two-row grid where the second track is 1fr and the
-   portrait spans both tracks. That can leave a large empty white area after
-   the support cards. Make both rows content-sized and let the section collapse
-   to the actual editorial content. */
+/* Two different grids were reserving height:
+   1) the outer fashion desk used two rows,
+   2) legacy v6.css still left .v6-style-side with grid-template-rows:1fr 1fr.
+   The newer design changed that support area to two columns but did not reset
+   the old row definition. With only two support stories, row 2 stayed empty
+   and still consumed half of the support grid height. */
 .v6-style-section{
   min-height:0!important;
   height:auto!important;
@@ -34,8 +36,13 @@
   margin-bottom:0!important;
 }
 
+/* Critical: remove the inherited empty second row from v6.css. */
 .v6-style-section .v6-style-side{
   grid-row:2!important;
+  grid-template-rows:max-content!important;
+  grid-auto-rows:max-content!important;
+  grid-auto-flow:row!important;
+  align-content:start!important;
 }
 
 .v6-style-section .v6-style-side article{
@@ -48,7 +55,7 @@
   height:176px!important;
 }
 
-/* Shots must begin immediately after the fashion desk. */
+/* Shots begins as soon as the real fashion content ends. */
 .v6-style-section + .v6-shots{
   margin-top:0!important;
 }
@@ -64,6 +71,7 @@
 @media(max-width:760px){
   .v6-style-section .v6-style-grid{display:flex!important;flex-direction:column!important;gap:20px!important}
   .v6-style-section .v6-style-main>a:first-child{height:430px!important}
+  .v6-style-section .v6-style-side{grid-template-rows:none!important}
   .v6-style-section .v6-style-side article>a:first-child,
   .v6-style-section .v6-style-side article:nth-child(2)>a:first-child{height:165px!important}
   .v6-shots{padding-top:24px!important}

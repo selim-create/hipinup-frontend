@@ -109,7 +109,7 @@
 
 /* Sticky state gets slightly tighter and more editorial */
 .navigation-shell.is-scrolled .primary-navigation{min-height:54px}
-.navigation-shell.is-scrolled .sticky-brand-reveal{max-width:122px;margin-right:7px}
+.navigation-shell.is-scrolled .sticky-brand-reveal{max-width:122px;margin-right:7px;overflow:visible}
 .navigation-shell.is-scrolled .sticky-brand-reveal .brand:hover .brand-image{transform:translateY(-1px) scale(1.02)}
 
 /* Dropdown interaction */

@@ -1,0 +1,131 @@
+/* Hipinup interaction polish — consistent feedback for interactive editorial text */
+
+@media (hover:hover) and (pointer:fine){
+  /* Linked story headlines: same energetic marker treatment across home, archive and related cards. */
+  .story-copy h3 a,
+  .culture-main-copy h3 a,
+  .article-rich-html a,
+  .article-rich-list a,
+  .article-content-fallback a{
+    background-image:linear-gradient(var(--yellow),var(--yellow));
+    background-repeat:no-repeat;
+    background-position:0 94%;
+    background-size:0 24%;
+    transition:background-size .22s cubic-bezier(.22,1,.36,1),color .18s ease;
+  }
+  .story-card:hover .story-copy h3 a,
+  .culture-main-copy h3 a:hover,
+  .article-rich-html a:hover,
+  .article-rich-list a:hover,
+  .article-content-fallback a:hover{
+    background-size:100% 24%;
+  }
+
+  /* Cards whose headline is inside the clickable wrapper. */
+  .quick-picks>a,
+  .travel-teaser,
+  .postcard,
+  .escape-circle,
+  .topic-dock a,
+  .search-results>a{
+    transition:transform .2s cubic-bezier(.22,1,.36,1),color .18s ease,background-color .18s ease,box-shadow .18s ease;
+  }
+  .quick-picks>a:hover,
+  .travel-teaser:hover,
+  .postcard:hover,
+  .escape-circle:hover,
+  .topic-dock a:hover,
+  .search-results>a:hover{
+    transform:translateY(-2px);
+  }
+  .quick-picks>a h3,
+  .travel-teaser h3,
+  .postcard h3{
+    transition:color .18s ease;
+  }
+  .quick-picks>a:hover h3,
+  .travel-teaser:hover h3,
+  .postcard:hover h3{
+    color:var(--blue);
+  }
+
+  /* Utility/editorial text links should always acknowledge hover. */
+  .all-link,
+  .breadcrumb a,
+  .category-pills a,
+  .article-category,
+  .footer-links a,
+  .footer-bottom a,
+  .publisher,
+  .back-top,
+  .category-group-title,
+  .all-categories a,
+  .dropdown-all,
+  .nav-dropdown-links>a{
+    transition:color .18s ease,transform .18s cubic-bezier(.22,1,.36,1),background-size .18s ease;
+  }
+  .all-link:hover,
+  .breadcrumb a:hover,
+  .category-pills a:hover,
+  .article-category:hover,
+  .footer-links a:hover,
+  .footer-bottom a:hover,
+  .publisher:hover,
+  .back-top:hover,
+  .category-group-title:hover,
+  .all-categories a:hover,
+  .dropdown-all:hover,
+  .nav-dropdown-links>a:hover{
+    color:var(--blue);
+  }
+
+  /* Arrow affordances move with their links instead of staying visually static. */
+  .all-link svg,
+  .category-pills a svg,
+  .article-category svg,
+  .topic-dock a svg,
+  .quick-picks>a>svg,
+  .publisher svg,
+  .back-top svg,
+  .category-group-title svg,
+  .search-results>a>svg{
+    transition:transform .2s cubic-bezier(.22,1,.36,1);
+  }
+  .all-link:hover svg,
+  .category-pills a:hover svg,
+  .article-category:hover svg,
+  .topic-dock a:hover svg,
+  .quick-picks>a:hover>svg,
+  .publisher:hover svg,
+  .back-top:hover svg,
+  .category-group-title:hover svg,
+  .search-results>a:hover>svg{
+    transform:translate(3px,-3px);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .story-copy h3 a,
+  .culture-main-copy h3 a,
+  .article-rich-html a,
+  .article-rich-list a,
+  .article-content-fallback a,
+  .quick-picks>a,
+  .travel-teaser,
+  .postcard,
+  .escape-circle,
+  .topic-dock a,
+  .search-results>a,
+  .all-link,
+  .breadcrumb a,
+  .category-pills a,
+  .article-category,
+  .footer-links a,
+  .footer-bottom a,
+  .publisher,
+  .back-top,
+  .category-group-title,
+  .all-categories a{
+    transition:none!important;
+  }
+}

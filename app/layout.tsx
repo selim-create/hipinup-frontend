@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { StructuredData } from "@/components/structured-data";
 import { HipAdsProvider } from "@/components/ad-runtime";
@@ -29,6 +29,13 @@ import "./hipinup-interactions-v220.css";
 import "./hipinup-ads-v230.css";
 
 const indexable = isIndexableEnvironment();
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

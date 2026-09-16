@@ -23,6 +23,7 @@ import "./hipinup-responsive-v110.css";
 import "./hipinup-formats-v120.css";
 import "./hipinup-formats-v121-polish.css";
 import "./hipinup-image-loading-v211.css";
+import "./hipinup-interactions-v220.css";
 
 const indexable = isIndexableEnvironment();
 

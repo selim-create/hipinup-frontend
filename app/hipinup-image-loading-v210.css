@@ -1,0 +1,33 @@
+/* Hipinup v2.1 — branded image loading state.
+   Photo elements show a lightweight Hipinup wordmark while remote media is
+   still downloading. The actual image paints over this background as soon as
+   the browser has decoded enough of the file, so layout dimensions and
+   existing object-fit rules remain untouched. */
+
+img:not(.brand-image){
+  background-color:#f3f5f6;
+  background-image:url('/brand/hipinup.svg');
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:min(34%, 180px) auto;
+}
+
+/* The site logo is already the wordmark itself and should never receive a
+   second logo behind it. */
+img.brand-image{
+  background:none;
+}
+
+/* Keep the placeholder visible on broken legacy media instead of exposing
+   browser alt-text blocks inside editorial crops. The alt attribute remains
+   available to assistive technology. */
+img:not(.brand-image){
+  color:transparent;
+  font-size:0;
+}
+
+@media (max-width:760px){
+  img:not(.brand-image){
+    background-size:min(42%, 150px) auto;
+  }
+}

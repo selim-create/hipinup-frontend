@@ -1,6 +1,6 @@
 import { articleByKey, forCategory, orderedArticles, type Article } from "@/app/data/content";
 import { categoryByKey } from "@/app/data/navigation";
-import { getArticles, resolveContent } from "./hipinup-api";
+import { getArticles, getHomepageEditorial, resolveContent } from "./hipinup-api";
 
 export type HomepageData = {
   latest: Article[];
@@ -14,6 +14,9 @@ export type HomepageData = {
   wellness: Article[];
   video: Article[];
   lead: Article;
+  mustRead: Article[];
+  editorsFeature: Article;
+  editorsSide: Article[];
   travelFeature: Article;
   travelOrbit: Article;
 };
@@ -48,8 +51,11 @@ async function resolveMockArticle(key: string) {
   return resolved?.type === "article" ? resolved.data : fallback;
 }
 
+const atOr = (items: Article[], index: number, fallbackKey: string) => items[index] || articleByKey(fallbackKey);
+
 export async function getHomepageData(): Promise<HomepageData> {
   const [
+    editorial,
     latest,
     moda,
     seyahat,
@@ -60,10 +66,11 @@ export async function getHomepageData(): Promise<HomepageData> {
     yasam,
     wellness,
     video,
-    lead,
-    travelFeature,
-    travelOrbit,
+    leadFallback,
+    travelFeatureFallback,
+    travelOrbitFallback,
   ] = await Promise.all([
+    getHomepageEditorial(),
     getArticles({ perPage: 18 }),
     getArticles({ category: "moda", perPage: 10 }),
     getArticles({ category: "seyahat", perPage: 10 }),
@@ -79,6 +86,33 @@ export async function getHomepageData(): Promise<HomepageData> {
     resolveMockArticle("bodrum-boat"),
   ]);
 
+  const latestItems = itemsOrFallback(latest, null, 18);
+  const modaItems = itemsOrFallback(moda, "moda", 10);
+  const seyahatItems = itemsOrFallback(seyahat, "seyahat", 10);
+  const ajandaItems = itemsOrFallback(ajanda, "ajanda", 10);
+  const sanatItems = itemsOrFallback(sanat, "sanat", 10);
+  const populerItems = itemsOrFallback(populer, "populer", 10);
+  const celebrityItems = itemsOrFallback(celebrity, "celebrity", 10);
+  const yasamItems = itemsOrFallback(yasam, "yasam", 10);
+  const wellnessItems = itemsOrFallback(wellness, "wellness", 10);
+  const slots = editorial?.slots;
+
+  const mustSource = latestItems.slice(3);
+  const mustRead = [
+    slots?.mustRead1 || atOr(mustSource, 0, "tags-design"),
+    slots?.mustRead2 || atOr(mustSource, 1, "bubas-bosphorus"),
+    slots?.mustRead3 || atOr(mustSource, 2, "istanbula-reverans"),
+  ];
+
+  const editorsSource = uniqueByPath([...sanatItems, ...ajandaItems]);
+  const editorsFeature = slots?.editorsFeature || atOr(editorsSource, 0, "ozge-gurkan");
+  const editorsSide = [
+    slots?.editorsSide1 || atOr(editorsSource, 1, "ben-bohmer"),
+    slots?.editorsSide2 || atOr(editorsSource, 2, "david-lynch"),
+    slots?.editorsSide3 || atOr(editorsSource, 3, "elif-ebru-sakar"),
+    slots?.editorsSide4 || atOr(editorsSource, 4, "six-senses"),
+  ];
+
   const videoFallback = [
     articleByKey("tommy-t-wave"),
     articleByKey("ben-bohmer"),
@@ -86,18 +120,21 @@ export async function getHomepageData(): Promise<HomepageData> {
   ];
 
   return {
-    latest: itemsOrFallback(latest, null, 18),
-    moda: itemsOrFallback(moda, "moda", 10),
-    seyahat: itemsOrFallback(seyahat, "seyahat", 10),
-    ajanda: itemsOrFallback(ajanda, "ajanda", 10),
-    sanat: itemsOrFallback(sanat, "sanat", 10),
-    populer: itemsOrFallback(populer, "populer", 10),
-    celebrity: itemsOrFallback(celebrity, "celebrity", 10),
-    yasam: itemsOrFallback(yasam, "yasam", 10),
-    wellness: itemsOrFallback(wellness, "wellness", 10),
+    latest: latestItems,
+    moda: modaItems,
+    seyahat: seyahatItems,
+    ajanda: ajandaItems,
+    sanat: sanatItems,
+    populer: populerItems,
+    celebrity: celebrityItems,
+    yasam: yasamItems,
+    wellness: wellnessItems,
     video: video?.items?.length ? uniqueByPath(video.items).slice(0, 6) : videoFallback,
-    lead,
-    travelFeature,
-    travelOrbit,
+    lead: slots?.heroLead || leadFallback,
+    mustRead,
+    editorsFeature,
+    editorsSide,
+    travelFeature: slots?.travelFeature || travelFeatureFallback,
+    travelOrbit: slots?.travelOrbit || travelOrbitFallback,
   };
 }

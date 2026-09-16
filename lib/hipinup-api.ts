@@ -65,6 +65,26 @@ export type ArticleCollection = {
   pagination: ApiPagination;
 };
 
+export type HomepageEditorialSlots = {
+  heroLead: Article | null;
+  mustRead1: Article | null;
+  mustRead2: Article | null;
+  mustRead3: Article | null;
+  editorsFeature: Article | null;
+  editorsSide1: Article | null;
+  editorsSide2: Article | null;
+  editorsSide3: Article | null;
+  editorsSide4: Article | null;
+  travelFeature: Article | null;
+  travelOrbit: Article | null;
+};
+
+export type HomepageEditorial = {
+  version: number;
+  configured: number;
+  slots: HomepageEditorialSlots;
+};
+
 export type ResolvedContent =
   | { type: "article"; data: Article }
   | { type: "category"; data: Category };
@@ -193,6 +213,32 @@ export async function getArticles({
 export async function getNavigation(): Promise<Category[] | null> {
   const response = await apiFetch<ApiTerm[]>(`/navigation?contract=${CORE_CONTRACT}`);
   return response ? response.map(toCategory) : null;
+}
+
+export async function getHomepageEditorial(): Promise<HomepageEditorial | null> {
+  type ApiHomepageSlots = Record<keyof HomepageEditorialSlots, ApiArticle | null>;
+  const response = await apiFetch<{ version: number; configured: number; slots: ApiHomepageSlots }>("/homepage");
+  if (!response?.slots) return null;
+
+  const mapSlot = (record: ApiArticle | null | undefined) => record ? toArticle(record) : null;
+
+  return {
+    version: response.version,
+    configured: response.configured,
+    slots: {
+      heroLead: mapSlot(response.slots.heroLead),
+      mustRead1: mapSlot(response.slots.mustRead1),
+      mustRead2: mapSlot(response.slots.mustRead2),
+      mustRead3: mapSlot(response.slots.mustRead3),
+      editorsFeature: mapSlot(response.slots.editorsFeature),
+      editorsSide1: mapSlot(response.slots.editorsSide1),
+      editorsSide2: mapSlot(response.slots.editorsSide2),
+      editorsSide3: mapSlot(response.slots.editorsSide3),
+      editorsSide4: mapSlot(response.slots.editorsSide4),
+      travelFeature: mapSlot(response.slots.travelFeature),
+      travelOrbit: mapSlot(response.slots.travelOrbit),
+    },
+  };
 }
 
 export async function getRelatedArticles(article: Article, limit = 3): Promise<Article[]> {

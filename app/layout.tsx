@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { StructuredData } from "@/components/structured-data";
+import { HipAdsProvider } from "@/components/ad-runtime";
+import { getHipAdsConfig, isHipAdsRuntimeEnabled } from "@/lib/hip-ads";
 import {
   DEFAULT_OG_IMAGE,
   GA_MEASUREMENT_ID,
@@ -24,6 +26,7 @@ import "./hipinup-formats-v120.css";
 import "./hipinup-formats-v121-polish.css";
 import "./hipinup-image-loading-v211.css";
 import "./hipinup-interactions-v220.css";
+import "./hipinup-ads-v230.css";
 
 const indexable = isIndexableEnvironment();
 
@@ -66,28 +69,34 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const analyticsEnabled = isAnalyticsEnabled();
+  const [adConfig, adsRuntimeEnabled] = await Promise.all([
+    getHipAdsConfig(),
+    Promise.resolve(isHipAdsRuntimeEnabled()),
+  ]);
 
   return (
     <html lang="tr" data-scroll-behavior="smooth">
       <body>
-        <StructuredData data={siteJsonLd()} />
-        {children}
-        {analyticsEnabled && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="hipinup-ga4" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];
+        <HipAdsProvider config={adConfig} runtimeEnabled={adsRuntimeEnabled}>
+          <StructuredData data={siteJsonLd()} />
+          {children}
+          {analyticsEnabled && (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+                strategy="afterInteractive"
+              />
+              <Script id="hipinup-ga4" strategy="afterInteractive">
+                {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${GA_MEASUREMENT_ID}');`}
-            </Script>
-          </>
-        )}
+              </Script>
+            </>
+          )}
+        </HipAdsProvider>
       </body>
     </html>
   );

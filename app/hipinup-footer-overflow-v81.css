@@ -1,0 +1,50 @@
+/* Hipinup footer v8.1 — contain decorative overflow without flattening the wave. */
+
+.newsletter-section{
+  max-width:100%;
+  min-width:0;
+  overflow-x:clip!important;
+}
+
+.newsletter-section::before{
+  left:0;
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+  box-sizing:border-box;
+  text-indent:-18px;
+}
+
+.newsletter-inner,
+.newsletter-copy,
+.newsletter-form-wrap,
+.footer,
+.footer>.site-width,
+.footer-top,
+.footer-links,
+.footer-wordmark,
+.footer-bottom{
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.footer::before{
+  box-sizing:border-box;
+  max-width:100%;
+}
+
+@media(max-width:620px){
+  .newsletter-section::before{
+    width:100%;
+    max-width:100%;
+    text-indent:-18px;
+  }
+
+  .newsletter-section::after,
+  .newsletter-stamp,
+  .newsletter-form-wrap::before{
+    max-width:calc(100% - 24px);
+    box-sizing:border-box;
+  }
+}

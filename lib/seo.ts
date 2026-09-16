@@ -114,13 +114,16 @@ export function categoryBreadcrumbJsonLd(category: Category) {
   return breadcrumbJsonLd(categoryTrail(category));
 }
 
-export function categoryJsonLd(category: Category) {
+export function categoryJsonLd(category: Category, page = 1) {
+  const path = page > 1 ? `${category.path}?page=${page}` : category.path;
+  const name = page > 1 ? `${category.name} — Sayfa ${page}` : category.name;
+
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": `${absoluteUrl(category.path)}#collection`,
-    url: absoluteUrl(category.path),
-    name: category.name,
+    "@id": `${absoluteUrl(path)}#collection`,
+    url: absoluteUrl(path),
+    name,
     description: category.description,
     inLanguage: "tr-TR",
     isPartOf: { "@id": `${SITE_URL}/#website` },

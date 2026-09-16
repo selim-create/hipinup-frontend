@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { HipAdSize, HipAdSlotConfig } from "@/lib/hip-ads-types";
+import type { HipAdSize, HipAdSizeMapping, HipAdSlotConfig } from "@/lib/hip-ads-types";
 import { useHipAdsRuntime } from "./ad-runtime";
 
 type AdFormat =
@@ -45,56 +45,110 @@ const formats: Record<AdFormat, { desktop: string; mobile: string }> = {
 type PlacementProfile = {
   slotKey: string;
   sizes: HipAdSize[];
+  sizeMappings?: HipAdSizeMapping[];
+  responsiveMinHeight: {
+    desktop: number;
+    tablet: number;
+    mobile: number;
+  };
 };
 
 const placementProfiles: Record<AdPlacement, PlacementProfile> = {
   topMasthead: {
     slotKey: "hipinup_970x250_masthead",
     sizes: [[1000, 90], [970, 90]],
+    sizeMappings: [
+      { viewport: [1024, 0], sizes: [[1000, 90], [970, 90]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 90, tablet: 0, mobile: 0 },
   },
   contentLeaderboard: {
     slotKey: "hipinup_728x90_leaderboard",
     sizes: [[728, 90]],
+    sizeMappings: [
+      { viewport: [768, 0], sizes: [[728, 90]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 90, tablet: 90, mobile: 0 },
   },
   inBanner: {
     slotKey: "hipinup_728x90_inbanner",
     sizes: [[728, 90]],
+    sizeMappings: [
+      { viewport: [768, 0], sizes: [[728, 90]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 90, tablet: 90, mobile: 0 },
   },
   homeBillboard: {
     slotKey: "hipinup_970x250_masthead",
     sizes: [[970, 250]],
+    sizeMappings: [
+      { viewport: [1024, 0], sizes: [[970, 250]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 250, tablet: 0, mobile: 0 },
   },
   desktopRailLeft: {
     slotKey: "hipinup_160x600_wideskyscraper_left",
     sizes: [[160, 600], [120, 600]],
+    sizeMappings: [
+      { viewport: [1781, 0], sizes: [[160, 600], [120, 600]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 600, tablet: 0, mobile: 0 },
   },
   desktopRailRight: {
     slotKey: "hipinup_160x600_wideskyscraper_right",
     sizes: [[160, 600], [120, 600]],
+    sizeMappings: [
+      { viewport: [1781, 0], sizes: [[160, 600], [120, 600]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 600, tablet: 0, mobile: 0 },
   },
   homePopRectangle: {
     slotKey: "hipinup_300x250_mediumrectangle",
     sizes: [[300, 250]],
+    responsiveMinHeight: { desktop: 250, tablet: 250, mobile: 250 },
   },
   homeLifeRectangle: {
     slotKey: "hipinup_300x250_mediumrectangle_2",
     sizes: [[300, 250]],
+    responsiveMinHeight: { desktop: 250, tablet: 250, mobile: 250 },
   },
   articleInlineRectangle: {
     slotKey: "hipinup_300x250_mediumrectangle_3",
     sizes: [[300, 250]],
+    responsiveMinHeight: { desktop: 250, tablet: 250, mobile: 250 },
   },
   halfpageRail: {
     slotKey: "hipinup_com_300x600",
     sizes: [[300, 600]],
+    sizeMappings: [
+      { viewport: [1181, 0], sizes: [[300, 600]] },
+      { viewport: [0, 0], sizes: [] },
+    ],
+    responsiveMinHeight: { desktop: 600, tablet: 0, mobile: 0 },
   },
   mobileMasthead: {
     slotKey: "hipinup_320x100_mobilemasthead",
     sizes: [[320, 100]],
+    sizeMappings: [
+      { viewport: [761, 0], sizes: [] },
+      { viewport: [0, 0], sizes: [[320, 100]] },
+    ],
+    responsiveMinHeight: { desktop: 0, tablet: 0, mobile: 100 },
   },
   mobileSticky: {
     slotKey: "hipinup_320x50_mobilesticky",
     sizes: [[320, 50]],
+    sizeMappings: [
+      { viewport: [761, 0], sizes: [] },
+      { viewport: [0, 0], sizes: [[320, 50]] },
+    ],
+    responsiveMinHeight: { desktop: 0, tablet: 0, mobile: 50 },
   },
 };
 
@@ -125,16 +179,14 @@ function sameSize(left: HipAdSize, right: HipAdSize) {
   return left[0] === right[0] && left[1] === right[1];
 }
 
-function restrictSlotSizes(slot: HipAdSlotConfig, allowedSizes: HipAdSize[]) {
-  const sizes = slot.sizes.filter((size) => allowedSizes.some((allowed) => sameSize(size, allowed)));
+function restrictSlotSizes(slot: HipAdSlotConfig, profile: PlacementProfile) {
+  const sizes = slot.sizes.filter((size) => profile.sizes.some((allowed) => sameSize(size, allowed)));
   if (!sizes.length) return null;
 
-  const sizeMappings = slot.sizeMappings
-    .map((mapping) => ({
-      ...mapping,
-      sizes: mapping.sizes.filter((size) => sizes.some((allowed) => sameSize(size, allowed))),
-    }))
-    .filter((mapping) => mapping.sizes.length > 0);
+  const sizeMappings = profile.sizeMappings || slot.sizeMappings.map((mapping) => ({
+    ...mapping,
+    sizes: mapping.sizes.filter((size) => sizes.some((allowed) => sameSize(size, allowed))),
+  }));
 
   const minHeight = Math.max(...sizes.map((size) => size[1]));
   return {
@@ -142,22 +194,27 @@ function restrictSlotSizes(slot: HipAdSlotConfig, allowedSizes: HipAdSize[]) {
     sizes,
     sizeMappings,
     minHeight,
-    responsiveMinHeight: {
-      desktop: minHeight,
-      tablet: minHeight,
-      mobile: minHeight,
-    },
+    responsiveMinHeight: profile.responsiveMinHeight,
   } satisfies HipAdSlotConfig;
 }
 
-function HouseCreative({ format, className = "" }: Pick<AdSlotProps, "format" | "className">) {
+function HouseCreative({
+  format,
+  className = "",
+  placement,
+}: Pick<AdSlotProps, "format" | "className"> & { placement: AdPlacement }) {
   const size = formats[format];
   const compact = ["leaderboard", "banner", "mobileBanner", "mobileMini"].includes(format);
   const narrow = format === "skyscraper" || format === "wideSkyscraper";
   const mini = format === "mobileMini";
 
   return (
-    <aside className={`ad-slot ad-${format} ${className}`} data-ad-format={format} aria-label={`${size.desktop} örnek reklam alanı`}>
+    <aside
+      className={`ad-slot ad-${format} ${className}`}
+      data-ad-format={format}
+      data-ad-layout-placement={placement}
+      aria-label={`${size.desktop} örnek reklam alanı`}
+    >
       <div className="ad-caption">
         <span>REKLAM <i>/</i> ÖRNEK KAMPANYA</span>
         <span className="ad-size-desktop">{size.desktop}</span>
@@ -195,7 +252,7 @@ export function AdSlot({
   const effectiveSlotKey = slotKey || profile.slotKey;
   const resolvedSlot = resolveSlot([effectiveSlotKey], effectiveSlotKey, placementKey);
   const slot = useMemo(
-    () => resolvedSlot ? restrictSlotSizes(resolvedSlot, profile.sizes) : null,
+    () => resolvedSlot ? restrictSlotSizes(resolvedSlot, profile) : null,
     [profile, resolvedSlot],
   );
   const divId = slot ? `${instanceId}-${slot.key}` : instanceId;
@@ -206,7 +263,7 @@ export function AdSlot({
   }, [divId, instanceId, registerSlot, slot]);
 
   if (!slot) {
-    return houseFallback ? <HouseCreative format={format} className={className}/> : null;
+    return houseFallback ? <HouseCreative format={format} className={className} placement={layoutPlacement}/> : null;
   }
 
   const minHeight = slot.responsiveMinHeight || { desktop: slot.minHeight, tablet: slot.minHeight, mobile: slot.minHeight };

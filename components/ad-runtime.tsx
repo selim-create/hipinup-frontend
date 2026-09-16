@@ -5,6 +5,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -28,21 +29,8 @@ export type GptSlotHandle = {
   }) => GptSlotHandle;
 };
 
-type GptSlotRenderEndedEvent = {
-  slot: GptSlotHandle;
-  isEmpty: boolean;
-};
-
 export type GptPubAdsService = {
   refresh: (slots?: GptSlotHandle[]) => void;
-  addEventListener: (
-    type: "slotRenderEnded",
-    listener: (event: GptSlotRenderEndedEvent) => void,
-  ) => void;
-  removeEventListener?: (
-    type: "slotRenderEnded",
-    listener: (event: GptSlotRenderEndedEvent) => void,
-  ) => void;
 };
 
 type GptSizeMappingBuilder = {
@@ -76,11 +64,18 @@ declare global {
   }
 }
 
+type RegisteredSlot = {
+  instanceId: string;
+  divId: string;
+  slot: HipAdSlotConfig;
+};
+
 type RuntimeContext = {
   config: HipAdsConfig;
   enabled: boolean;
   ready: boolean;
   resolveSlot: (candidateKeys: string[], slotKey?: string, placementKey?: string) => HipAdSlotConfig | null;
+  registerSlot: (registration: RegisteredSlot) => () => void;
 };
 
 const AdRuntimeContext = createContext<RuntimeContext | null>(null);
@@ -99,6 +94,28 @@ export function getGoogletag() {
   return window.googletag;
 }
 
+function defineRuntimeSlot(googletag: GptApi, registration: RegisteredSlot) {
+  const { slot, divId } = registration;
+  const gptSlot = googletag.defineSlot(slot.adUnitPath, slot.sizes, divId);
+  if (!gptSlot) return null;
+
+  if (slot.sizeMappings?.length) {
+    const builder = googletag.sizeMapping();
+    for (const item of slot.sizeMappings) {
+      builder.addSize(item.viewport, item.sizes);
+    }
+    const mapping = builder.build();
+    if (mapping) gptSlot.defineSizeMapping(mapping);
+  }
+
+  gptSlot.setConfig({
+    targeting: normalizeTargeting(slot.targeting),
+    collapseDiv: slot.collapseEmpty ? "ON_NO_FILL" : "DISABLED",
+  });
+  gptSlot.addService(googletag.pubads());
+  return gptSlot;
+}
+
 export function HipAdsProvider({
   children,
   config,
@@ -109,18 +126,59 @@ export function HipAdsProvider({
   runtimeEnabled: boolean;
 }) {
   const [ready, setReady] = useState(false);
-  const initialized = useRef(false);
+  const registrations = useRef(new Map<string, RegisteredSlot>());
+  const definedSlots = useRef(new Map<string, GptSlotHandle>());
+  const servicesEnabled = useRef(false);
+  const booted = useRef(false);
   const enabled = Boolean(
     runtimeEnabled && config.adsEnabled && config.networkCode && config.slots.length,
   );
 
+  const destroyInstance = useCallback((instanceId: string) => {
+    const defined = definedSlots.current.get(instanceId);
+    if (!defined) return;
+
+    const googletag = getGoogletag();
+    if (googletag) {
+      googletag.cmd.push(() => {
+        googletag.destroySlots([defined]);
+      });
+    }
+    definedSlots.current.delete(instanceId);
+  }, []);
+
+  const registerSlot = useCallback(
+    (registration: RegisteredSlot) => {
+      registrations.current.set(registration.instanceId, registration);
+
+      if (servicesEnabled.current) {
+        const googletag = getGoogletag();
+        if (googletag) {
+          googletag.cmd.push(() => {
+            destroyInstance(registration.instanceId);
+            const defined = defineRuntimeSlot(googletag, registration);
+            if (!defined) return;
+            definedSlots.current.set(registration.instanceId, defined);
+            googletag.display(registration.divId);
+          });
+        }
+      }
+
+      return () => {
+        registrations.current.delete(registration.instanceId);
+        destroyInstance(registration.instanceId);
+      };
+    },
+    [destroyInstance],
+  );
+
   const boot = useCallback(() => {
-    if (!enabled || initialized.current) return;
+    if (!enabled || booted.current) return;
 
     const googletag = getGoogletag();
     if (!googletag) return;
 
-    initialized.current = true;
+    booted.current = true;
     googletag.cmd.push(() => {
       googletag.setConfig({
         singleRequest: config.gpt.singleRequest,
@@ -128,7 +186,21 @@ export function HipAdsProvider({
         lazyLoad: config.gpt.lazyLoad,
         targeting: normalizeTargeting(config.globalTargeting),
       });
+
+      for (const registration of registrations.current.values()) {
+        const defined = defineRuntimeSlot(googletag, registration);
+        if (defined) definedSlots.current.set(registration.instanceId, defined);
+      }
+
       googletag.enableServices();
+      servicesEnabled.current = true;
+
+      for (const registration of registrations.current.values()) {
+        if (definedSlots.current.has(registration.instanceId)) {
+          googletag.display(registration.divId);
+        }
+      }
+
       setReady(true);
     });
   }, [config, enabled]);
@@ -159,9 +231,17 @@ export function HipAdsProvider({
     [config.slots, enabled],
   );
 
+  useEffect(() => {
+    if (enabled) return;
+    for (const instanceId of definedSlots.current.keys()) destroyInstance(instanceId);
+    servicesEnabled.current = false;
+    booted.current = false;
+    setReady(false);
+  }, [destroyInstance, enabled]);
+
   const value = useMemo<RuntimeContext>(
-    () => ({ config, enabled, ready, resolveSlot }),
-    [config, enabled, ready, resolveSlot],
+    () => ({ config, enabled, ready, resolveSlot, registerSlot }),
+    [config, enabled, ready, registerSlot, resolveSlot],
   );
 
   return (

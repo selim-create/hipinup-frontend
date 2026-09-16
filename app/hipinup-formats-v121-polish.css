@@ -43,8 +43,43 @@
 .v65-must-list>a[href="/yasam/tags-design-ege-esintisini-evlere-tasiyor/"]>div:before,
 .v65-must-list>a[href="/ajanda/new-yorkta-yasayan-unlu-fotograf-sanatcisi-annette-louise-solakoglundan-turkiyede-ilk-sergi-istanbula-reverans/"]>div:before{content:none!important;display:none!important}
 
+/* v13 — live format engine media/content support without changing the locked layout. */
+.pf-video-media{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;background:#000;z-index:1}
+.pf-video-shade{z-index:2;pointer-events:none}
+.pf-video-play,.pf-video-caption,.pf-video-corner{z-index:3}
+.pf-video-stage:has(.pf-video-media) .pf-video-caption{bottom:66px;pointer-events:none}
+.pf-video-stage:has(.pf-video-media) .pf-video-corner{pointer-events:none}
+.pf-podcast-player h2{overflow-wrap:anywhere}
+.pf-podcast-audio{width:100%;margin-top:24px;accent-color:var(--pf-blue)}
+.pf-media-missing{margin:24px 0 0;color:#b8b8bd;font-size:13px;line-height:1.5}
+.pf-podcast-player .pf-player-line{grid-template-columns:minmax(0,1fr) auto}
+.pf-story-list{margin:0 0 28px;padding-left:24px;font-size:19px;line-height:1.7;color:#292831}
+.pf-story-list li+li{margin-top:8px}
+.pf-story-quote{margin:36px 0;padding:24px 28px;border-left:6px solid var(--pf-blue);background:#f4fbfe}
+.pf-story-quote p{margin:0;font-family:Georgia,serif;font-size:25px;line-height:1.45}
+.pf-story-quote cite{display:block;margin-top:12px;font-size:12px;font-style:normal;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+.pf-story-image,.pf-story-media{margin:36px 0}
+.pf-story-image img,.pf-story-media video{display:block;width:100%;height:auto;border:2px solid var(--pf-ink)}
+.pf-story-image figcaption,.pf-story-media figcaption,.pf-story-gallery figcaption{margin-top:8px;font-size:11px;line-height:1.45;color:#77747c}
+.pf-story-media audio{width:100%}
+.pf-story-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:36px 0}
+.pf-story-gallery figure{margin:0}.pf-story-gallery img{width:100%;height:100%;max-height:420px;object-fit:cover;border:2px solid var(--pf-ink)}
+.pf-story-embed a{display:inline-flex;align-items:center;gap:8px;font-weight:850;color:#087ea7}
+.pf-story-table{max-width:100%;overflow:auto;margin:34px 0}.pf-story-table table{width:100%;border-collapse:collapse}.pf-story-table th,.pf-story-table td{padding:10px;border:1px solid #bbb;text-align:left}
+.pf-story-code{max-width:100%;overflow:auto;margin:34px 0;padding:18px;background:#101015;color:#fff;border-radius:2px}
+.pf-story-separator{margin:42px 0;border:0;border-top:2px solid var(--pf-ink)}
+.pf-story-html{font-size:19px;line-height:1.7;color:#292831}.pf-story-html img{max-width:100%;height:auto}
+.pf-list-body article{grid-template-columns:78px minmax(0,1fr) 120px auto}
+.pf-list-item-copy{min-width:0}.pf-list-item-copy strong{display:block;margin-bottom:7px;font-size:20px;line-height:1.2}.pf-list-item-copy p{font-size:16px}
+.pf-list-item-media{width:120px;height:82px;margin:0;background:#f1f0ec;overflow:hidden;border:1px solid #d6d4cf}
+.pf-list-item-media:not(.has-image){visibility:hidden}
+.pf-list-item-media img{width:100%;height:100%;object-fit:cover}
+
 @media(max-width:760px){
  .pf-single .reader-actions{width:100%}.pf-single .reader-actions>div{width:100%}.pf-single .reader-actions button{flex:1;justify-content:center;min-width:145px}.pf-single .reader-actions>span{text-align:left}
  .pf-single .reading-strip{top:48px}.pf-single .reading-strip>.site-width{min-height:42px;gap:9px}.pf-single .reading-title{font-size:10px}.pf-single .reading-label{font-size:8px}
+ .pf-video-stage:has(.pf-video-media) .pf-video-caption{bottom:82px}
+ .pf-story-gallery{grid-template-columns:1fr}.pf-story-quote{padding:20px}.pf-story-quote p{font-size:21px}
+ .pf-list-body article{grid-template-columns:58px minmax(0,1fr) auto}.pf-list-item-media{display:none}.pf-list-item-copy strong{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){.pf-single .reader-actions button,.pf-single .reading-strip>.site-width>a{transition:none!important}}

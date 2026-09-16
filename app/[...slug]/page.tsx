@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { articles, normalizePath } from "@/app/data/content";
+import { articleFormat, articles, normalizePath } from "@/app/data/content";
 import { categories } from "@/app/data/navigation";
 import { getArticles, getNavigation, getRelatedArticles, resolveContent } from "@/lib/hipinup-api";
 import { CategoryPage } from "@/components/magazine";
@@ -54,6 +54,11 @@ export default async function Page({ params, searchParams }: Props) {
   const live = await resolveContent(path);
 
   if (live?.type === "article") {
+    if (articleFormat(live.data) !== "standard") {
+      const related = await getRelatedArticles(live.data, 3);
+      return <PostFormatPage article={live.data} related={related}/>;
+    }
+
     const [related, navigation] = await Promise.all([
       getRelatedArticles(live.data, 3),
       getNavigation(),
@@ -73,7 +78,10 @@ export default async function Page({ params, searchParams }: Props) {
   }
 
   const { article, category } = resolveMock(path);
-  if (article) return <PostFormatPage article={article}/>;
+  if (article) {
+    const related = articles.filter((item) => item.key !== article.key).slice(0, 3);
+    return <PostFormatPage article={article} related={related}/>;
+  }
   if (category) return <CategoryPage category={category} page={page}/>;
   notFound();
 }

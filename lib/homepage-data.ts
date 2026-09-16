@@ -79,6 +79,12 @@ export async function getHomepageData(): Promise<HomepageData> {
     resolveMockArticle("bodrum-boat"),
   ]);
 
+  const videoFallback = [
+    articleByKey("tommy-t-wave"),
+    articleByKey("ben-bohmer"),
+    articleByKey("david-lynch"),
+  ];
+
   return {
     latest: itemsOrFallback(latest, null, 18),
     moda: itemsOrFallback(moda, "moda", 10),
@@ -89,7 +95,7 @@ export async function getHomepageData(): Promise<HomepageData> {
     celebrity: itemsOrFallback(celebrity, "celebrity", 10),
     yasam: itemsOrFallback(yasam, "yasam", 10),
     wellness: itemsOrFallback(wellness, "wellness", 10),
-    video: itemsOrFallback(video, null, 6),
+    video: video?.items?.length ? uniqueByPath(video.items).slice(0, 6) : videoFallback,
     lead,
     travelFeature,
     travelOrbit,

@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { categories as fallbackCategories } from "@/app/data/navigation";
 import { getArticles, getNavigation } from "@/lib/hipinup-api";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 
@@ -11,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getArticles({ page: 1, perPage: 50 }),
   ]);
 
-  const liveCategories = navigation || fallbackCategories;
+  const liveCategories = (navigation || []).filter((category) => (category.count || 0) > 0);
   const articles = firstPage ? [...firstPage.items] : [];
 
   if (firstPage && firstPage.pagination.totalPages > 1) {

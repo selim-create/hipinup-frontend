@@ -1,0 +1,122 @@
+/* Hipinup mobile header v2.4 — deterministic 3-column mobile masthead */
+
+@media (max-width:760px){
+  .hip-header-masthead{
+    min-height:72px!important;
+    display:grid!important;
+    grid-template-columns:48px minmax(0,1fr) 52px!important;
+    align-items:center!important;
+    gap:0!important;
+  }
+
+  .hip-header-masthead .mobile-menu{
+    grid-column:1!important;
+    grid-row:1!important;
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    padding:0!important;
+  }
+
+  .hip-header-masthead>.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    align-self:center!important;
+    width:min(148px,100%)!important;
+    max-width:148px!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  .hip-header-masthead>.brand .brand-image{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    object-fit:contain!important;
+  }
+
+  .hip-header-masthead .masthead-actions{
+    grid-column:3!important;
+    grid-row:1!important;
+    width:52px!important;
+    min-width:52px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:0!important;
+  }
+
+  .hip-header-masthead .search-button{
+    display:none!important;
+  }
+
+  .hip-header-masthead .newsletter-button{
+    width:48px!important;
+    min-width:48px!important;
+    height:44px!important;
+    min-height:44px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:0!important;
+    margin:0!important;
+    gap:0!important;
+    box-sizing:border-box!important;
+    box-shadow:3px 3px 0 var(--v110-ink)!important;
+  }
+
+  .hip-header-masthead .newsletter-button span{
+    display:none!important;
+  }
+
+  .hip-header-masthead .newsletter-button svg{
+    width:20px!important;
+    height:20px!important;
+    flex:0 0 20px!important;
+  }
+
+  .v6-live-inner{
+    min-width:0!important;
+    grid-template-columns:auto minmax(0,1fr)!important;
+  }
+
+  .v6-live-list{
+    min-width:0!important;
+    max-width:100%!important;
+  }
+
+  .v6-live-list>a{
+    max-width:calc(100vw - 118px)!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media (max-width:390px){
+  .hip-header-masthead{
+    grid-template-columns:46px minmax(0,1fr) 50px!important;
+  }
+
+  .hip-header-masthead>.brand{
+    width:min(136px,100%)!important;
+    max-width:136px!important;
+  }
+
+  .hip-header-masthead .masthead-actions{
+    width:50px!important;
+    min-width:50px!important;
+  }
+
+  .hip-header-masthead .newsletter-button{
+    width:46px!important;
+    min-width:46px!important;
+  }
+}

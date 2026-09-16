@@ -98,12 +98,12 @@ function toCategory(term: ApiTerm): Category {
   };
 }
 
-function toArticle(record: ApiArticle): Article {
+function toArticle(record: ApiArticle, compactMedia = false): Article {
   const apiCategories = (record.categories || []).map(toCategory);
   const primary = record.primaryCategory ? toCategory(record.primaryCategory) : apiCategories[0];
   const tags = record.tags?.length ? record.tags : primary ? [primary.key] : ["genel"];
-  const image = record.image || record.imageSmall || FALLBACK_IMAGE;
   const imageSmall = record.imageSmall || record.image || FALLBACK_IMAGE;
+  const image = compactMedia ? imageSmall : (record.image || imageSmall);
   const title = cleanPlainText(record.title);
 
   return {
@@ -182,7 +182,10 @@ export async function getArticles({
   if (!response) return null;
 
   return {
-    items: response.items.map(toArticle),
+    // Collection views never need the original multi-megapixel upload. Keep the
+    // medium_large derivative as the primary card source; resolved article pages
+    // still receive the full-size image through resolveContent().
+    items: response.items.map((record) => toArticle(record, true)),
     pagination: response.pagination,
   };
 }

@@ -123,6 +123,20 @@ type AdSlotProps = {
   houseFallback?: boolean;
 };
 
+function inferPlacement(format: AdFormat, className: string): AdPlacement {
+  if (format === "leaderboard") return className.includes("archive-ad") ? "contentLeaderboard" : "topMasthead";
+  if (format === "banner") return "inBanner";
+  if (format === "billboard") return "homeBillboard";
+  if (format === "wideSkyscraper") return "desktopRailLeft";
+  if (format === "skyscraper") return "desktopRailRight";
+  if (format === "halfpage") return "halfpageRail";
+  if (format === "mobileBanner") return "mobileMasthead";
+  if (format === "mobileMini") return "mobileSticky";
+  if (className.includes("v74-pop-ad")) return "homePopRectangle";
+  if (className.includes("v69-life-ad")) return "homeLifeRectangle";
+  return "articleInlineRectangle";
+}
+
 function sameSize(left: HipAdSize, right: HipAdSize) {
   return left[0] === right[0] && left[1] === right[1];
 }
@@ -192,10 +206,11 @@ export function AdSlot({
   const { resolveSlot, registerSlot } = useHipAdsRuntime();
   const reactId = useId();
   const instanceId = useMemo(() => `hip-ad-instance-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`, [reactId]);
-  const profile = placement ? placementProfiles[placement] : null;
-  const resolvedSlot = resolveSlot(defaultSlotKeys[format], slotKey || profile?.slotKey, placementKey);
+  const layoutPlacement = placement || inferPlacement(format, className);
+  const profile = placementProfiles[layoutPlacement];
+  const resolvedSlot = resolveSlot(defaultSlotKeys[format], slotKey || profile.slotKey, placementKey);
   const slot = useMemo(
-    () => resolvedSlot && profile ? restrictSlotSizes(resolvedSlot, profile.sizes) : resolvedSlot,
+    () => resolvedSlot ? restrictSlotSizes(resolvedSlot, profile.sizes) : null,
     [profile, resolvedSlot],
   );
   const divId = slot ? `${instanceId}-${slot.key}` : instanceId;
@@ -220,7 +235,7 @@ export function AdSlot({
     <aside
       className={`ad-slot ad-${format} hip-gpt-slot ${className}`}
       data-ad-format={format}
-      data-ad-layout-placement={placement || undefined}
+      data-ad-layout-placement={layoutPlacement}
       data-ad-slot-key={slot.key}
       data-ad-placement={slot.placementKey}
       style={style}

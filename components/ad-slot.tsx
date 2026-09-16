@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
+import type { HipAdSize, HipAdSlotConfig } from "@/lib/hip-ads-types";
 import { useHipAdsRuntime } from "./ad-runtime";
 
 type AdFormat =
@@ -14,6 +15,20 @@ type AdFormat =
   | "wideSkyscraper"
   | "mobileBanner"
   | "mobileMini";
+
+export type AdPlacement =
+  | "topMasthead"
+  | "contentLeaderboard"
+  | "inBanner"
+  | "homeBillboard"
+  | "desktopRailLeft"
+  | "desktopRailRight"
+  | "homePopRectangle"
+  | "homeLifeRectangle"
+  | "articleInlineRectangle"
+  | "halfpageRail"
+  | "mobileMasthead"
+  | "mobileSticky";
 
 const formats: Record<AdFormat, { desktop: string; mobile: string }> = {
   leaderboard: { desktop: "970 × 90", mobile: "320 × 100" },
@@ -37,19 +52,105 @@ const defaultSlotKeys: Record<AdFormat, string[]> = {
     "hipinup_300x250_mediumrectangle_3",
   ],
   halfpage: ["hipinup_com_300x600"],
-  skyscraper: ["hipinup_160x600_wideskyscraper_left", "hipinup_160x600_wideskyscraper_right"],
-  wideSkyscraper: ["hipinup_160x600_wideskyscraper_left", "hipinup_160x600_wideskyscraper_right"],
+  skyscraper: ["hipinup_160x600_wideskyscraper_right"],
+  wideSkyscraper: ["hipinup_160x600_wideskyscraper_left"],
   mobileBanner: ["hipinup_320x100_mobilemasthead"],
   mobileMini: ["hipinup_320x50_mobilesticky"],
+};
+
+type PlacementProfile = {
+  slotKey: string;
+  sizes: HipAdSize[];
+};
+
+const placementProfiles: Record<AdPlacement, PlacementProfile> = {
+  topMasthead: {
+    slotKey: "hipinup_970x250_masthead",
+    sizes: [[1000, 90], [970, 90]],
+  },
+  contentLeaderboard: {
+    slotKey: "hipinup_728x90_leaderboard",
+    sizes: [[728, 90]],
+  },
+  inBanner: {
+    slotKey: "hipinup_728x90_inbanner",
+    sizes: [[728, 90]],
+  },
+  homeBillboard: {
+    slotKey: "hipinup_970x250_masthead",
+    sizes: [[970, 250]],
+  },
+  desktopRailLeft: {
+    slotKey: "hipinup_160x600_wideskyscraper_left",
+    sizes: [[160, 600], [120, 600]],
+  },
+  desktopRailRight: {
+    slotKey: "hipinup_160x600_wideskyscraper_right",
+    sizes: [[160, 600], [120, 600]],
+  },
+  homePopRectangle: {
+    slotKey: "hipinup_300x250_mediumrectangle",
+    sizes: [[300, 250]],
+  },
+  homeLifeRectangle: {
+    slotKey: "hipinup_300x250_mediumrectangle_2",
+    sizes: [[300, 250]],
+  },
+  articleInlineRectangle: {
+    slotKey: "hipinup_300x250_mediumrectangle_3",
+    sizes: [[300, 250]],
+  },
+  halfpageRail: {
+    slotKey: "hipinup_com_300x600",
+    sizes: [[300, 600]],
+  },
+  mobileMasthead: {
+    slotKey: "hipinup_320x100_mobilemasthead",
+    sizes: [[320, 100]],
+  },
+  mobileSticky: {
+    slotKey: "hipinup_320x50_mobilesticky",
+    sizes: [[320, 50]],
+  },
 };
 
 type AdSlotProps = {
   format: AdFormat;
   className?: string;
+  placement?: AdPlacement;
   slotKey?: string;
   placementKey?: string;
   houseFallback?: boolean;
 };
+
+function sameSize(left: HipAdSize, right: HipAdSize) {
+  return left[0] === right[0] && left[1] === right[1];
+}
+
+function restrictSlotSizes(slot: HipAdSlotConfig, allowedSizes: HipAdSize[]) {
+  const sizes = slot.sizes.filter((size) => allowedSizes.some((allowed) => sameSize(size, allowed)));
+  if (!sizes.length) return null;
+
+  const sizeMappings = slot.sizeMappings
+    .map((mapping) => ({
+      ...mapping,
+      sizes: mapping.sizes.filter((size) => sizes.some((allowed) => sameSize(size, allowed))),
+    }))
+    .filter((mapping) => mapping.sizes.length > 0);
+
+  const minHeight = Math.max(...sizes.map((size) => size[1]));
+  return {
+    ...slot,
+    sizes,
+    sizeMappings,
+    minHeight,
+    responsiveMinHeight: {
+      desktop: minHeight,
+      tablet: minHeight,
+      mobile: minHeight,
+    },
+  } satisfies HipAdSlotConfig;
+}
 
 function HouseCreative({ format, className = "" }: Pick<AdSlotProps, "format" | "className">) {
   const size = formats[format];
@@ -83,6 +184,7 @@ function HouseCreative({ format, className = "" }: Pick<AdSlotProps, "format" | 
 export function AdSlot({
   format,
   className = "",
+  placement,
   slotKey,
   placementKey,
   houseFallback = true,
@@ -90,7 +192,12 @@ export function AdSlot({
   const { resolveSlot, registerSlot } = useHipAdsRuntime();
   const reactId = useId();
   const instanceId = useMemo(() => `hip-ad-instance-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`, [reactId]);
-  const slot = resolveSlot(defaultSlotKeys[format], slotKey, placementKey);
+  const profile = placement ? placementProfiles[placement] : null;
+  const resolvedSlot = resolveSlot(defaultSlotKeys[format], slotKey || profile?.slotKey, placementKey);
+  const slot = useMemo(
+    () => resolvedSlot && profile ? restrictSlotSizes(resolvedSlot, profile.sizes) : resolvedSlot,
+    [profile, resolvedSlot],
+  );
   const divId = slot ? `${instanceId}-${slot.key}` : instanceId;
 
   useEffect(() => {
@@ -113,6 +220,7 @@ export function AdSlot({
     <aside
       className={`ad-slot ad-${format} hip-gpt-slot ${className}`}
       data-ad-format={format}
+      data-ad-layout-placement={placement || undefined}
       data-ad-slot-key={slot.key}
       data-ad-placement={slot.placementKey}
       style={style}

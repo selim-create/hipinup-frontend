@@ -33,6 +33,7 @@ export type Article = {
   originalTitle: string;
   path: string;
   date: string;
+  modified?: string;
   tags: string[];
   image: string;
   imageSmall: string;

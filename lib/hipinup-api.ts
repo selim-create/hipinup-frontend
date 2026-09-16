@@ -135,6 +135,7 @@ function toArticle(record: ApiArticle, compactMedia = false): Article {
     originalTitle: title,
     path: record.path,
     date: record.date,
+    modified: record.modified,
     tags,
     image,
     imageSmall,

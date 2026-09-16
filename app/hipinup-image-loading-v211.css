@@ -1,0 +1,24 @@
+/* Hipinup v2.1.1 — branded image loading state.
+   Editorial images keep their existing dimensions/object-fit behavior while
+   showing the Hipinup wordmark until the real file paints over the element. */
+
+img:not(.brand-image){
+  background-color:#f3f5f6;
+  background-image:url('/brand/hipinup.svg');
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:min(34%, 180px) auto;
+  color:transparent;
+  font-size:0;
+}
+
+/* The site logo is already the wordmark itself; avoid a second wordmark behind it. */
+img.brand-image{
+  background:none;
+}
+
+@media (max-width:760px){
+  img:not(.brand-image){
+    background-size:min(42%, 150px) auto;
+  }
+}

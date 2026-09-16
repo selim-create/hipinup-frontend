@@ -40,6 +40,7 @@ type ApiArticle = {
   modified?: string;
   author: string;
   minutes: number;
+  heroTitle?: string;
   format?: ArticleFormat;
   cardLabel?: string;
   image: string;
@@ -139,6 +140,7 @@ function toArticle(record: ApiArticle, compactMedia = false): Article {
     excerpt: cleanPlainText(record.excerpt, { excerpt: true }),
     author: cleanPlainText(record.author),
     minutes: record.minutes,
+    heroTitle: cleanPlainText(record.heroTitle || ""),
     format: record.format || "standard",
     content: record.content,
     contentBlocks: record.contentBlocks,
@@ -202,9 +204,6 @@ export async function getArticles({
   if (!response) return null;
 
   return {
-    // Collection views never need the original multi-megapixel upload. Keep the
-    // medium_large derivative as the primary card source; resolved article pages
-    // still receive the full-size image through resolveContent().
     items: response.items.map((record) => toArticle(record, true)),
     pagination: response.pagination,
   };

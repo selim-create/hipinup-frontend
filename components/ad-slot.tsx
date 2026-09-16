@@ -208,7 +208,8 @@ export function AdSlot({
   const instanceId = useMemo(() => `hip-ad-instance-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`, [reactId]);
   const layoutPlacement = placement || inferPlacement(format, className);
   const profile = placementProfiles[layoutPlacement];
-  const resolvedSlot = resolveSlot(defaultSlotKeys[format], slotKey || profile.slotKey, placementKey);
+  const effectiveSlotKey = slotKey || profile.slotKey;
+  const resolvedSlot = resolveSlot([effectiveSlotKey], effectiveSlotKey, placementKey);
   const slot = useMemo(
     () => resolvedSlot ? restrictSlotSizes(resolvedSlot, profile.sizes) : null,
     [profile, resolvedSlot],

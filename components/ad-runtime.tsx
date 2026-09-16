@@ -8,7 +8,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
 import type {
@@ -73,7 +72,6 @@ type RegisteredSlot = {
 type RuntimeContext = {
   config: HipAdsConfig;
   enabled: boolean;
-  ready: boolean;
   resolveSlot: (candidateKeys: string[], slotKey?: string, placementKey?: string) => HipAdSlotConfig | null;
   registerSlot: (registration: RegisteredSlot) => () => void;
 };
@@ -125,7 +123,6 @@ export function HipAdsProvider({
   config: HipAdsConfig;
   runtimeEnabled: boolean;
 }) {
-  const [ready, setReady] = useState(false);
   const registrations = useRef(new Map<string, RegisteredSlot>());
   const definedSlots = useRef(new Map<string, GptSlotHandle>());
   const servicesEnabled = useRef(false);
@@ -205,8 +202,6 @@ export function HipAdsProvider({
           googletag.display(registration.divId);
         }
       }
-
-      setReady(true);
     });
   }, [config, enabled]);
 
@@ -242,12 +237,11 @@ export function HipAdsProvider({
     for (const instanceId of instanceIds) destroyInstance(instanceId);
     servicesEnabled.current = false;
     booted.current = false;
-    setReady(false);
   }, [destroyInstance, enabled]);
 
   const value = useMemo<RuntimeContext>(
-    () => ({ config, enabled, ready, resolveSlot, registerSlot }),
-    [config, enabled, ready, registerSlot, resolveSlot],
+    () => ({ config, enabled, resolveSlot, registerSlot }),
+    [config, enabled, registerSlot, resolveSlot],
   );
 
   return (

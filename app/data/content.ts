@@ -39,6 +39,7 @@ export type Article = {
   excerpt: string;
   author: string;
   minutes: number;
+  heroTitle?: string;
   format?: ArticleFormat;
   content?: string;
   contentBlocks?: ContentBlock[];

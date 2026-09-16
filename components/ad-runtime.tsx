@@ -155,7 +155,12 @@ export function HipAdsProvider({
         const googletag = getGoogletag();
         if (googletag) {
           googletag.cmd.push(() => {
-            destroyInstance(registration.instanceId);
+            const previous = definedSlots.current.get(registration.instanceId);
+            if (previous) {
+              googletag.destroySlots([previous]);
+              definedSlots.current.delete(registration.instanceId);
+            }
+
             const defined = defineRuntimeSlot(googletag, registration);
             if (!defined) return;
             definedSlots.current.set(registration.instanceId, defined);
@@ -233,7 +238,8 @@ export function HipAdsProvider({
 
   useEffect(() => {
     if (enabled) return;
-    for (const instanceId of definedSlots.current.keys()) destroyInstance(instanceId);
+    const instanceIds = Array.from(definedSlots.current.keys());
+    for (const instanceId of instanceIds) destroyInstance(instanceId);
     servicesEnabled.current = false;
     booted.current = false;
     setReady(false);

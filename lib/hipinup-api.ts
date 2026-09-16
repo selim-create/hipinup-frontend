@@ -7,6 +7,7 @@ const API_URL = (process.env.HIPINUP_API_URL || DEFAULT_API_URL).replace(/\/+$/,
 const REVALIDATE_SECONDS = 60;
 const FALLBACK_IMAGE = "/images/freesbee-small.webp";
 const CORE_CONTRACT = "2";
+const MALFORMED_PERCENT = /%(?![0-9A-Fa-f]{2})/g;
 
 type ApiAncestor = {
   id: number;
@@ -166,16 +167,25 @@ async function apiFetch<T>(path: string): Promise<T | null> {
   }
 }
 
-export async function resolveContent(path: string): Promise<ResolvedContent | null> {
-  const query = new URLSearchParams({ path });
-  const response = await apiFetch<{ type: "article" | "category"; data: ApiArticle | ApiTerm }>(`/resolve?${query.toString()}`);
-  if (!response) return null;
+function resolvePathCandidates(path: string): string[] {
+  const repaired = path.replace(MALFORMED_PERCENT, "%25");
+  return repaired === path ? [path] : [repaired, path];
+}
 
-  if (response.type === "article") {
-    return { type: "article", data: toArticle(response.data as ApiArticle) };
+export async function resolveContent(path: string): Promise<ResolvedContent | null> {
+  for (const candidate of resolvePathCandidates(path)) {
+    const query = new URLSearchParams({ path: candidate });
+    const response = await apiFetch<{ type: "article" | "category"; data: ApiArticle | ApiTerm }>(`/resolve?${query.toString()}`);
+    if (!response) continue;
+
+    if (response.type === "article") {
+      return { type: "article", data: toArticle(response.data as ApiArticle) };
+    }
+
+    return { type: "category", data: toCategory(response.data as ApiTerm) };
   }
 
-  return { type: "category", data: toCategory(response.data as ApiTerm) };
+  return null;
 }
 
 export async function getArticles({

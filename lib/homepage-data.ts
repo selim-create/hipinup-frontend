@@ -53,6 +53,25 @@ async function resolveMockArticle(key: string) {
 
 const atOr = (items: Article[], index: number, fallbackKey: string) => items[index] || articleByKey(fallbackKey);
 
+function editorialHeroForDisplay(article: Article): Article {
+  const actualTitle = article.originalTitle || article.title;
+  const fallbackHeroTitle = actualTitle.trim().split(/\s+/).filter(Boolean).slice(0, 3).join(" ");
+  const heroTitle = (article.heroTitle || fallbackHeroTitle).trim();
+
+  return {
+    ...article,
+    // HomePageV6's locked hero component uses `title` for the large image overlay
+    // and `excerpt` for the line immediately below the image. For editorially
+    // assigned heroes we feed those presentation slots explicitly: short hero
+    // display title above, full story title below. The actual excerpt is therefore
+    // intentionally not rendered in the hero.
+    key: `${article.key}--editorial-hero`,
+    title: heroTitle,
+    excerpt: actualTitle,
+    originalTitle: actualTitle,
+  };
+}
+
 export async function getHomepageData(): Promise<HomepageData> {
   const [
     editorial,
@@ -130,7 +149,7 @@ export async function getHomepageData(): Promise<HomepageData> {
     yasam: yasamItems,
     wellness: wellnessItems,
     video: video?.items?.length ? uniqueByPath(video.items).slice(0, 6) : videoFallback,
-    lead: slots?.heroLead || leadFallback,
+    lead: slots?.heroLead ? editorialHeroForDisplay(slots.heroLead) : leadFallback,
     mustRead,
     editorsFeature,
     editorsSide,

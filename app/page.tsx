@@ -1,7 +1,10 @@
 import { SearchPage } from "@/components/magazine";
 import { HomePageV6 } from "@/components/home-v6";
+import { getHomepageData } from "@/lib/homepage-data";
 
 export default async function Page({searchParams}:{searchParams:Promise<{s?:string}>}) {
  const q=await searchParams;
- return q.s?.trim()?<SearchPage query={q.s.trim()}/>:<HomePageV6/>;
+ if(q.s?.trim()) return <SearchPage query={q.s.trim()}/>;
+ const data=await getHomepageData();
+ return <HomePageV6 data={data}/>;
 }

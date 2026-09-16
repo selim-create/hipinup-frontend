@@ -61,7 +61,18 @@ export const dateLabel = (date:string) => {
   const value = /^\d{4}-\d{2}-\d{2}$/.test(date) ? `${date}T12:00:00Z` : date;
   return new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(value));
 };
-export const normalizePath = (path:string) => decodeURIComponent(path).replace(/\/+$/, "") || "/";
+export const normalizePath = (path:string) => {
+  let normalized = path;
+
+  try {
+    normalized = decodeURIComponent(path);
+  } catch {
+    // Next route params may already be decoded. Legacy WordPress slugs can
+    // contain literal malformed percent sequences (for example "%e").
+  }
+
+  return normalized.replace(/\/+$/, "") || "/";
+};
 
 const mockArticleFormats: Record<string,ArticleFormat> = {
   "istanbula-reverans":"gallery",

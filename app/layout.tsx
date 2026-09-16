@@ -10,6 +10,7 @@ import "./hipinup-discovery-v100.css";
 import "./hipinup-responsive-v110.css";
 import "./hipinup-formats-v120.css";
 import "./hipinup-formats-v121-polish.css";
+import "./hipinup-image-loading-v211.css";
 
 export const metadata: Metadata = {
   title: { default: "Hipinup — Hayatın içinden, kültürün peşinden", template: "%s | Hipinup" },

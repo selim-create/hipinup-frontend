@@ -21,8 +21,8 @@ import { AdSlot } from "./ad-slot";
 
 const isApiImage = (src: ImageProps["src"]) => typeof src === "string" && /^https:\/\/api\.hipinup\.com\//i.test(src);
 
-function HomeImage(props: ImageProps) {
-  return <Image {...props} unoptimized={props.unoptimized ?? isApiImage(props.src)}/>;
+function HomeImage({alt="", ...props}: ImageProps) {
+  return <Image {...props} alt={alt} unoptimized={props.unoptimized ?? isApiImage(props.src)}/>;
 }
 
 function Photo({article, priority=false, sizes="(max-width: 760px) 100vw, 50vw", className=""}:{article:Article;priority?:boolean;sizes?:string;className?:string}) {
@@ -51,6 +51,25 @@ function without(items:Article[], ...articles:Article[]) {
   return items.filter(item=>!blocked.has(item.path));
 }
 
+function splitHeadline(value:string) {
+  const words=value.toLocaleUpperCase("tr").trim().split(/\s+/).filter(Boolean);
+  if(words.length<=1) return [value.toLocaleUpperCase("tr")];
+  let best=1;
+  let bestDiff=Number.POSITIVE_INFINITY;
+  for(let index=1;index<words.length;index++){
+    const left=words.slice(0,index).join(" ").length;
+    const right=words.slice(index).join(" ").length;
+    const diff=Math.abs(left-right);
+    if(diff<bestDiff){best=index;bestDiff=diff;}
+  }
+  return [words.slice(0,best).join(" "),words.slice(best).join(" ")];
+}
+
+function shortLabel(value:string,max=30){
+  const clean=value.trim();
+  return clean.length>max?`${clean.slice(0,max-1).trim()}…`:clean;
+}
+
 function LiveStrip({data}:{data:HomepageData}){
   const items=data.latest.slice(0,4);
   return <section className="v6-live" aria-label="Şu an Hipinup'ta"><div className="site-width v6-live-inner">
@@ -63,18 +82,22 @@ function LiveStrip({data}:{data:HomepageData}){
 function Hero({data}:{data:HomepageData}){
   const lead=data.lead;
   const travel=data.travelFeature;
+  const leadCategory=articleCategory(lead);
+  const defaultLead=lead.key==="freesbee";
+  const headline=defaultLead?["KALİFORNİYA","RUHUNU TAK!"]:splitHeadline(lead.title);
+  const leadDeck=defaultLead?"Cesur çerçeveler. Özgür ruhlar. Freesbee’nin Kaliforniya enerjisi şimdi Türkiye’de.":lead.excerpt;
   const liveSide=without(data.latest,lead,travel);
   const side=[pick(liveSide,0,"tommy-t-wave"),pick(liveSide,1,"elif-ebru-sakar"),pick(liveSide,2,"david-lynch")];
   return <section className="site-width v65-hero">
     <article className="v65-lead">
       <div className="v65-lead-media">
         <Link href={lead.path} className="v65-lead-photo"><Photo article={lead} priority sizes="(max-width: 980px) 100vw, 68vw"/></Link>
-        <Link href={categoryByKey("moda").path} className="v65-radar-tag">STİL RADARI <ArrowUpRight size={18}/></Link>
-        <span className="v65-side-rule">NO RULES. JUST STYLE.</span>
-        <h1 className="v65-lead-title"><Link href={lead.path}><span>KALİFORNİYA</span><span>RUHUNU TAK!</span></Link></h1>
+        <Link href={defaultLead?categoryByKey("moda").path:leadCategory.path} className="v65-radar-tag">{defaultLead?"STİL RADARI":`${leadCategory.name.toLocaleUpperCase("tr")} SEÇKİSİ`} <ArrowUpRight size={18}/></Link>
+        <span className="v65-side-rule">{defaultLead?"NO RULES. JUST STYLE.":"HİPİNUP EDITORIAL."}</span>
+        <h1 className="v65-lead-title"><Link href={lead.path}>{headline.map((line,index)=><span key={`${line}-${index}`}>{line}</span>)}</Link></h1>
       </div>
       <div className="v65-lead-deck">
-        <div><p>Cesur çerçeveler. Özgür ruhlar. Freesbee’nin Kaliforniya enerjisi şimdi Türkiye’de.</p><Meta article={lead}/></div>
+        <div><p>{leadDeck}</p><Meta article={lead}/></div>
         <Link href={lead.path} className="v65-round-link" aria-label="Hikâyeyi oku"><ArrowUpRight size={25}/></Link>
       </div>
     </article>
@@ -96,8 +119,7 @@ function Hero({data}:{data:HomepageData}){
 }
 
 function MustRead({data}:{data:HomepageData}){
-  const source=data.latest.slice(3);
-  const list=[pick(source,0,"tags-design"),pick(source,1,"bubas-bosphorus"),pick(source,2,"istanbula-reverans")];
+  const list=data.mustRead;
   return <section className="site-width v65-must">
     <header><Eyebrow>HIZLI SEÇKİ</Eyebrow><h2>KAÇIRMA</h2></header>
     <div className="v65-must-list">{list.map((article,index)=><Link href={article.path} key={article.path}>
@@ -120,12 +142,11 @@ function ReadersLike({data}:{data:HomepageData}){
 }
 
 function EditorsDesk({data}:{data:HomepageData}){
-  const source=unique([...data.sanat,...data.ajanda]);
-  const feature=pick(source,0,"ozge-gurkan");
-  const side=[pick(source,1,"ben-bohmer"),pick(source,2,"david-lynch"),pick(source,3,"elif-ebru-sakar"),pick(source,4,"six-senses")];
+  const feature=data.editorsFeature;
+  const side=data.editorsSide;
   return <section className="v6-editors"><div className="site-width">
     <header className="v6-editors-head"><div className="v62-editors-title"><Eyebrow>HİPİNUP EDIT / 01</Eyebrow><h2>Editör Masası</h2><div className="v62-curator"><span>up!</span><div><strong>Hipinup Edit</strong><small>Haftanın editör seçkisi</small></div></div></div><p>Algoritmanın değil, merakın seçtiği hikâyeler.</p></header>
-    <div className="v6-editors-grid"><article className="v6-editors-feature"><Link href={feature.path}><Photo article={feature}/></Link><div><Eyebrow>SANAT & KÜLTÜR</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
+    <div className="v6-editors-grid"><article className="v6-editors-feature"><Link href={feature.path}><Photo article={feature}/></Link><div><Eyebrow>{articleCategory(feature).name.toLocaleUpperCase("tr")}</Eyebrow><h3><Link href={feature.path}>{feature.title}</Link></h3><p>{feature.excerpt}</p><Meta article={feature}/></div></article>
     <div className="v6-editors-side">{side.map((article,index)=><Link href={article.path} key={article.path}><span>0{index+1}</span><HomeImage src={article.imageSmall} alt="" width={220} height={150}/><div><Eyebrow>{articleCategory(article).name}</Eyebrow><strong>{article.title}</strong></div></Link>)}</div></div>
   </div></section>;
 }
@@ -149,6 +170,8 @@ function UpShots({data}:{data:HomepageData}){
 function Escape({data}:{data:HomepageData}){
   const main=data.travelFeature;
   const orbit=data.travelOrbit;
+  const defaultMain=main.key==="modern-travel";
+  const defaultOrbit=orbit.key==="bodrum-boat";
   const source=without(data.seyahat,main,orbit);
   const picks=[pick(source,0,"six-senses"),pick(source,1,"bubas-bosphorus"),pick(source,2,"hurrem-sultan-hamami")];
   return <section className="v67-escape"><div className="site-width v67-escape-inner">
@@ -170,13 +193,13 @@ function Escape({data}:{data:HomepageData}){
 
       <article className="v67-postcard">
         <Link href={main.path} className="v67-postcard-media"><Photo article={main} sizes="(max-width: 900px) 90vw, 58vw"/></Link>
-        <span className="v67-postcard-tag">KOS’TAN BİR NOT</span>
-        <div className="v67-postcard-caption"><Eyebrow>SEYAHAT DOSYASI</Eyebrow><h4><Link href={main.path}>Modern seyahatin<br/>yeni lüksü: özgürlük.</Link></h4><Meta article={main}/></div>
+        <span className="v67-postcard-tag">{defaultMain?"KOS’TAN BİR NOT":`${articleCategory(main).name.toLocaleUpperCase("tr")} / HİPİNUP`}</span>
+        <div className="v67-postcard-caption"><Eyebrow>SEYAHAT DOSYASI</Eyebrow><h4><Link href={main.path}>{defaultMain?<><span>Modern seyahatin</span><br/><span>yeni lüksü: özgürlük.</span></>:main.title}</Link></h4><Meta article={main}/></div>
       </article>
 
       <Link href={orbit.path} className="v67-orbit" aria-label={orbit.title}>
         <span className="v67-orbit-image"><HomeImage src={orbit.image} alt="" width={520} height={520} sizes="220px"/></span>
-        <strong>MAVİNİN<br/>PEŞİNDE</strong><ArrowUpRight size={21}/>
+        <strong>{defaultOrbit?<><span>MAVİNİN</span><br/><span>PEŞİNDE</span></>:shortLabel(orbit.title).toLocaleUpperCase("tr")}</strong><ArrowUpRight size={21}/>
       </Link>
 
       <div className="v67-escape-sticker" aria-label="Daha az yük, daha çok hayat"><small>DAHA AZ YÜK</small><strong>DAHA<br/>ÇOK<br/>HAYAT</strong></div>

@@ -87,16 +87,16 @@ export function AdSlot({
   placementKey,
   houseFallback = true,
 }: AdSlotProps) {
-  const runtime = useHipAdsRuntime();
+  const { resolveSlot, registerSlot } = useHipAdsRuntime();
   const reactId = useId();
   const instanceId = useMemo(() => `hip-ad-instance-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`, [reactId]);
-  const slot = runtime.resolveSlot(defaultSlotKeys[format], slotKey, placementKey);
+  const slot = resolveSlot(defaultSlotKeys[format], slotKey, placementKey);
   const divId = slot ? `${instanceId}-${slot.key}` : instanceId;
 
   useEffect(() => {
     if (!slot) return;
-    return runtime.registerSlot({ instanceId, divId, slot });
-  }, [divId, instanceId, runtime, slot]);
+    return registerSlot({ instanceId, divId, slot });
+  }, [divId, instanceId, registerSlot, slot]);
 
   if (!slot) {
     return houseFallback ? <HouseCreative format={format} className={className}/> : null;

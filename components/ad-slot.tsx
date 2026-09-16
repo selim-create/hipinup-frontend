@@ -42,22 +42,6 @@ const formats: Record<AdFormat, { desktop: string; mobile: string }> = {
   mobileMini: { desktop: "320 × 50", mobile: "320 × 50" },
 };
 
-const defaultSlotKeys: Record<AdFormat, string[]> = {
-  leaderboard: ["hipinup_728x90_leaderboard", "hipinup_728x90_inbanner"],
-  banner: ["hipinup_728x90_inbanner", "hipinup_728x90_leaderboard"],
-  billboard: ["hipinup_970x250_masthead"],
-  rectangle: [
-    "hipinup_300x250_mediumrectangle",
-    "hipinup_300x250_mediumrectangle_2",
-    "hipinup_300x250_mediumrectangle_3",
-  ],
-  halfpage: ["hipinup_com_300x600"],
-  skyscraper: ["hipinup_160x600_wideskyscraper_right"],
-  wideSkyscraper: ["hipinup_160x600_wideskyscraper_left"],
-  mobileBanner: ["hipinup_320x100_mobilemasthead"],
-  mobileMini: ["hipinup_320x50_mobilesticky"],
-};
-
 type PlacementProfile = {
   slotKey: string;
   sizes: HipAdSize[];

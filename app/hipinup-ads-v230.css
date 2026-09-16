@@ -1,0 +1,38 @@
+.hip-gpt-slot{
+  --hip-ad-min-desktop:0px;
+  --hip-ad-min-tablet:0px;
+  --hip-ad-min-mobile:0px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:var(--hip-ad-min-mobile);
+  overflow:visible;
+}
+
+.hip-gpt-label{
+  width:100%;
+  margin:0 0 6px;
+  text-align:center;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.16em;
+  line-height:1;
+  color:#7d7d78;
+}
+
+.hip-gpt-container{
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  min-height:inherit;
+}
+
+@media (min-width:768px){
+  .hip-gpt-slot{min-height:var(--hip-ad-min-tablet)}
+}
+
+@media (min-width:1024px){
+  .hip-gpt-slot{min-height:var(--hip-ad-min-desktop)}
+}

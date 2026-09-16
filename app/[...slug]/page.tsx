@@ -74,11 +74,13 @@ function categoryMetadata(category: Category, page: number): Metadata {
   const title = page > 1 ? `${category.name} — Sayfa ${page}` : category.name;
   const canonicalPath = page > 1 ? `${category.path}?page=${page}` : category.path;
   const canonical = absoluteUrl(canonicalPath);
+  const isEmpty = category.count === 0;
 
   return {
     title,
     description: category.description,
     alternates: { canonical },
+    ...(isEmpty ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type: "website",
       locale: "tr_TR",
@@ -149,9 +151,12 @@ export default async function Page({ params, searchParams }: Props) {
     ]);
 
     if (collection) {
+      const maxPage = Math.max(1, collection.pagination.totalPages);
+      if (page > maxPage) notFound();
+
       return (
         <>
-          <StructuredData data={categoryJsonLd(live.data)} />
+          <StructuredData data={categoryJsonLd(live.data, page)} />
           <StructuredData data={categoryBreadcrumbJsonLd(live.data)} />
           <LiveCategoryPage category={live.data} items={collection.items} pagination={collection.pagination} navigation={navigation || categories}/>
         </>
@@ -173,7 +178,7 @@ export default async function Page({ params, searchParams }: Props) {
   if (category) {
     return (
       <>
-        <StructuredData data={categoryJsonLd(category)} />
+        <StructuredData data={categoryJsonLd(category, page)} />
         <StructuredData data={categoryBreadcrumbJsonLd(category)} />
         <CategoryPage category={category} page={page}/>
       </>

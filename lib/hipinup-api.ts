@@ -1,5 +1,6 @@
 import type { Article, ArticleFormat, ContentBlock } from "@/app/data/content";
 import { categories as mockCategories, type Category, type CategoryAncestor } from "@/app/data/navigation";
+import { cleanPlainText } from "./plain-text";
 
 const DEFAULT_API_URL = "https://api.hipinup.com/wp-json/hipinup/v1";
 const API_URL = (process.env.HIPINUP_API_URL || DEFAULT_API_URL).replace(/\/+$/, "");
@@ -70,38 +71,25 @@ export type ResolvedContent =
 
 const fallbackDescription = (name: string) => `${name} dünyasından yeni hikâyeler, keşifler ve Hipinup seçkileri.`;
 
-function decodeEntities(value = "") {
-  return value
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&quot;/gi, "\"")
-    .replace(/&#039;|&apos;/gi, "'")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&#8217;|&#x2019;/gi, "’")
-    .replace(/&#8220;|&#x201c;/gi, "“")
-    .replace(/&#8221;|&#x201d;/gi, "”");
-}
-
 function toAncestor(item: ApiAncestor): CategoryAncestor {
   return {
     id: item.id,
     key: item.key,
     slug: item.slug,
-    name: decodeEntities(item.name),
+    name: cleanPlainText(item.name),
     path: item.path,
   };
 }
 
 function toCategory(term: ApiTerm): Category {
   const fallback = mockCategories.find((item) => item.key === term.key);
-  const name = decodeEntities(term.name || fallback?.name || term.key);
+  const name = cleanPlainText(term.name || fallback?.name || term.key);
   return {
     id: term.id,
     key: term.key,
     name,
     path: term.path || fallback?.path || `/konu/${term.key}/`,
-    description: decodeEntities(term.description || fallback?.description || fallbackDescription(name)),
+    description: cleanPlainText(term.description || fallback?.description || fallbackDescription(name)),
     parent: term.parent || fallback?.parent,
     parentId: term.parentId,
     count: term.count,
@@ -116,19 +104,20 @@ function toArticle(record: ApiArticle): Article {
   const tags = record.tags?.length ? record.tags : primary ? [primary.key] : ["genel"];
   const image = record.image || record.imageSmall || FALLBACK_IMAGE;
   const imageSmall = record.imageSmall || record.image || FALLBACK_IMAGE;
+  const title = cleanPlainText(record.title);
 
   return {
     id: record.id,
     key: record.key,
-    title: decodeEntities(record.title),
-    originalTitle: decodeEntities(record.title),
+    title,
+    originalTitle: title,
     path: record.path,
     date: record.date,
     tags,
     image,
     imageSmall,
-    excerpt: decodeEntities(record.excerpt),
-    author: decodeEntities(record.author),
+    excerpt: cleanPlainText(record.excerpt, { excerpt: true }),
+    author: cleanPlainText(record.author),
     minutes: record.minutes,
     format: record.format || "standard",
     content: record.content,
@@ -137,7 +126,7 @@ function toArticle(record: ApiArticle): Article {
     category: primary,
     categories: apiCategories,
     formatData: record.formatData,
-    cardLabel: decodeEntities(record.cardLabel || ""),
+    cardLabel: cleanPlainText(record.cardLabel || ""),
   };
 }
 
@@ -199,8 +188,6 @@ export async function getArticles({
 }
 
 export async function getNavigation(): Promise<Category[] | null> {
-  // Contract query differentiates the richer Core 0.2 category response from any
-  // stale reverse-cache entry produced before category metadata was introduced.
   const response = await apiFetch<ApiTerm[]>(`/navigation?contract=${CORE_CONTRACT}`);
   return response ? response.map(toCategory) : null;
 }

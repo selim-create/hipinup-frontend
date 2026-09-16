@@ -5,7 +5,7 @@ export const SITE_NAME = "Hipinup";
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://hipinup.com").replace(/\/+$/, "");
 export const SITE_DESCRIPTION = "Popüler kültür, moda, seyahat, iyi yaşam ve şehirden hikâyeler. Hipinup ile keşfet.";
 export const GA_MEASUREMENT_ID = "G-LYHB2KZBD0";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph-image`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og`;
 
 export function isIndexableEnvironment(): boolean {
   return process.env.VERCEL_ENV ? process.env.VERCEL_ENV === "production" : true;

@@ -1,4 +1,4 @@
-import type { Article, ArticleFormat, ContentBlock } from "@/app/data/content";
+import type { Article, ArticleFormat, AuthorDetail, ContentBlock } from "@/app/data/content";
 import { categories as mockCategories, type Category, type CategoryAncestor } from "@/app/data/navigation";
 import { cleanPlainText } from "./plain-text";
 

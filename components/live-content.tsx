@@ -21,6 +21,7 @@ import { Shell, StoryCard } from "./magazine";
 import { AdSlot } from "./ad-slot";
 import { ReaderActions } from "./reader-actions";
 import { ReadingProgress } from "./reading-progress";
+import { SocialEmbed } from "./social-embed";
 import { Wave, Squiggle } from "./wave";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
 
@@ -121,6 +122,13 @@ function blockAnchor(block: ContentBlock, index: number) {
   return block.type === "heading" && block.anchor ? block.anchor : `bolum-${index}`;
 }
 
+function embedSource(block: Extract<ContentBlock, { type: "embed" }>) {
+  if (block.url) return block.url;
+  const html = decodeEntities(block.html || "");
+  const match = html.match(/\b(?:src|href)=["']([^"']+)["']/i);
+  return match?.[1] || "";
+}
+
 function StructuredBlock({
   block,
   index,
@@ -161,16 +169,8 @@ function StructuredBlock({
   }
 
   if (block.type === "embed") {
-    const html = frontendHtml(block.html || "");
-    return <div className="article-content-embed">
-      {html && /<(iframe|video)\b/i.test(html)
-        ? <div dangerouslySetInnerHTML={{ __html: html }}/>
-        : block.url
-          ? <a href={block.url} target="_blank" rel="noreferrer">{block.provider ? `${block.provider} içeriğini aç` : "Gömülü içeriği aç"}<ArrowUpRight size={19}/></a>
-          : html
-            ? <div dangerouslySetInnerHTML={{ __html: html }}/>
-            : null}
-    </div>;
+    const url = embedSource(block);
+    return url ? <div className="article-content-embed"><SocialEmbed url={url} provider={block.provider}/></div> : null;
   }
 
   if (block.type === "media") {

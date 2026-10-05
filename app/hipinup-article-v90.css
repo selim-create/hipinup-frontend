@@ -815,4 +815,9 @@
   .article-main .article-tags>a,
   .article-main .article-end>svg{transition:none!important}
 }
-\n.article-main .author-avatar-image{object-fit:cover;border-radius:50%;display:block;padding:0}\n.article-main .article-byline small{display:block;font-size:11px;font-weight:700;color:#6b6671;margin-top:1px}\n.article-main .article-editor{align-items:flex-start}\n.article-main .article-editor .author-role{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#6b6671;margin-top:2px}\n.article-main .article-editor p{max-width:620px}\n
+
+.article-main .author-avatar-image{object-fit:cover;border-radius:50%;display:block;padding:0}
+.article-main .article-byline small{display:block;font-size:11px;font-weight:700;color:#6b6671;margin-top:1px}
+.article-main .article-editor{align-items:flex-start}
+.article-main .article-editor .author-role{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#6b6671;margin-top:2px}
+.article-main .article-editor p{max-width:620px}

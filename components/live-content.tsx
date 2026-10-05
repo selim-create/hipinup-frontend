@@ -258,7 +258,10 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
   const more = related.length ? related : fallbackRelated;
   const adAfter = blocks.length >= 8 ? Math.min(9, Math.floor(blocks.length * 0.42)) : -1;
   const pulloutAfter = blocks.length ? Math.min(6, blocks.length - 1) : -1;
-  const image = article.image || article.imageSmall || "/images/freesbee-small.webp";\n  const author = article.authorDetail;\n  const authorAvatar = author?.avatar;\n  const authorBio = author?.bio || author?.tagline || "Hayatın içinden, kültürün peşinden.";
+  const image = article.image || article.imageSmall || "/images/freesbee-small.webp";
+  const author = article.authorDetail;
+  const authorAvatar = author?.avatar;
+  const authorBio = author?.bio || author?.tagline || "Hayatın içinden, kültürün peşinden.";
 
   return <Shell><main id="icerik" className="article-main" data-channel={category.key}>
     <section className="article-cover"><div className="site-width">

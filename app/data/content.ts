@@ -26,6 +26,17 @@ export type ContentBlock =
   | { type: "separator" }
   | { type: "html"; text?: string; html?: string };
 
+export type AuthorDetail = {
+  id?: number;
+  name: string;
+  slug?: string;
+  avatar?: string;
+  role?: string;
+  bio?: string;
+  tagline?: string;
+  isPersona?: boolean;
+};
+
 export type Article = {
   id?: number;
   key: string;
@@ -39,6 +50,7 @@ export type Article = {
   imageSmall: string;
   excerpt: string;
   author: string;
+  authorDetail?: AuthorDetail;
   minutes: number;
   heroTitle?: string;
   format?: ArticleFormat;

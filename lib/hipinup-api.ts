@@ -1,4 +1,4 @@
-import type { Article, ArticleFormat, ContentBlock } from "@/app/data/content";
+import type { Article, ArticleFormat, AuthorDetail, ContentBlock } from "@/app/data/content";
 import { categories as mockCategories, type Category, type CategoryAncestor } from "@/app/data/navigation";
 import { cleanPlainText } from "./plain-text";
 
@@ -40,6 +40,7 @@ type ApiArticle = {
   date: string;
   modified?: string;
   author: string;
+  authorDetail?: AuthorDetail;
   minutes: number;
   heroTitle?: string;
   format?: ArticleFormat;
@@ -141,6 +142,13 @@ function toArticle(record: ApiArticle, compactMedia = false): Article {
     imageSmall,
     excerpt: cleanPlainText(record.excerpt, { excerpt: true }),
     author: cleanPlainText(record.author),
+    authorDetail: record.authorDetail ? {
+      ...record.authorDetail,
+      name: cleanPlainText(record.authorDetail.name || record.author),
+      role: cleanPlainText(record.authorDetail.role || ""),
+      bio: cleanPlainText(record.authorDetail.bio || ""),
+      tagline: cleanPlainText(record.authorDetail.tagline || ""),
+    } : undefined,
     minutes: record.minutes,
     heroTitle: cleanPlainText(record.heroTitle || ""),
     format: record.format || "standard",

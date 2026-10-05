@@ -259,6 +259,9 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
   const adAfter = blocks.length >= 8 ? Math.min(9, Math.floor(blocks.length * 0.42)) : -1;
   const pulloutAfter = blocks.length ? Math.min(6, blocks.length - 1) : -1;
   const image = article.image || article.imageSmall || "/images/freesbee-small.webp";
+  const author = article.authorDetail;
+  const authorAvatar = author?.avatar;
+  const authorBio = author?.bio || author?.tagline || "Hayatın içinden, kültürün peşinden.";
 
   return <Shell><main id="icerik" className="article-main" data-channel={category.key}>
     <section className="article-cover"><div className="site-width">
@@ -267,7 +270,7 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
         <Link className="article-category" href={category.path}>{category.name}<ArrowUpRight size={17}/></Link>
         <h1>{article.title}</h1>
         <p className="article-deck">{article.excerpt}</p>
-        <div className="article-byline"><div className="author-avatar">h.</div><div><strong>{article.author}</strong><span><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk okuma</span></div></div>
+        <div className="article-byline">{authorAvatar ? <Image className="author-avatar author-avatar-image" src={authorAvatar} alt={article.author} width={86} height={86}/> : <div className="author-avatar">h.</div>}<div><strong>{article.author}</strong>{author?.role && <small>{author.role}</small>}<span><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk okuma</span></div></div>
         <ReaderActions articleKey={article.key}/>
       </header><figure className={`article-cover-photo article-photo-${article.key}`}><Image src={image} alt={article.title} width={1280} height={854} priority sizes="(max-width: 760px) 100vw, 54vw"/><span className="article-photo-stamp" aria-hidden="true">MERAK<br/>ETMEYE<br/>DEVAM.</span><figcaption>HİPİNUP / {category.name.toLocaleUpperCase("tr")}</figcaption></figure></div>
     </div><Wave className="article-cover-wave"/></section>
@@ -292,7 +295,7 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
           const tagCategory = liveTagCategory(article, key);
           return tagCategory ? <Link key={key} href={tagCategory.path}>#{tagCategory.name}</Link> : <span key={key}>#{key}</span>;
         })}</div>
-        <div className="article-editor"><div className="author-avatar">h.</div><div><strong>{article.author}</strong><p>Hayatın içinden, kültürün peşinden.</p></div></div>
+        <div className="article-editor">{authorAvatar ? <Image className="author-avatar author-avatar-image" src={authorAvatar} alt={article.author} width={78} height={78}/> : <div className="author-avatar">h.</div>}<div><strong>{article.author}</strong>{author?.role && <span className="author-role">{author.role}</span>}<p>{authorBio}</p></div></div>
       </article>
 
       <aside className="article-sidebar"><AdSlot format="halfpage" className="article-rail-ad"/><div className="sidebar-heading">BİR DE<br/><span>BUNA BAK.</span></div>{more.slice(0, 2).map((item) => <StoryCard key={item.key} article={item}/>)}<a href="#bulten" className="sidebar-newsletter"><Mail size={27}/><h3>FEED’DE<br/><em>KAYBOLMA.</em></h3><p>İyi hikâyeleri senin için toparlıyoruz.</p><span>Bülteni keşfet <ArrowUpRight size={18}/></span></a></aside>

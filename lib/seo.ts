@@ -97,6 +97,7 @@ export function articleJsonLd(article: Article) {
     author: {
       "@type": "Person",
       name: article.author || SITE_NAME,
+      ...(article.authorDetail?.avatar ? { image: absoluteUrl(article.authorDetail.avatar) } : {}),
     },
     publisher: { "@id": `${SITE_URL}/#organization` },
   };

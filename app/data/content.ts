@@ -26,7 +26,7 @@ export type ContentBlock =
   | { type: "separator" }
   | { type: "html"; text?: string; html?: string };
 
-export type Article = {
+export type AuthorDetail = {\n  id?: number;\n  name: string;\n  slug?: string;\n  avatar?: string;\n  role?: string;\n  bio?: string;\n  tagline?: string;\n  isPersona?: boolean;\n};\n\nexport type Article = {
   id?: number;
   key: string;
   title: string;

@@ -68,6 +68,18 @@ export type ArticleCollection = {
   pagination: ApiPagination;
 };
 
+export type AuthorProfile = {
+  id: number;
+  name: string;
+  slug: string;
+  path: string;
+  avatar: string;
+  role: string;
+  bio: string;
+  tagline: string;
+  isPersona: boolean;
+};
+
 export type HomepageEditorialSlots = {
   heroLead: Article | null;
   mustRead1: Article | null;
@@ -203,12 +215,14 @@ export async function getArticles({
   perPage = 6,
   search,
   format,
+  author,
 }: {
   category?: string;
   page?: number;
   perPage?: number;
   search?: string;
   format?: ArticleFormat;
+  author?: string;
 } = {}): Promise<ArticleCollection | null> {
   const query = new URLSearchParams({
     page: String(Math.max(1, page)),
@@ -218,6 +232,7 @@ export async function getArticles({
   if (category) query.set("category", category);
   if (search) query.set("search", search);
   if (format) query.set("format", format);
+  if (author) query.set("author", author);
 
   const response = await apiFetch<{ items: ApiArticle[]; pagination: ApiPagination }>(`/articles?${query.toString()}`);
   if (!response) return null;
@@ -264,4 +279,15 @@ export async function getRelatedArticles(article: Article, limit = 3): Promise<A
   const response = await getArticles({ category, perPage: Math.max(limit + 1, 4) });
   if (!response) return [];
   return response.items.filter((item) => item.key !== article.key).slice(0, limit);
+}
+
+
+export async function getAuthor(slug: string): Promise<AuthorProfile | null> {
+  const safeSlug = encodeURIComponent(slug.trim());
+  if (!safeSlug) return null;
+  return apiFetch<AuthorProfile>(`/authors/${safeSlug}`);
+}
+
+export async function getAuthorArticles(slug: string, page = 1, perPage = 9): Promise<ArticleCollection | null> {
+  return getArticles({ author: slug, page, perPage });
 }

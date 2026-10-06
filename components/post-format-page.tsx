@@ -160,11 +160,12 @@ function FormatBreadcrumb({ article }: { article: Article }) {
 
 function FormatHeader({ article, format }: { article: Article; format: ArticleFormat }) {
   const category = articleCategory(article);
+  const authorPath = article.authorDetail?.path || (article.authorDetail?.slug ? `/yazar/${article.authorDetail.slug}/` : "");
   return <header className="pf-heading">
     <div className="pf-heading-top"><FormatBadge format={format}/><Link href={category.path}>{category.name}<ArrowUpRight size={16}/></Link></div>
     <h1>{article.title}</h1>
     {article.excerpt && <p>{article.excerpt}</p>}
-    <div className="pf-meta-row"><div><span className="pf-avatar">h.</span><span><strong>{article.author}</strong><small><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk</small></span></div><ReaderActions articleKey={article.key}/></div>
+    <div className="pf-meta-row"><div><span className="pf-avatar">h.</span><span>{authorPath ? <strong><Link className="author-name-link" href={authorPath}>{article.author}</Link></strong> : <strong>{article.author}</strong>}<small><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk</small></span></div><ReaderActions articleKey={article.key}/></div>
   </header>;
 }
 

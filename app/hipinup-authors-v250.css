@@ -1,0 +1,33 @@
+.author-page{background:#fff;color:var(--ink)}
+.author-hero{position:relative;overflow:hidden;padding:72px 0 82px;background:linear-gradient(135deg,#f7f7f5 0%,#fff 55%,#edf7ff 100%);border-bottom:1.5px solid var(--ink)}
+.author-hero:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-140px;top:-110px;background:var(--yellow);opacity:.82}
+.author-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(240px,330px) minmax(0,1fr);gap:clamp(48px,7vw,110px);align-items:center}
+.author-portrait{position:relative}
+.author-portrait img,.author-portrait-fallback{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;border:2px solid var(--ink);background:#eceff2;box-shadow:12px 12px 0 var(--blue)}
+.author-portrait-fallback{display:grid;place-items:center;font-family:var(--display);font-size:84px;font-weight:900}
+.author-portrait-stamp{position:absolute;right:-22px;bottom:17px;display:grid;place-items:center;width:94px;height:94px;border-radius:50%;border:1.5px solid var(--ink);background:var(--yellow);font-size:13px;font-weight:900;line-height:1.05;text-align:center;transform:rotate(7deg)}
+.author-intro{max-width:780px}
+.author-intro .eyebrow{display:flex;align-items:center;gap:7px}
+.author-intro h1{margin:18px 0 8px;font-family:var(--display);font-size:clamp(70px,8vw,126px);line-height:.82;letter-spacing:-.05em;text-wrap:balance}
+.author-intro>strong{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue)}
+.author-tagline{margin:28px 0 0;max-width:28ch;font-family:var(--display);font-size:clamp(28px,3vw,42px);font-weight:800;line-height:1.02}
+.author-bio{margin:22px 0 0;max-width:68ch;font-size:17px;line-height:1.7;color:#56515d}
+.author-mail-link{display:inline-flex;align-items:center;gap:8px;margin-top:28px;padding:11px 15px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font-weight:850;text-decoration:none;box-shadow:4px 4px 0 var(--yellow)}
+.author-mail-link:hover{background:var(--blue);color:#fff}
+.author-stories{padding-top:72px;padding-bottom:110px}
+.author-stories-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:42px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
+.author-stories-head h2{margin-top:8px;font-size:clamp(54px,6vw,82px);line-height:.84}
+.author-stories-head h2 em{display:inline-block;margin-left:74px;padding:2px 8px 6px;background:var(--yellow);font-style:normal;transform:rotate(-2deg)}
+.author-stories-head>span{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.author-pagination{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:58px;padding-top:24px;border-top:1px solid #ddd}
+.author-pagination a{font-weight:850;color:var(--ink)}
+.author-pagination span{color:#77717d}
+.article-main .author-name-link{color:inherit;text-decoration:none;background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-size:0 4px;background-position:0 100%;transition:background-size .18s ease}
+.article-main .author-name-link:hover,.article-main .author-name-link:focus-visible{background-size:100% 4px}
+.article-main .author-avatar-link{display:block;flex:0 0 auto;border-radius:50%}
+.article-main .author-profile-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:11px;font-weight:850;color:var(--ink)}
+.pf-meta-row .author-name-link{color:inherit;text-decoration:none}
+@media(max-width:760px){.author-hero{padding:48px 0 58px}.author-hero-grid{grid-template-columns:1fr;gap:38px}.author-portrait{width:min(68vw,280px)}.author-portrait-stamp{width:76px;height:76px;right:-13px;font-size:11px}.author-intro h1{font-size:clamp(62px,20vw,92px)}.author-tagline{font-size:29px}.author-bio{font-size:16px}.author-stories{padding-top:50px}.author-stories-head{align-items:flex-start;flex-direction:column}.author-stories-head h2{font-size:56px}.author-stories-head h2 em{margin-left:42px}}
+
+.v62-reader-foot .v62-author-link{font-size:10px;font-weight:850;color:#6b6871;white-space:nowrap;text-decoration:none}
+.v62-reader-foot .v62-author-link:hover{text-decoration:underline;text-underline-offset:3px}

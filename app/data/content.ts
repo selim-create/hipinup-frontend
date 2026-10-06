@@ -30,6 +30,7 @@ export type AuthorDetail = {
   id?: number;
   name: string;
   slug?: string;
+  path?: string;
   avatar?: string;
   role?: string;
   bio?: string;

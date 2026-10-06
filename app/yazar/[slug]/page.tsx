@@ -105,7 +105,7 @@ export default async function AuthorPage({ params, searchParams }: Props) {
         <header className="author-stories-head">
           <div>
             <span className="eyebrow">ARŞİV</span>
-            <h2>{author.name.split(" ")[0]}'dan<br/><em>hikâyeler.</em></h2>
+            <h2>{author.name.split(" ")[0]}’dan<br/><em>hikâyeler.</em></h2>
           </div>
           <span>{pagination.total} yazı</span>
         </header>

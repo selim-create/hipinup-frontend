@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowUpRight, Asterisk } from "lucide-react";
 import { Shell, StoryCard } from "@/components/magazine";
 import Link from "@/components/site-link";
@@ -57,13 +57,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AuthorPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const page = pageNumber((await searchParams).page);
-  const [author, collection] = await Promise.all([
-    getAuthor(slug),
-    getAuthorArticles(slug, page, 9),
-  ]);
+  const author = await getAuthor(slug);
 
   if (!author) notFound();
 
+  if (author.slug !== slug || author.path !== `/yazar/${slug}/`) {
+    permanentRedirect(author.path);
+  }
+
+  const collection = await getAuthorArticles(author.slug, page, 9);
   const items = collection?.items || [];
   const pagination = collection?.pagination || { page: 1, perPage: 9, total: 0, totalPages: 1 };
   if (page > Math.max(1, pagination.totalPages)) notFound();

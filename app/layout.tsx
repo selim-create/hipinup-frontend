@@ -29,6 +29,7 @@ import "./hipinup-interactions-v220.css";
 import "./hipinup-ads-v230.css";
 import "./hipinup-footer-overflow-v81.css";
 import "./hipinup-mobile-header-v240.css";
+import "./hipinup-authors-v250.css";
 
 const indexable = isIndexableEnvironment();
 

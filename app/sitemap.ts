@@ -33,20 +33,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const uniqueCategories = Array.from(
     new Map(liveCategories.map((category) => [category.path, category])).values(),
   );
-  const uniqueAuthors = Array.from(
-    uniqueArticles.reduce((authors, article) => {
-      const path = article.authorDetail?.path;
-      if (!path?.startsWith("/yazar/")) return authors;
-
-      const lastModified = article.modified || article.date;
-      const current = authors.get(path);
-      if (!current || lastModified > current.lastModified) {
-        authors.set(path, { path, lastModified });
-      }
-
-      return authors;
-    }, new Map<string, { path: string; lastModified: string }>()),
-  ).map(([, author]) => author);
   const latestArticleDate = uniqueArticles
     .map((article) => article.modified || article.date)
     .filter(Boolean)
@@ -60,10 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...uniqueCategories.map((category) => ({
       url: absoluteUrl(category.path),
-    })),
-    ...uniqueAuthors.map((author) => ({
-      url: absoluteUrl(author.path),
-      lastModified: author.lastModified,
     })),
     ...uniqueArticles.map((article) => ({
       url: absoluteUrl(article.path),

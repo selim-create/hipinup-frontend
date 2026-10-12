@@ -19,7 +19,7 @@ import { categoryByKey, type Category } from "@/app/data/navigation";
 import type { ApiPagination } from "@/lib/hipinup-api";
 import { Shell, StoryCard } from "./magazine";
 import { AdSlot } from "./ad-slot";
-import { ReaderActions } from "./reader-actions";
+import { ReaderActions, ArticleShare } from "./reader-actions";
 import { ReadingProgress } from "./reading-progress";
 import { SocialEmbed } from "./social-embed";
 import { Wave, Squiggle } from "./wave";
@@ -272,7 +272,7 @@ export function LiveArticlePage({ article, related, navigation }: { article: Art
         <h1>{article.title}</h1>
         <p className="article-deck">{article.excerpt}</p>
         <div className="article-byline">{authorPath ? <Link className="author-avatar-link" href={authorPath} aria-label={`${article.author} yazar sayfası`}>{authorAvatar ? <Image className="author-avatar author-avatar-image" src={authorAvatar} alt={article.author} width={86} height={86}/> : <div className="author-avatar">h.</div>}</Link> : (authorAvatar ? <Image className="author-avatar author-avatar-image" src={authorAvatar} alt={article.author} width={86} height={86}/> : <div className="author-avatar">h.</div>)}<div>{authorPath ? <strong><Link className="author-name-link" href={authorPath}>{article.author}</Link></strong> : <strong>{article.author}</strong>}{author?.role && <small>{author.role}</small>}<span><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk okuma</span></div></div>
-        <ReaderActions articleKey={article.key}/>
+        <ReaderActions articleKey={article.key}/><ArticleShare title={article.title} path={article.path}/>
       </header><figure className={`article-cover-photo article-photo-${article.key}`}><Image src={image} alt={article.title} width={1280} height={854} priority sizes="(max-width: 760px) 100vw, 54vw"/><span className="article-photo-stamp" aria-hidden="true">MERAK<br/>ETMEYE<br/>DEVAM.</span><figcaption>HİPİNUP / {category.name.toLocaleUpperCase("tr")}</figcaption></figure></div>
     </div><Wave className="article-cover-wave"/></section>
 

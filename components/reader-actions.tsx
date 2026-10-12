@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
-import { Bookmark, Check, Link as LinkIcon, ArrowRight } from "lucide-react";
+import { Bookmark, Check, Link as LinkIcon, ArrowRight, Share2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export function NewsletterForm() {
@@ -23,4 +23,29 @@ export function ReaderActions({articleKey}:{articleKey:string}) {
  const toggle=()=>{try{const items:string[]=JSON.parse(localStorage.getItem('hipinup-saved')||'[]');const next=saved?items.filter(x=>x!==articleKey):[...items,articleKey];localStorage.setItem('hipinup-saved',JSON.stringify(next));setSaved(!saved);setNotice(saved?'Yazı kayıtlılarından çıkarıldı.':'Yazı bu tarayıcıda kaydedildi.')}catch{setNotice('Bu tarayıcıda kayıt yapılamıyor.')}};
  const copy=async()=>{try{await navigator.clipboard.writeText(window.location.href);setCopied(true);setNotice('Bağlantı kopyalandı.')}catch{setNotice('Bağlantıyı adres çubuğundan kopyalayabilirsin.')}};
  return <div className="reader-actions"><div><button onClick={toggle} aria-pressed={saved}>{saved?<Check size={17}/>:<Bookmark size={17}/>} {saved?'Kaydedildi':'Sonra oku'}</button><button onClick={copy}>{copied?<Check size={17}/>:<LinkIcon size={17}/>} {copied?'Kopyalandı':'Bağlantıyı kopyala'}</button></div><span role="status">{notice}</span></div>;
+}
+
+
+export function ArticleShare({ title, path }: { title: string; path: string }) {
+ const [copied,setCopied]=useState(false);
+ const url = `https://hipinup.com${path.startsWith("/") ? path : `/${path}`}`;
+ const encodedUrl=encodeURIComponent(url);
+ const encodedTitle=encodeURIComponent(title);
+ const links=[
+  {label:"WhatsApp",url:`https://api.whatsapp.com/send?text=${encodeURIComponent(title+" "+url)}`},
+  {label:"X",url:`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`},
+  {label:"Facebook",url:`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`},
+  {label:"LinkedIn",url:`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`},
+ ];
+ const copy=async()=>{
+  try{await navigator.clipboard.writeText(url);setCopied(true);}
+  catch{setCopied(false);}
+ };
+ return <nav className="hip-article-share" aria-label="Yazıyı paylaş">
+   <span><Share2 size={17} aria-hidden="true"/> Bu yazıyı paylaş</span>
+   <div className="hip-article-share__links">
+    {links.map(link=><a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.label} üzerinde paylaş`}>{link.label}</a>)}
+    <button type="button" onClick={copy} aria-label="Yazı bağlantısını kopyala">{copied?<Check size={15}/>:<LinkIcon size={15}/>} {copied?"Kopyalandı":"Link"}</button>
+   </div>
+ </nav>;
 }

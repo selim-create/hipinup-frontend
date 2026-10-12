@@ -20,7 +20,7 @@ import {
 } from "@/app/data/content";
 import { cleanPlainText } from "@/lib/plain-text";
 import { Shell, StoryCard, ArticlePage } from "./magazine";
-import { ReaderActions } from "./reader-actions";
+import { ReaderActions, ArticleShare } from "./reader-actions";
 import { ReadingProgress } from "./reading-progress";
 import { AdSlot } from "./ad-slot";
 
@@ -165,7 +165,7 @@ function FormatHeader({ article, format }: { article: Article; format: ArticleFo
     <div className="pf-heading-top"><FormatBadge format={format}/><Link href={category.path}>{category.name}<ArrowUpRight size={16}/></Link></div>
     <h1>{article.title}</h1>
     {article.excerpt && <p>{article.excerpt}</p>}
-    <div className="pf-meta-row"><div><span className="pf-avatar">h.</span><span>{authorPath ? <strong><Link className="author-name-link" href={authorPath}>{article.author}</Link></strong> : <strong>{article.author}</strong>}<small><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk</small></span></div><ReaderActions articleKey={article.key}/></div>
+    <div className="pf-meta-row"><div><span className="pf-avatar">h.</span><span>{authorPath ? <strong><Link className="author-name-link" href={authorPath}>{article.author}</Link></strong> : <strong>{article.author}</strong>}<small><time dateTime={article.date}>{dateLabel(article.date)}</time> · {article.minutes} dk</small></span></div><div className="pf-article-actions"><ReaderActions articleKey={article.key}/><ArticleShare title={article.title} path={article.path}/></div></div>
   </header>;
 }
 

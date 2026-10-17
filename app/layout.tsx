@@ -31,6 +31,7 @@ import "./hipinup-footer-overflow-v81.css";
 import "./hipinup-mobile-header-v240.css";
 import "./hipinup-authors-v250.css";
 import "./hipinup-article-share-v260.css";
+import "./hipinup-bio-v270.css";
 
 const indexable = isIndexableEnvironment();
 
